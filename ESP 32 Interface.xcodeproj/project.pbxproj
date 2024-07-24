@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */; };
-		44B3C00E2C50BE6800CAADBC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C00D2C50BE6800CAADBC /* ContentView.swift */; };
+		44B3C00E2C50BE6800CAADBC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C00D2C50BE6800CAADBC /* MainView.swift */; };
 		44B3C0102C50BE6A00CAADBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B3C00F2C50BE6A00CAADBC /* Assets.xcassets */; };
 		44B3C0142C50BE6A00CAADBC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B3C0132C50BE6A00CAADBC /* Preview Assets.xcassets */; };
 		44B3C01E2C50BE6B00CAADBC /* ESP_32_InterfaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C01D2C50BE6B00CAADBC /* ESP_32_InterfaceTests.swift */; };
 		44B3C0282C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0272C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift */; };
 		44B3C02A2C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0292C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift */; };
+		44B3C0392C50C97200CAADBC /* Servo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0382C50C97200CAADBC /* Servo.swift */; };
+		44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C03A2C50CCE500CAADBC /* DeviceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +38,7 @@
 /* Begin PBXFileReference section */
 		44B3C0082C50BE6800CAADBC /* ESP 32 Interface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ESP 32 Interface.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceApp.swift; sourceTree = "<group>"; };
-		44B3C00D2C50BE6800CAADBC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		44B3C00D2C50BE6800CAADBC /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		44B3C00F2C50BE6A00CAADBC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44B3C0112C50BE6A00CAADBC /* ESP_32_Interface.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ESP_32_Interface.entitlements; sourceTree = "<group>"; };
 		44B3C0132C50BE6A00CAADBC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -45,6 +47,8 @@
 		44B3C0232C50BE6B00CAADBC /* ESP 32 InterfaceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ESP 32 InterfaceUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B3C0272C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceUITests.swift; sourceTree = "<group>"; };
 		44B3C0292C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		44B3C0382C50C97200CAADBC /* Servo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servo.swift; sourceTree = "<group>"; };
+		44B3C03A2C50CCE500CAADBC /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +100,9 @@
 			isa = PBXGroup;
 			children = (
 				44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */,
-				44B3C00D2C50BE6800CAADBC /* ContentView.swift */,
+				44B3C00D2C50BE6800CAADBC /* MainView.swift */,
+				44B3C03A2C50CCE500CAADBC /* DeviceView.swift */,
+				44B3C0382C50C97200CAADBC /* Servo.swift */,
 				44B3C00F2C50BE6A00CAADBC /* Assets.xcassets */,
 				44B3C0112C50BE6A00CAADBC /* ESP_32_Interface.entitlements */,
 				44B3C0122C50BE6A00CAADBC /* Preview Content */,
@@ -259,7 +265,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44B3C00E2C50BE6800CAADBC /* ContentView.swift in Sources */,
+				44B3C00E2C50BE6800CAADBC /* MainView.swift in Sources */,
+				44B3C0392C50C97200CAADBC /* Servo.swift in Sources */,
+				44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */,
 				44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
