@@ -11,7 +11,7 @@ import SwiftUI
 struct ESP_32_InterfaceApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            ContentView()
         }
     }
 }

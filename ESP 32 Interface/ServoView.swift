@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Servo: View {
+struct ServoView: View {
     @State private var servoPosition = 0
 
     var body: some View {
@@ -20,8 +20,8 @@ struct Servo: View {
     }
 }
 
-struct Servo_Previews: PreviewProvider {
+struct ServoView_Previews: PreviewProvider {
     static var previews: some View {
-        Servo()
+        ServoView()
     }
 }
