@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showingServoView = false
+    @State private var showingAltimeterView = false
     
     var body: some View {
         NavigationView {
@@ -24,6 +25,14 @@ struct ContentView: View {
                         showingServoView.toggle()
                     }
                     .sheet(isPresented: $showingServoView) {
+                        ServoView()
+                    }
+                }
+                Section(header: Text("Sensors")) {
+                    Button("BMP390 Altimeter") {
+                        showingAltimeterView.toggle()
+                    }
+                    .sheet(isPresented: $showingAltimeterView) {
                         ServoView()
                     }
                 }

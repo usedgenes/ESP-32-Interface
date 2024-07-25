@@ -6,14 +6,26 @@
 //
 
 import SwiftUI
+import CoreBluetooth
+
 
 struct BluetoothConnectView: View {
-    var bluetoothConnect: BluetoothIO!
     var body: some View {
-        Button("Connect") {
-            bluetoothConnect = BluetoothIO(serviceUUID: "4fafc201-1fb5-459e-8fcc-c5c9c331914b", delegate: self)
+        VStack {
+        
+
         }
     }
+    
+    private var manager = BTManager()
+    private var devices: [BTDevice] = [] {
+        didSet {
+            if isViewLoaded {
+                tableView.reloadData()
+            }
+        }
+    }
+    @IBOutlet var scanLabel: UILabel!
 }
 
 struct BluetoothConnectView_Previews: PreviewProvider {
