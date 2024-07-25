@@ -88,7 +88,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
 class BlinkCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
-      std::string value = pCharacteristic->getValue();
+      String value = pCharacteristic->getValue();
 
       if (value.length()  == 1) {
         uint8_t v = value[0];
@@ -103,7 +103,7 @@ class BlinkCallbacks: public BLECharacteristicCallbacks {
 
 class SpeedCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
-      std::string value = pCharacteristic->getValue();
+      String value = pCharacteristic->getValue();
 
       if (value.length() == 1) {
         uint8_t v = value[0];
