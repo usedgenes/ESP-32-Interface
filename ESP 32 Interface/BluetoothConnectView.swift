@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct BluetoothConnectView: View {
-    var BluetoothIO: BluetoothIO!
+    var bluetoothConnect: BluetoothIO!
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button("Connect") {
+            bluetoothConnect = BluetoothIO(serviceUUID: "4fafc201-1fb5-459e-8fcc-c5c9c331914b", delegate: self)
+        }
     }
 }
 

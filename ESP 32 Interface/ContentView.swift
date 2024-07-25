@@ -8,14 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showingServoView = false
+    
     var body: some View {
-        NavigationLink(destination: ServoView()) {
-                Text("Connect to a ESP32")
-        }
         NavigationView {
-            Text("Hello, World!")
-                .navigationTitle("ESP32")
+            List {
+                Section(header: Text("Connect to ESP32")) {
+                    NavigationLink("Bluetooth", destination: BluetoothConnectView())
+//                    NavigationLink("Green", destination: GreenView())
+//                    NavigationLink("Blue", destination: BlueView())
+                }
+                
+                Section(header: Text("Motion")) {
+                    Button("Servo") {
+                        showingServoView.toggle()
+                    }
+                    .sheet(isPresented: $showingServoView) {
+                        ServoView()
+                    }
+                }
+            }
+            .navigationBarTitle("ESP32 Assistant")
+            
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

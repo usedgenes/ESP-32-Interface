@@ -12,9 +12,7 @@ struct ServoView: View {
 
     var body: some View {
         VStack {
-            TextField("Servo Position", value: $servoPosition, format: .number)
-                .textFieldStyle(.roundedBorder)
-                .padding()
+        
 
         }
     }
