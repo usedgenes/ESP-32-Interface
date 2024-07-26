@@ -13,23 +13,32 @@ import CoreBluetooth
 class BluetoothHelper {
     
     var manager = BTManager()
+    
     var devices: [BTDevice] = [] {
         didSet {
         }
     }
     
-    func viewLoaded() {
+    init() {
         manager.delegate = self
+    }
+    
+    func connectDevice(deviceNumber: Int) {
+        let device = devices[deviceNumber]
+        device.connect()
+        device?.blink = blinkSwitch.isOn
     }
 }
 
 extension BluetoothHelper: BTManagerDelegate {
     func didChangeState(state: CBManagerState) {
         devices = manager.devices
+        print("state changed")
     }
     
     func didDiscover(device: BTDevice) {
         devices = manager.devices
+        print("discovered")
     }
     
     func didEnableScan(on: Bool) {

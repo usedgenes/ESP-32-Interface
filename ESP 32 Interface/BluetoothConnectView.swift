@@ -10,23 +10,21 @@ import CoreBluetooth
 
 
 struct BluetoothConnectView: View {
+    @State private var selection: String?
+    @State var count: Int = 1
+    
     var bluetoothHelper = BluetoothHelper()
-    @State var selectedIndex: Int?
-    @State var refresh: Bool = false
-
-    func update() {
-       refresh.toggle()
-    }
     
     var body: some View {
-        
-        let _ = bluetoothHelper.viewLoaded()
         var bluetoothManager = bluetoothHelper.manager
         var bluetoothDevices = bluetoothHelper.devices
-        
+
         VStack {
             Button("Refresh") {
-                update()
+                count += 1
+            }
+            Button(String(count)) {
+                
             }
             List {
                 ForEach(0..<bluetoothDevices.count, id: \.self) { index in
@@ -37,14 +35,10 @@ struct BluetoothConnectView: View {
                     //Entirely Clickable
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        selectedIndex = index
+                        bluetoothHelper.connectDevice(deviceNumber: index)
+                        count += 1
                     }
                 }
-            }
-            
-            selectedIndex.map {
-                Text("\($0)")
-                    .font(.largeTitle)
             }
             
         }
