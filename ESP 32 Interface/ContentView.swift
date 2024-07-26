@@ -16,8 +16,7 @@ struct ContentView: View {
             List {
                 Section(header: Text("Connect to ESP32")) {
                     NavigationLink("Bluetooth", destination: BluetoothConnectView())
-//                    NavigationLink("Green", destination: GreenView())
-//                    NavigationLink("Blue", destination: BlueView())
+
                 }
                 
                 Section(header: Text("Motion")) {
@@ -28,6 +27,7 @@ struct ContentView: View {
                         ServoView()
                     }
                 }
+                
                 Section(header: Text("Sensors")) {
                     Button("BMP390 Altimeter") {
                         showingAltimeterView.toggle()

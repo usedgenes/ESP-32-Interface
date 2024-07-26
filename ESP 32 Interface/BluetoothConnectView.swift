@@ -10,16 +10,21 @@ import CoreBluetooth
 
 
 struct BluetoothConnectView: View {
-    var bluetoothManager = BTManager()
-    var devices: [BTDevice]
-    @State  var selectedIndex: Int?
+    var bluetoothHelper = BluetoothHelper()
+    @State var selectedIndex: Int?
     
     var body: some View {
+        var bluetoothManager = bluetoothHelper.manager
+        var bluetoothDevices = bluetoothHelper.devices
+        var state = bluetoothManager.state
+        var scanning = bluetoothManager.scanning
+        
+        bluetoothHelper.viewLoaded()
         VStack {
             List {
-                ForEach(1...10, id: \.self) { index in
+                ForEach(0..<bluetoothDevices.count, id: \.self) { index in
                     HStack {
-                        Text("\(index)")
+                        Text("\(bluetoothDevices[index].name)")
                         Spacer()
                     }
                     //Entirely Clickable
@@ -38,7 +43,6 @@ struct BluetoothConnectView: View {
         }
     }
 }
-
 
 struct BluetoothConnectView_Previews: PreviewProvider {
     static var previews: some View {
