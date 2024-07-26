@@ -27,7 +27,6 @@ struct ContentView: View {
                         ServoView()
                     }
                 }
-                
                 Section(header: Text("Sensors")) {
                     Button("BMP390 Altimeter") {
                         showingAltimeterView.toggle()

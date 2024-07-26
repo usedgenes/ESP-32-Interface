@@ -12,15 +12,22 @@ import CoreBluetooth
 struct BluetoothConnectView: View {
     var bluetoothHelper = BluetoothHelper()
     @State var selectedIndex: Int?
+    @State var refresh: Bool = false
+
+    func update() {
+       refresh.toggle()
+    }
     
     var body: some View {
+        
+        let _ = bluetoothHelper.viewLoaded()
         var bluetoothManager = bluetoothHelper.manager
         var bluetoothDevices = bluetoothHelper.devices
-        var state = bluetoothManager.state
-        var scanning = bluetoothManager.scanning
         
-        bluetoothHelper.viewLoaded()
         VStack {
+            Button("Refresh") {
+                update()
+            }
             List {
                 ForEach(0..<bluetoothDevices.count, id: \.self) { index in
                     HStack {

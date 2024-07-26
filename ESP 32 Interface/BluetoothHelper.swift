@@ -11,9 +11,12 @@ import CoreBluetooth
 
 
 class BluetoothHelper {
+    
     var manager = BTManager()
-    var devices: [BTDevice] = []
-    @IBOutlet var scanLabel: UILabel!
+    var devices: [BTDevice] = [] {
+        didSet {
+        }
+    }
     
     func viewLoaded() {
         manager.delegate = self
