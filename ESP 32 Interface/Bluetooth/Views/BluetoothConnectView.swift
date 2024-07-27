@@ -10,23 +10,49 @@ import CoreBluetooth
 
 
 struct BluetoothConnectView: View {
-    @State private var selection: String?
-    @State private var connectedState: Bool = false
-    @State private var deviceName: String = "null"
+    @ObservedObject var bluetoothDevice = BluetoothDeviceHelper()
+    @State private var refresh: Bool = false
+    @State private var showBluetoothAlert: Bool = false
+    
     var bluetoothManagerHelper = BluetoothManagerHelper()
     
     var body: some View {
         var bluetoothDevices = bluetoothManagerHelper.devices
-
+        
         VStack {
-            Button("Refresh") {
+            Text("Bluetooth")
+            
+            HStack {
+                Button("Refresh") {
+                    refresh.toggle()
+                    bluetoothDevice.blinkChanged()
+                    print(String(bluetoothDevice.isConnected))
+                }
+                Spacer()
+                Button("Disconnect") {
+                    if(bluetoothDevice.isConnected) {
+                        bluetoothDevice.disconnect()
+                    }
+                    else {
+                            showBluetoothAlert = true
+                        
+                    }
+                }
+                .alert(isPresented: $showBluetoothAlert) {
+                        Alert(
+                            title: Text("No Bluetooth Device Connected"),
+                            message: Text("Please select a device to connect to")
+                        )
+                    }
             }
+            .cornerRadius(8)
+            .padding()
             
             VStack(spacing:-20) {
                 HStack{
                     Text("Device Name")
                     Spacer()
-                    Text(String(deviceName))
+                    Text(String(bluetoothDevice.deviceName))
                 }
                 .cornerRadius(8)
                 .padding()
@@ -34,7 +60,7 @@ struct BluetoothConnectView: View {
                 HStack{
                     Text("Device State")
                     Spacer()
-                    Text(String(connectedState))
+                    Text(String(bluetoothDevice.isConnected))
                 }
                 .cornerRadius(8)
                 .padding()
@@ -48,6 +74,8 @@ struct BluetoothConnectView: View {
                     .contentShape(Rectangle())
                     .onTapGesture {
                         bluetoothManagerHelper.connectDevice(deviceNumber: index)
+                        bluetoothDevice.device = bluetoothDevices[index]
+                        bluetoothDevice.connect()
                     }
                 }
             }

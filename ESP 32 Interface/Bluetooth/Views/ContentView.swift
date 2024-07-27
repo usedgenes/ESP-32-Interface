@@ -14,9 +14,10 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                Section(header: Text("Connect to ESP32")) {
-                    NavigationLink("Bluetooth", destination: BluetoothConnectView())
-
+                Section(header: Text("ESP32 Options")) {
+                    NavigationLink("Connect to Bluetooth", destination: BluetoothConnectView())
+//                    NavigationLink("Connect to WiFi", destination: BluetoothConnectView())
+                    NavigationLink("Add a Device", destination: BluetoothConnectView())
                 }
                 
                 Section(header: Text("Motion")) {

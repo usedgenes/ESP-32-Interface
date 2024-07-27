@@ -10,9 +10,8 @@ import UIKit
 import CoreBluetooth
 
 
-class BluetoothManagerHelper {
-    @Binding private var connectedState: Bool
-    @Binding private var deviceName: String 
+class BluetoothManagerHelper : ObservableObject {
+    
     var manager = BTManager()
     var device: BTDevice?
     
@@ -28,19 +27,16 @@ class BluetoothManagerHelper {
     func connectDevice(deviceNumber: Int) {
         device = devices[deviceNumber]
         device?.connect()
-        device?.blink = true
     }
 }
 
 extension BluetoothManagerHelper: BTManagerDelegate {
     func didChangeState(state: CBManagerState) {
         devices = manager.devices
-        print("state changed")
     }
     
     func didDiscover(device: BTDevice) {
         devices = manager.devices
-        print("discovered")
     }
     
     func didEnableScan(on: Bool) {
