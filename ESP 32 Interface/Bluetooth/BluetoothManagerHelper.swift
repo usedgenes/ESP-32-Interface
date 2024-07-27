@@ -20,6 +20,11 @@ class BluetoothManagerHelper : ObservableObject {
         }
     }
     
+    @Published var ESP32Devices: [DeviceCategory] = [] {
+        didSet {
+        }
+    }
+    
     init() {
         manager.delegate = self
     }

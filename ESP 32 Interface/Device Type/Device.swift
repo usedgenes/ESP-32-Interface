@@ -1,38 +1,30 @@
-//
-//  DeviceType.swift
-//  ESP 32 Interface
-//
-//  Created by Eugene on 7/26/24.
-//
-
 import Foundation
 
-class Device: Identifiable {
-    let id = UUID()
-    let name: String
-    let pins : [Int] = []
+class Device: NSObject, Identifiable {
+    var name: String
+    var pins : [String: Int] = [:]
     init(name: String) {
         self.name = name
     }
 }
 
-class DeviceType: Identifiable {
-    let id = UUID()
-    let type: String
-    let devices : [Device]
-    init(type: String, devices: [Device]) {
+class DeviceType: NSObject, Identifiable {
+    var type: String
+    var devices : [Device] = []
+    init(type: String) {
         self.type = type
-        self.devices = devices
     }
 }
 
-class DeviceCategory: Identifiable {
-    let id = UUID()
-    let category: String
-    let deviceTypes: [DeviceType]
-    init(category: String, deviceTypes: [DeviceType]) {
+class DeviceCategory: NSObject, Identifiable {
+    var category: String
+    var deviceTypes: [DeviceType] = []
+    init(category: String) {
         self.category = category
-        self.deviceTypes = deviceTypes
+    }
+    
+    func addDevice(deviceType : DeviceType) {
+        deviceTypes.append(deviceType)
     }
 }
 

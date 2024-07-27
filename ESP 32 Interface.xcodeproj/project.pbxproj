@@ -99,9 +99,9 @@
 		443A4D792C548F70004E1D26 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				44B3C00D2C50BE6800CAADBC /* ContentView.swift */,
 				44B3C0382C50C97200CAADBC /* ServoView.swift */,
 				449096472C52210F00EF97A3 /* BluetoothConnectView.swift */,
-				44B3C00D2C50BE6800CAADBC /* ContentView.swift */,
 				44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */,
 			);
 			path = Views;

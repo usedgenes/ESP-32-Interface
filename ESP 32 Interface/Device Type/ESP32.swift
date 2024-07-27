@@ -9,11 +9,14 @@ import Foundation
 
 class ESP32 : ObservableObject {
     var servos = DeviceType(type: "servo")
-    var motion = DeviceCategory(category: "motion", deviceTypes: <#[DeviceType]#>
-    var altimeter
-    var ESP32Devices: [DeviceCategory]
+    var motion = DeviceCategory(category: "motion")
+    @Published var ESP32Devices: [DeviceCategory] = [] {
+        didSet {
+        }
+    }
     
-                                init() {
-        
+    init() {
+        motion.addDevice(deviceType: servos)
+        ESP32Devices.append(motion)
     }
 }

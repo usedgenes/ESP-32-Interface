@@ -10,30 +10,32 @@ import SwiftUI
 struct AddDeviceView: View {
     @State private var singleSelection: UUID?
     @ObservedObject var ESP_32 : ESP32
-    
+    @State var bluetoothManagerHelper = BluetoothManagerHelper()
+
     var body: some View {
-        List(selection: $singleSelection) {
-            ForEach(ESP32Devices) { deviceCategory in
+
+        List() {
+            ForEach(ESP_32.ESP32Devices, id: \.self) { deviceCategory in
                 Section(header: Text("\(deviceCategory.category)")) {
-                    ForEach(deviceCategory.devices, id: \.self) { device in
-                        HStack {
-                            Text("\(device.name)")
-                            Spacer()
-                            Button(action: {alert()}) {
-                                Text("Add")
-                            }
-                        }
-                        .contentShape(Rectangle())
-                        
-                        //                                    ForEach(ESP_32.de)
-                    }
+//                    ForEach(deviceCategory.devices, id: \.self) { device in
+//                        HStack {
+//                            Text("\(device.name)")
+//                            Spacer()
+//                            Button(action: {self.alert()}) {
+//                                Text("Add")
+//                            }
+//                        }
+//                        .contentShape(Rectangle())
+//                        
+//                        //                                    ForEach(ESP_32.de)
+//                    }
                 }
             }
         }
         .navigationTitle("Device List")
     }
     
-    private mutating func alert() {
+    private func alert() {
         let alert = UIAlertController(title: "Pin Number", message: "Enter the pins this device is attached to on the ESP32", preferredStyle: .alert)
         alert.addTextField() { textField in
             textField.placeholder = "Enter pin number"
