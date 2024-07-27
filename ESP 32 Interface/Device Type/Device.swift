@@ -7,20 +7,32 @@
 
 import Foundation
 
-struct Device: Identifiable {
+class Device: Identifiable {
     let id = UUID()
     let name: String
+    let pins : [Int] = []
+    init(name: String) {
+        self.name = name
+    }
 }
 
-struct DeviceType: Identifiable {
+class DeviceType: Identifiable {
     let id = UUID()
     let type: String
     let devices : [Device]
+    init(type: String, devices: [Device]) {
+        self.type = type
+        self.devices = devices
+    }
 }
 
-struct DeviceCategory: Identifiable {
+class DeviceCategory: Identifiable {
     let id = UUID()
     let category: String
-    let devicesTypes: [DeviceType]
+    let deviceTypes: [DeviceType]
+    init(category: String, deviceTypes: [DeviceType]) {
+        self.category = category
+        self.deviceTypes = deviceTypes
+    }
 }
 

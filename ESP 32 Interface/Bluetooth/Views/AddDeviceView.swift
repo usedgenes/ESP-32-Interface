@@ -10,65 +10,62 @@ import SwiftUI
 struct AddDeviceView: View {
     @State private var singleSelection: UUID?
     @ObservedObject var ESP_32 : ESP32
-
+    
     var body: some View {
         List(selection: $singleSelection) {
             ForEach(ESP32Devices) { deviceCategory in
-                            Section(header: Text("\(deviceCategory.category)")) {
-                                ForEach(deviceCategory.devices, id: \.self) { device in
-                                    HStack {
-                                        Text("\(device.name)")
-                                        Spacer()
-                                        Button(action: {alert()}) {
-                                            Text("Add")
-                                        }
-                                    }
-                                    .contentShape(Rectangle())
-                                    
-//                                    ForEach(ESP_32.de)
-                                }
+                Section(header: Text("\(deviceCategory.category)")) {
+                    ForEach(deviceCategory.devices, id: \.self) { device in
+                        HStack {
+                            Text("\(device.name)")
+                            Spacer()
+                            Button(action: {alert()}) {
+                                Text("Add")
                             }
                         }
+                        .contentShape(Rectangle())
+                        
+                        //                                    ForEach(ESP_32.de)
                     }
-                    .navigationTitle("Device List")
+                }
+            }
+        }
+        .navigationTitle("Device List")
     }
     
-    private func alert() {
+    private mutating func alert() {
         let alert = UIAlertController(title: "Pin Number", message: "Enter the pins this device is attached to on the ESP32", preferredStyle: .alert)
         alert.addTextField() { textField in
-            textField.placeholder = "Enter some text"
+            textField.placeholder = "Enter pin number"
+            textField.keyboardType = .numberPad
         }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in })
-        alert.addAction(UIAlertAction(title: "Done", style: .default, validate: TextValidationRule.nonEmpty) { _ in })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in }))
+        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { _ in })
+        alert.addAction(alertDone)
         showAlert(alert: alert)
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-
-        return true;
-    }
     
     func showAlert(alert: UIAlertController) {
         if let controller = topMostViewController() {
             controller.present(alert, animated: true)
         }
     }
-
+    
     private func keyWindow() -> UIWindow? {
         return UIApplication.shared.connectedScenes
-        .filter {$0.activationState == .foregroundActive}
-        .compactMap {$0 as? UIWindowScene}
-        .first?.windows.filter {$0.isKeyWindow}.first
+            .filter {$0.activationState == .foregroundActive}
+            .compactMap {$0 as? UIWindowScene}
+            .first?.windows.filter {$0.isKeyWindow}.first
     }
-
+    
     private func topMostViewController() -> UIViewController? {
         guard let rootController = keyWindow()?.rootViewController else {
             return nil
         }
         return topMostViewController(for: rootController)
     }
-
+    
     private func topMostViewController(for controller: UIViewController) -> UIViewController {
         if let presentedController = controller.presentedViewController {
             return topMostViewController(for: presentedController)

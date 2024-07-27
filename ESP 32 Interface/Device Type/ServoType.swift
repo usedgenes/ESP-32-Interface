@@ -7,6 +7,6 @@
 
 import Foundation
 
-class ServoType : Device{
+class ServoType : Device {
 
 }
