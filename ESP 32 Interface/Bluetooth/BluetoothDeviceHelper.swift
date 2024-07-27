@@ -12,8 +12,8 @@ import UserNotifications
 class BluetoothDeviceHelper: ObservableObject {
     @Published var refreshBluetooth: Bool = false
     
-    var deviceName: String = "null"
-    var isConnected: Bool = false
+    @Published var deviceName: String = "null"
+    @Published var isConnected: Bool = false
     
     @Published var device: BTDevice? {
         didSet {
@@ -31,15 +31,26 @@ class BluetoothDeviceHelper: ObservableObject {
     
     func disconnect() {
         device?.disconnect()
+        deviceName = "null"
         isConnected = false
     }
     
     func connect() {
-        isConnected = true
+        if(device != nil) {
+            isConnected = true
+            deviceName = device?.name ?? "null"
+        }
     }
     
     func blinkChanged() {
-        device?.blink = true
+        device?.blink.toggle()
+    }
+    
+    func blinkState() -> Bool {
+        if(device?.blink == nil) {
+            return false
+        }
+        return device!.blink
     }
 
 }

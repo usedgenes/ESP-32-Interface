@@ -7,25 +7,13 @@
 
 import Foundation
 
-class DeviceType : NSObject {
-    struct Device: Hashable, Identifiable {
-        let name: String
-        let id = UUID()
-    }
+class Device : NSObject {
+    var name: String
     
-    struct DeviceList: Identifiable {
-        let name: String
-        let devices: [Device]
-        let id = UUID()
+    init(name: String) {
+        self.name = name
+        
+        super.init()
     }
-    
-    let ESP32Devices: [DeviceList] = [
-        DeviceList(name: "Motion",
-                   devices: [Device(name: "Motor"),
-                             Device(name: "Servo")]),
-        DeviceList(name: "Altimeter",
-                   devices: [Device(name: "BMP388")]),
-        DeviceList(name: "IMU",
-                   devices: [Device(name: "BNO08x")]),
-    ]
+
 }

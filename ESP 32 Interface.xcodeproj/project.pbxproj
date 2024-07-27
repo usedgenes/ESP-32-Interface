@@ -11,6 +11,7 @@
 		443A4D7B2C549284004E1D26 /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7A2C549284004E1D26 /* DeviceType.swift */; };
 		443A4D802C549B90004E1D26 /* ESP32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7F2C549B90004E1D26 /* ESP32.swift */; };
 		443A4D822C54B41F004E1D26 /* ServoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D812C54B41F004E1D26 /* ServoType.swift */; };
+		443A4D842C54BAA3004E1D26 /* DeviceCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D832C54BAA3004E1D26 /* DeviceCategory.swift */; };
 		449096422C520ECD00EF97A3 /* BTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963E2C520ECD00EF97A3 /* BTManager.swift */; };
 		449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963F2C520ECD00EF97A3 /* BTDevice.swift */; };
 		449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096402C520ECD00EF97A3 /* BTUUIDs.swift */; };
@@ -50,6 +51,7 @@
 		443A4D7A2C549284004E1D26 /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
 		443A4D7F2C549B90004E1D26 /* ESP32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP32.swift; sourceTree = "<group>"; };
 		443A4D812C54B41F004E1D26 /* ServoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServoType.swift; sourceTree = "<group>"; };
+		443A4D832C54BAA3004E1D26 /* DeviceCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCategory.swift; sourceTree = "<group>"; };
 		4490963E2C520ECD00EF97A3 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
 		4490963F2C520ECD00EF97A3 /* BTDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
 		449096402C520ECD00EF97A3 /* BTUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUUIDs.swift; sourceTree = "<group>"; };
@@ -99,10 +101,10 @@
 		443A4D792C548F70004E1D26 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				44B3C0382C50C97200CAADBC /* ServoView.swift */,
 				449096472C52210F00EF97A3 /* BluetoothConnectView.swift */,
 				44B3C00D2C50BE6800CAADBC /* ContentView.swift */,
 				44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */,
-				44B3C0382C50C97200CAADBC /* ServoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				443A4D7A2C549284004E1D26 /* DeviceType.swift */,
+				443A4D832C54BAA3004E1D26 /* DeviceCategory.swift */,
 				443A4D7F2C549B90004E1D26 /* ESP32.swift */,
 				443A4D812C54B41F004E1D26 /* ServoType.swift */,
 			);
@@ -330,6 +333,7 @@
 				44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */,
 				44B3C03B2C50CCE500CAADBC /* AddDeviceView.swift in Sources */,
 				44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */,
+				443A4D842C54BAA3004E1D26 /* DeviceCategory.swift in Sources */,
 				449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */,
 				443A4D802C549B90004E1D26 /* ESP32.swift in Sources */,
 				443A4D822C54B41F004E1D26 /* ServoType.swift in Sources */,

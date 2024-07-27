@@ -8,10 +8,8 @@
 import Foundation
 
 class ESP32 : ObservableObject {
-    var devices : [DeviceType] = []
-    var deviceAmount: [DeviceType: Int] = [:]
+    var servos : [ServoType] = []
     
-    func addDevice(device : DeviceType) {
-        deviceAmount[device]? += 1
+    func addDevice(device : Device) {
     }
 }

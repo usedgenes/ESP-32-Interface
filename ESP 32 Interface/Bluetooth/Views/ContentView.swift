@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var bluetoothDevice = BluetoothDeviceHelper()
-    @ObservedObject var ESP_32 = ESP32()
+    @StateObject var ESP_32 = ESP32()
 
     @State private var showingServoView = false
     @State private var showingAltimeterView = false
