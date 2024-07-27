@@ -24,8 +24,8 @@ class BluetoothManagerHelper : ObservableObject {
         manager.delegate = self
     }
     
-    func connectDevice(deviceNumber: Int) {
-        device = devices[deviceNumber]
+    func connectDevice(BTDevice : BTDevice) {
+        device = BTDevice
         device?.connect()
     }
 }

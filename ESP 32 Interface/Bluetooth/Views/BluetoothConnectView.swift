@@ -10,10 +10,9 @@ import CoreBluetooth
 
 
 struct BluetoothConnectView: View {
-    @ObservedObject var bluetoothDevice = BluetoothDeviceHelper()
-    @State private var refresh: Bool = false
+    @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
     @State private var showBluetoothAlert: Bool = false
-    
+    @State private var count = 0;
     var bluetoothManagerHelper = BluetoothManagerHelper()
     
     var body: some View {
@@ -21,10 +20,11 @@ struct BluetoothConnectView: View {
         
         VStack {
             Text("Bluetooth")
-            
+            Text(String(count))
             HStack {
                 Button("Refresh") {
-                    refresh.toggle()
+                    bluetoothDevice.refresh()
+                    count += 1
                     bluetoothDevice.blinkChanged()
                     print(String(bluetoothDevice.isConnected))
                 }
@@ -66,17 +66,18 @@ struct BluetoothConnectView: View {
                 .padding()
             }
             List {
-                ForEach(0..<bluetoothDevices.count, id: \.self) { index in
+                ForEach(bluetoothDevices, id: \.self) { device in
                     HStack {
-                        Text("\(bluetoothDevices[index].name)")
+                        Text("\(device.name)")
+                            .onTapGesture {
+                                bluetoothManagerHelper.connectDevice(BTDevice: device)
+                                bluetoothDevice.device = device
+                                bluetoothDevice.connect()
+                            }
                         Spacer()
                     }
                     .contentShape(Rectangle())
-                    .onTapGesture {
-                        bluetoothManagerHelper.connectDevice(deviceNumber: index)
-                        bluetoothDevice.device = bluetoothDevices[index]
-                        bluetoothDevice.connect()
-                    }
+                    
                 }
             }
             
@@ -86,6 +87,6 @@ struct BluetoothConnectView: View {
 
 struct BluetoothConnectView_Previews: PreviewProvider {
     static var previews: some View {
-        BluetoothConnectView()
+        BluetoothConnectView(bluetoothDevice : BluetoothDeviceHelper())
     }
 }

@@ -10,6 +10,7 @@ import UserNotifications
 
 
 class BluetoothDeviceHelper: ObservableObject {
+    var refreshBluetooth: Bool = false
     
     var deviceName: String = "null"
     var isConnected: Bool = false
@@ -22,6 +23,10 @@ class BluetoothDeviceHelper: ObservableObject {
     
     init() {
         device?.delegate = self
+    }
+    
+    func refresh() {
+        refreshBluetooth.toggle()
     }
     
     func disconnect() {

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var bluetoothDevice = BluetoothDeviceHelper()
+    @ObservedObject var ESP_32 = ESP32()
+
     @State private var showingServoView = false
     @State private var showingAltimeterView = false
     
@@ -15,9 +18,9 @@ struct ContentView: View {
         NavigationView {
             List {
                 Section(header: Text("ESP32 Options")) {
-                    NavigationLink("Connect to Bluetooth", destination: BluetoothConnectView())
+                    NavigationLink("Connect to Bluetooth", destination: BluetoothConnectView(bluetoothDevice : bluetoothDevice))
 //                    NavigationLink("Connect to WiFi", destination: BluetoothConnectView())
-                    NavigationLink("Add a Device", destination: BluetoothConnectView())
+                    NavigationLink("Add a Device", destination: AddDeviceView())
                 }
                 
                 Section(header: Text("Motion")) {

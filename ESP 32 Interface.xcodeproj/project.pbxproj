@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */; };
 		443A4D7B2C549284004E1D26 /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7A2C549284004E1D26 /* DeviceType.swift */; };
-		443A4D7E2C549883004E1D26 /* AddDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7D2C549883004E1D26 /* AddDeviceView.swift */; };
+		443A4D802C549B90004E1D26 /* ESP32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7F2C549B90004E1D26 /* ESP32.swift */; };
 		449096422C520ECD00EF97A3 /* BTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963E2C520ECD00EF97A3 /* BTManager.swift */; };
 		449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963F2C520ECD00EF97A3 /* BTDevice.swift */; };
 		449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096402C520ECD00EF97A3 /* BTUUIDs.swift */; };
@@ -24,7 +24,7 @@
 		44B3C0282C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0272C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift */; };
 		44B3C02A2C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0292C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift */; };
 		44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0382C50C97200CAADBC /* ServoView.swift */; };
-		44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C03A2C50CCE500CAADBC /* DeviceView.swift */; };
+		44B3C03B2C50CCE500CAADBC /* AddDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +47,7 @@
 /* Begin PBXFileReference section */
 		443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceHelper.swift; sourceTree = "<group>"; };
 		443A4D7A2C549284004E1D26 /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
-		443A4D7D2C549883004E1D26 /* AddDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDeviceView.swift; sourceTree = "<group>"; };
+		443A4D7F2C549B90004E1D26 /* ESP32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP32.swift; sourceTree = "<group>"; };
 		4490963E2C520ECD00EF97A3 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
 		4490963F2C520ECD00EF97A3 /* BTDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
 		449096402C520ECD00EF97A3 /* BTUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUUIDs.swift; sourceTree = "<group>"; };
@@ -66,7 +66,7 @@
 		44B3C0272C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceUITests.swift; sourceTree = "<group>"; };
 		44B3C0292C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		44B3C0382C50C97200CAADBC /* ServoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServoView.swift; sourceTree = "<group>"; };
-		44B3C03A2C50CCE500CAADBC /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
+		44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDeviceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,8 +99,7 @@
 			children = (
 				449096472C52210F00EF97A3 /* BluetoothConnectView.swift */,
 				44B3C00D2C50BE6800CAADBC /* ContentView.swift */,
-				443A4D7D2C549883004E1D26 /* AddDeviceView.swift */,
-				44B3C03A2C50CCE500CAADBC /* DeviceView.swift */,
+				44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */,
 				44B3C0382C50C97200CAADBC /* ServoView.swift */,
 			);
 			path = Views;
@@ -110,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				443A4D7A2C549284004E1D26 /* DeviceType.swift */,
+				443A4D7F2C549B90004E1D26 /* ESP32.swift */,
 			);
 			path = "Device Type";
 			sourceTree = "<group>";
@@ -318,7 +318,6 @@
 			files = (
 				449096482C52210F00EF97A3 /* BluetoothConnectView.swift in Sources */,
 				449096422C520ECD00EF97A3 /* BTManager.swift in Sources */,
-				443A4D7E2C549883004E1D26 /* AddDeviceView.swift in Sources */,
 				443A4D7B2C549284004E1D26 /* DeviceType.swift in Sources */,
 				449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */,
 				449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */,
@@ -326,9 +325,10 @@
 				449840492C53532400A7AF05 /* BluetoothManagerHelper.swift in Sources */,
 				44B3C00E2C50BE6800CAADBC /* ContentView.swift in Sources */,
 				44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */,
-				44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */,
+				44B3C03B2C50CCE500CAADBC /* AddDeviceView.swift in Sources */,
 				44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */,
 				449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */,
+				443A4D802C549B90004E1D26 /* ESP32.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
