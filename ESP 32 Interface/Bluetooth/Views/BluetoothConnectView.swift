@@ -12,21 +12,16 @@ import CoreBluetooth
 struct BluetoothConnectView: View {
     @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
     @State private var showBluetoothAlert: Bool = false
-    @State private var count = 0;
-    var bluetoothManagerHelper = BluetoothManagerHelper()
+    @State var bluetoothManagerHelper = BluetoothManagerHelper()
     
     var body: some View {
-        var bluetoothDevices = bluetoothManagerHelper.devices
         
         VStack {
             Text("Bluetooth")
-            Text(String(count))
             HStack {
                 Button("Refresh") {
                     bluetoothDevice.refresh()
-                    count += 1
-                    bluetoothDevice.blinkChanged()
-                    print(String(bluetoothDevice.isConnected))
+                    //                    bluetoothDevice.blinkChanged()
                 }
                 Spacer()
                 Button("Disconnect") {
@@ -34,16 +29,16 @@ struct BluetoothConnectView: View {
                         bluetoothDevice.disconnect()
                     }
                     else {
-                            showBluetoothAlert = true
+                        showBluetoothAlert = true
                         
                     }
                 }
                 .alert(isPresented: $showBluetoothAlert) {
-                        Alert(
-                            title: Text("No Bluetooth Device Connected"),
-                            message: Text("Please select a device to connect to")
-                        )
-                    }
+                    Alert(
+                        title: Text("No Bluetooth Device Connected"),
+                        message: Text("Please select a device to connect to")
+                    )
+                }
             }
             .cornerRadius(8)
             .padding()
@@ -66,7 +61,7 @@ struct BluetoothConnectView: View {
                 .padding()
             }
             List {
-                ForEach(bluetoothDevices, id: \.self) { device in
+                ForEach(bluetoothManagerHelper.devices, id: \.self) { device in
                     HStack {
                         Text("\(device.name)")
                             .onTapGesture {

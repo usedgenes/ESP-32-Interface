@@ -10,12 +10,12 @@ import UserNotifications
 
 
 class BluetoothDeviceHelper: ObservableObject {
-    var refreshBluetooth: Bool = false
+    @Published var refreshBluetooth: Bool = false
     
     var deviceName: String = "null"
     var isConnected: Bool = false
     
-    var device: BTDevice? {
+    @Published var device: BTDevice? {
         didSet {
             device?.delegate = self
         }

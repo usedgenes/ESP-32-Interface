@@ -20,7 +20,7 @@ struct ContentView: View {
                 Section(header: Text("ESP32 Options")) {
                     NavigationLink("Connect to Bluetooth", destination: BluetoothConnectView(bluetoothDevice : bluetoothDevice))
 //                    NavigationLink("Connect to WiFi", destination: BluetoothConnectView())
-                    NavigationLink("Add a Device", destination: AddDeviceView())
+                    NavigationLink("Add a Device", destination: AddDeviceView(ESP_32: ESP_32))
                 }
                 
                 Section(header: Text("Motion")) {

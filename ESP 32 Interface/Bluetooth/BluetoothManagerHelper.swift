@@ -12,10 +12,10 @@ import CoreBluetooth
 
 class BluetoothManagerHelper : ObservableObject {
     
-    var manager = BTManager()
-    var device: BTDevice?
+    @Published var manager = BTManager()
+    @Published var device: BTDevice?
     
-    var devices: [BTDevice] = [] {
+    @Published var devices: [BTDevice] = [] {
         didSet {
         }
     }

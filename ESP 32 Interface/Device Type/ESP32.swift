@@ -9,8 +9,9 @@ import Foundation
 
 class ESP32 : ObservableObject {
     var devices : [DeviceType] = []
+    var deviceAmount: [DeviceType: Int] = [:]
     
     func addDevice(device : DeviceType) {
-        
+        deviceAmount[device]? += 1
     }
 }

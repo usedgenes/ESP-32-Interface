@@ -9,14 +9,22 @@ import SwiftUI
 
 struct AddDeviceView: View {
     @State private var singleSelection: UUID?
+    @ObservedObject var ESP_32 : ESP32
     var devices = DeviceType()
 
     var body: some View {
         List(selection: $singleSelection) {
             ForEach(devices.ESP32Devices) { deviceList in
-                            Section(header: Text("IMU: \(deviceList.name)")) {
-                                ForEach(deviceList.devices) { devices in
-                                    Text(devices.name)
+                            Section(header: Text("\(deviceList.name)")) {
+                                ForEach(deviceList.devices) { device in
+                                    HStack {
+                                        Text("\(device.name)")
+                                        Spacer()
+                                        Button("Add") {
+                                            ESP_32.addDevice(device)
+                                        }
+                                    }
+                                    .contentShape(Rectangle())
                                 }
                             }
                         }
@@ -27,6 +35,6 @@ struct AddDeviceView: View {
 
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
-        AddDeviceView()
+        AddDeviceView(ESP_32 : ESP32())
     }
 }
