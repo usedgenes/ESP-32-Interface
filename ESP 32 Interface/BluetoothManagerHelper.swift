@@ -10,9 +10,11 @@ import UIKit
 import CoreBluetooth
 
 
-class BluetoothHelper {
-    
+class BluetoothManagerHelper {
+    @Binding private var connectedState: Bool
+    @Binding private var deviceName: String 
     var manager = BTManager()
+    var device: BTDevice?
     
     var devices: [BTDevice] = [] {
         didSet {
@@ -24,13 +26,13 @@ class BluetoothHelper {
     }
     
     func connectDevice(deviceNumber: Int) {
-        let device = devices[deviceNumber]
-        device.connect()
-        device?.blink = blinkSwitch.isOn
+        device = devices[deviceNumber]
+        device?.connect()
+        device?.blink = true
     }
 }
 
-extension BluetoothHelper: BTManagerDelegate {
+extension BluetoothManagerHelper: BTManagerDelegate {
     func didChangeState(state: CBManagerState) {
         devices = manager.devices
         print("state changed")

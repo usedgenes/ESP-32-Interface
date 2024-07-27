@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */; };
 		449096272C51E7C000EF97A3 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096262C51E7C000EF97A3 /* Data.swift */; };
 		449096422C520ECD00EF97A3 /* BTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963E2C520ECD00EF97A3 /* BTManager.swift */; };
 		449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963F2C520ECD00EF97A3 /* BTDevice.swift */; };
 		449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096402C520ECD00EF97A3 /* BTUUIDs.swift */; };
 		449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096412C520ECD00EF97A3 /* BTUtils.swift */; };
 		449096482C52210F00EF97A3 /* BluetoothConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096472C52210F00EF97A3 /* BluetoothConnectView.swift */; };
-		449840492C53532400A7AF05 /* BluetoothHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449840482C53532400A7AF05 /* BluetoothHelper.swift */; };
+		449840492C53532400A7AF05 /* BluetoothManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449840482C53532400A7AF05 /* BluetoothManagerHelper.swift */; };
 		44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */; };
 		44B3C00E2C50BE6800CAADBC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C00D2C50BE6800CAADBC /* ContentView.swift */; };
 		44B3C0102C50BE6A00CAADBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B3C00F2C50BE6A00CAADBC /* Assets.xcassets */; };
@@ -43,13 +44,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceHelper.swift; sourceTree = "<group>"; };
 		449096262C51E7C000EF97A3 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		4490963E2C520ECD00EF97A3 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
 		4490963F2C520ECD00EF97A3 /* BTDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
 		449096402C520ECD00EF97A3 /* BTUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUUIDs.swift; sourceTree = "<group>"; };
 		449096412C520ECD00EF97A3 /* BTUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUtils.swift; sourceTree = "<group>"; };
 		449096472C52210F00EF97A3 /* BluetoothConnectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothConnectView.swift; sourceTree = "<group>"; };
-		449840482C53532400A7AF05 /* BluetoothHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothHelper.swift; sourceTree = "<group>"; };
+		449840482C53532400A7AF05 /* BluetoothManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManagerHelper.swift; sourceTree = "<group>"; };
 		44B3C0082C50BE6800CAADBC /* ESP 32 Interface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ESP 32 Interface.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceApp.swift; sourceTree = "<group>"; };
 		44B3C00D2C50BE6800CAADBC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -127,7 +129,8 @@
 				449096462C520ED100EF97A3 /* Bluetooth */,
 				44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */,
 				449096472C52210F00EF97A3 /* BluetoothConnectView.swift */,
-				449840482C53532400A7AF05 /* BluetoothHelper.swift */,
+				449840482C53532400A7AF05 /* BluetoothManagerHelper.swift */,
+				443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */,
 				44B3C00D2C50BE6800CAADBC /* ContentView.swift */,
 				44B3C03A2C50CCE500CAADBC /* DeviceView.swift */,
 				44B3C0382C50C97200CAADBC /* ServoView.swift */,
@@ -298,7 +301,8 @@
 				449096422C520ECD00EF97A3 /* BTManager.swift in Sources */,
 				449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */,
 				449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */,
-				449840492C53532400A7AF05 /* BluetoothHelper.swift in Sources */,
+				443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */,
+				449840492C53532400A7AF05 /* BluetoothManagerHelper.swift in Sources */,
 				449096272C51E7C000EF97A3 /* Data.swift in Sources */,
 				44B3C00E2C50BE6800CAADBC /* ContentView.swift in Sources */,
 				44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */,
