@@ -7,6 +7,6 @@
 
 import Foundation
 
-class ServoType : DeviceType {
+class BNO08X_I2CType : DeviceType {
 
 }

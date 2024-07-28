@@ -11,8 +11,10 @@ class Device: NSObject, Identifiable {
 class DeviceType: NSObject, Identifiable {
     var type: String
     var devices : [Device] = []
-    init(type: String) {
+    var pinTypes: [String] = []
+    init(type: String, pinTypes: [String]) {
         self.type = type
+        self.pinTypes = pinTypes
     }
 }
 

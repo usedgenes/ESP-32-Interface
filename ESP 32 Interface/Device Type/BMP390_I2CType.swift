@@ -7,6 +7,6 @@
 
 import Foundation
 
-class ServoType : DeviceType {
+class BMP390_I2CType : DeviceType {
 
 }

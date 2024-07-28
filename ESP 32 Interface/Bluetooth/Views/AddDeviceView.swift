@@ -17,32 +17,40 @@ struct AddDeviceView: View {
         List() {
             ForEach(ESP_32.ESP32Devices, id: \.self) { deviceCategory in
                 Section(header: Text("\(deviceCategory.category)")) {
-//                    ForEach(deviceCategory.devices, id: \.self) { device in
-//                        HStack {
-//                            Text("\(device.name)")
-//                            Spacer()
-//                            Button(action: {self.alert()}) {
-//                                Text("Add")
-//                            }
-//                        }
-//                        .contentShape(Rectangle())
-//                        
-//                        //                                    ForEach(ESP_32.de)
-//                    }
+                    ForEach(deviceCategory.deviceTypes, id: \.self) { deviceType in
+                        HStack {
+                            Text("\(deviceType.type)")
+                            Spacer()
+                            Button(action: {self.alert(device: deviceType)}) {
+                                Text("Add")
+                            }
+                        }
+                        .contentShape(Rectangle())
+                        ForEach(deviceType.devices, id: \.self) { device in
+                            HStack {
+                                Text(device.name)
+                            }
+                        }
+                    }
                 }
             }
         }
         .navigationTitle("Device List")
     }
     
-    private func alert() {
+    private func alert(device: DeviceType) {
         let alert = UIAlertController(title: "Pin Number", message: "Enter the pins this device is attached to on the ESP32", preferredStyle: .alert)
-        alert.addTextField() { textField in
-            textField.placeholder = "Enter pin number"
-            textField.keyboardType = .numberPad
+        for pinType in device.pinTypes {
+            alert.addTextField() { textField in
+                textField.placeholder = pinType
+                textField.keyboardType = .numberPad
+            }
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in }))
-        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { _ in })
+        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            print("Text field: \(textField!.text)")
+        })
         alert.addAction(alertDone)
         showAlert(alert: alert)
     }
