@@ -12,7 +12,7 @@ class ESP32 : ObservableObject {
     var motors = MotorType(type: "Motors", pinTypes: ["Digital"])
     var motion = DeviceCategory(category: "Motion")
     
-    var bmp390I2C = BMP390_I2CType(type: "BMP390 I2C", pinTypes: [""])
+    var bmp390I2C = BMP390_I2CType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"])
     var altimeters = DeviceCategory(category: "Altimeters")
     
     var bno08x = BNO08X_I2CType(type: "BNO08X", pinTypes: [""])

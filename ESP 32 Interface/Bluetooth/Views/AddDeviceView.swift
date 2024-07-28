@@ -39,19 +39,34 @@ struct AddDeviceView: View {
     }
     
     private func alert(device: DeviceType) {
+        var pinsInput : [Bool] = Array(repeating: false, count: device.pinTypes.count)
+        var pinNumbers : [Int] = Array(repeating: -1, count: device.pinTypes.count)
         let alert = UIAlertController(title: "Pin Number", message: "Enter the pins this device is attached to on the ESP32", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in }))
+        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
+            for number in 0..<device.pinTypes.count {
+                let value : Int? = Int((alert?.textFields![number].text)!)
+                pinNumbers[number] = value!
+            }
+            print(pinNumbers)
+        })
+        alertDone.isEnabled = false
+        alert.addAction(alertDone)
         for pinType in device.pinTypes {
             alert.addTextField() { textField in
                 textField.placeholder = pinType
                 textField.keyboardType = .numberPad
+                NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
+                                                        {_ in
+                    let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                    pinsInput[device.pinTypes.firstIndex(of: pinType)!] = textCount > 0
+                    if(pinsInput.allSatisfy({$0})) {
+                        alertDone.isEnabled = true
+                    }
+                })
+                        
             }
         }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in }))
-        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
-            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
-            print("Text field: \(textField!.text)")
-        })
-        alert.addAction(alertDone)
         showAlert(alert: alert)
     }
     
