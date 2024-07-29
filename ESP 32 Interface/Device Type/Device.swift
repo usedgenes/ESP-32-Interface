@@ -9,16 +9,16 @@ class Device: NSObject, Identifiable {
     }
 }
 
-class DeviceType: NSObject, Identifiable {
+class DeviceType: NSObject, Identifiable, ObservableObject {
     var type: String
-    var devices : [Device] = []
+    @Published var devices : [Device] = []
     var pinTypes: [String] = []
     init(type: String, pinTypes: [String]) {
         self.type = type
         self.pinTypes = pinTypes
     }
     
-    func sendData(device : Device) {
+    func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {
         
     }
 }

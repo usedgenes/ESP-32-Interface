@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+struct DeviceTypeView : View {
+    @ObservedObject var deviceType : DeviceType
+    var body: some View {
+        ForEach(deviceType.devices, id: \.self) { device in
+            HStack {
+                Text(device.name)
+            }
+        }.padding(.leading)
+    }
+}
+
 struct AddDeviceView: View {
     @State private var singleSelection: UUID?
     @ObservedObject var ESP_32 : ESP32
@@ -16,7 +27,7 @@ struct AddDeviceView: View {
         List() {
             ForEach(ESP_32.ESP32Devices, id: \.self) { deviceCategory in
                 Section(header: Text("\(deviceCategory.category)")) {
-                    ForEach(deviceCategory.deviceTypes, id: \.self) { deviceType in
+                    ForEach(deviceCategory.deviceTypes, id: \.id) { deviceType in
                         HStack {
                             Text("\(deviceType.type)")
                             Spacer()
@@ -25,11 +36,7 @@ struct AddDeviceView: View {
                             }
                         }
                         .contentShape(Rectangle())
-                        ForEach(deviceType.devices, id: \.self) { device in
-                            HStack {
-                                Text(device.name)
-                            }
-                        }
+                        DeviceTypeView(deviceType : deviceType)
                     }
                 }
             }

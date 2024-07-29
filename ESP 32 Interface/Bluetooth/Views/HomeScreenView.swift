@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct HomeScreenView: View {
     @ObservedObject var bluetoothDevice = BluetoothDeviceHelper()
     @StateObject var ESP_32 = ESP32()
 
@@ -24,20 +24,10 @@ struct ContentView: View {
                 }
                 
                 Section(header: Text("Motion")) {
-                    Button("Servo") {
-                        showingServoView.toggle()
-                    }
-                    .sheet(isPresented: $showingServoView) {
-                        ServoView(ESP_32)
-                    }
+                    NavigationLink("Servos", destination: ServoView(ESP_32: ESP_32))
                 }
                 Section(header: Text("Sensors")) {
-                    Button("BMP390 Altimeter") {
-                        showingAltimeterView.toggle()
-                    }
-                    .sheet(isPresented: $showingAltimeterView) {
-                        ServoView()
-                    }
+                    NavigationLink("Altimeters", destination: AltimeterView())
                 }
             }
             .navigationBarTitle("ESP32 Assistant")
@@ -49,6 +39,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        HomeScreenView()
     }
 }
