@@ -8,5 +8,7 @@
 import Foundation
 
 class ServoType : DeviceType {
-
+    override func sendData(device : Device, BTDevice) {
+        
+    }
 }

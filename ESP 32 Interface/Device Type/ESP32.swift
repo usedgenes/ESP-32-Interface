@@ -8,8 +8,8 @@
 import Foundation
 
 class ESP32 : ObservableObject {
-    var servos = ServoType(type: "Servos", pinTypes: ["Digital"])
-    var motors = MotorType(type: "Motors", pinTypes: ["Digital"])
+    var servos = ServoType(type: "Servo", pinTypes: ["Digital"])
+    var motors = MotorType(type: "Motor", pinTypes: ["Digital"])
     var motion = DeviceCategory(category: "Motion")
     
     var bmp390I2C = BMP390_I2CType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"])
@@ -23,10 +23,18 @@ class ESP32 : ObservableObject {
         }
     }
     
+    func getServos() -> DeviceType {
+        return ESP32Devices[0].deviceTypes[0]
+    }
+    
     init() {
         motion.addDevice(deviceType: servos)
+        motion.addDevice(deviceType: motors)
+        
         altimeters.addDevice(deviceType: bmp390I2C)
+        
         imu.addDevice(deviceType: bno08x)
+        
         ESP32Devices.append(motion)
         ESP32Devices.append(altimeters)
         ESP32Devices.append(imu)

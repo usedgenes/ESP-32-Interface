@@ -10,8 +10,7 @@ import SwiftUI
 struct AddDeviceView: View {
     @State private var singleSelection: UUID?
     @ObservedObject var ESP_32 : ESP32
-    @State var bluetoothManagerHelper = BluetoothManagerHelper()
-
+    
     var body: some View {
 
         List() {
@@ -47,8 +46,12 @@ struct AddDeviceView: View {
             for number in 0..<device.pinTypes.count {
                 let value : Int? = Int((alert?.textFields![number].text)!)
                 pinNumbers[number] = value!
+                
             }
-            print(pinNumbers)
+            var currentPins = Dictionary(uniqueKeysWithValues: zip(device.pinTypes, pinNumbers))
+            let currentDevice = Device(name: device.type + " \(device.devices.count + 1)", pins : currentPins)
+            device.devices.append(currentDevice)
+            print(device.devices)
         })
         alertDone.isEnabled = false
         alert.addAction(alertDone)

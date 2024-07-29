@@ -2,9 +2,10 @@ import Foundation
 
 class Device: NSObject, Identifiable {
     var name: String
-    var pins : [String: Int] = [:]
-    init(name: String) {
+    var pins : [String : Int] = [:]
+    init(name: String, pins : [String : Int]) {
         self.name = name
+        self.pins = pins
     }
 }
 
@@ -15,6 +16,10 @@ class DeviceType: NSObject, Identifiable {
     init(type: String, pinTypes: [String]) {
         self.type = type
         self.pinTypes = pinTypes
+    }
+    
+    func sendData(device : Device) {
+        
     }
 }
 

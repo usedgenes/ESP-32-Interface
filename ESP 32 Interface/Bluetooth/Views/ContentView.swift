@@ -28,7 +28,7 @@ struct ContentView: View {
                         showingServoView.toggle()
                     }
                     .sheet(isPresented: $showingServoView) {
-                        ServoView()
+                        ServoView(ESP_32)
                     }
                 }
                 Section(header: Text("Sensors")) {
