@@ -16,7 +16,7 @@ class ESP32 : ObservableObject {
     var altimeters = DeviceCategory(category: "Altimeters")
     
     var bno08x = BNO08X_I2CType(type: "BNO08X", pinTypes: [""])
-    var imu = DeviceCategory(category: "IMUs")
+    var imu = DeviceCategory(category: "Inertial Measurement Units")
 
     @Published var ESP32Devices: [DeviceCategory] = [] {
         didSet {
@@ -38,5 +38,10 @@ class ESP32 : ObservableObject {
         ESP32Devices.append(motion)
         ESP32Devices.append(altimeters)
         ESP32Devices.append(imu)
+    }
+    
+    convenience init(servo : ServoType) {
+        self.init()
+        self.servos.devices.append(Device(name: "Servo", attachedPins: [AttachedPin(pinName: "Digital", pinNumber: 5)]))
     }
 }
