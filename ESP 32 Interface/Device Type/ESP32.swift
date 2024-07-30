@@ -43,5 +43,7 @@ class ESP32 : ObservableObject {
     convenience init(servo : ServoType) {
         self.init()
         self.servos.devices.append(Device(name: "Servo", attachedPins: [AttachedPin(pinName: "Digital", pinNumber: 5)]))
+        self.servos.devices.append(Device(name: "Servo", attachedPins: [AttachedPin(pinName: "Digital", pinNumber: 8)]))
+
     }
 }

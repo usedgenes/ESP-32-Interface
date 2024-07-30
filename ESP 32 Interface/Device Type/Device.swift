@@ -15,6 +15,7 @@ class AttachedPin : NSObject, Identifiable, ObservableObject {
 class Device: NSObject, Identifiable, ObservableObject {
     @Published var name: String
     var attachedPins : [AttachedPin]
+    var servoPosition = 0
     init(name: String, attachedPins : [AttachedPin]) {
         self.name = name
         self.attachedPins = attachedPins
@@ -40,6 +41,7 @@ class DeviceType: NSObject, Identifiable, ObservableObject {
             }
         }
     }
+    
     func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {
         
     }

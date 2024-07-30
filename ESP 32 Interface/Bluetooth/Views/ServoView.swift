@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct ServoView: View {
-    @State private var servoPosition : Int?
+    @State private var servoPosition : [Int]
     @ObservedObject var ESP_32 : ESP32
-    
+    @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
+    var count = 0;
+    init(ESP_32 : ESP32) {
+        servoPosition = Array(repeating: 0, count: ESP_32.servos.devices.count)
+        self.ESP_32 = ESP_32
+        bluetoothDevice = BluetoothDeviceHelper()
+    }
     var body: some View {
         VStack {
             if(ESP_32.getServos().devices.isEmpty) {
@@ -19,13 +25,24 @@ struct ServoView: View {
             else {
                 List {
                     ForEach(ESP_32.getServos().devices, id: \.self) { servo in
-                        HStack {
-                            Text("\(servo.name)")
-                            Spacer()
-                            Text("\(servo.attachedPins[0].pinName): \(servo.attachedPins[0].pinNumber)")
+                        Section() {
+                            HStack {
+                                Text("\(servo.name)")
+                                Spacer()
+                                Text("\(servo.attachedPins[0].pinName): \(servo.attachedPins[0].pinNumber)")
+                            }
+                            .contentShape(Rectangle())
+                            HStack {
+                                Text("Servo Position: ")
+                                TextField("\(servo.servoPosition)", value: $servoPosition[count], formatter: NumberFormatter())
+                                Button(action: {
+                                    servo.servoPosition = servoPosition[count]
+                                    ESP_32.servos.sendData(device: servo, bluetoothDevice: bluetoothDevice)}) {
+                                        Text("Send")
+                                    }
+                            }
                         }
-                        .contentShape(Rectangle())
-                        TextField("Placeholder", value: $servoPosition, formatter: NumberFormatter())
+                        self.count += 1
                     }
                 }
             }

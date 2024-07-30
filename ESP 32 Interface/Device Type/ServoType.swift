@@ -7,9 +7,7 @@
 
 import Foundation
 
-class ServoType : DeviceType {
-    var servoPosition : Int
-    
+class ServoType : DeviceType {    
     override func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {
         
     }
