@@ -1,11 +1,24 @@
 import Foundation
 
+class AttachedPin : NSObject, Identifiable, ObservableObject {
+    @Published var pinName : String
+    @Published var pinNumber : Int
+    init(pinName: String, pinNumber: Int) {
+        self.pinName = pinName
+        self.pinNumber = pinNumber
+    }
+    
+    func setNumber(pinNumber : Int) {
+        self.pinNumber = pinNumber
+    }
+}
+
 class Device: NSObject, Identifiable {
     var name: String
-    var pins : [String : Int] = [:]
-    init(name: String, pins : [String : Int]) {
+    var attachedPins : [AttachedPin]
+    init(name: String, attachedPins : [AttachedPin]) {
         self.name = name
-        self.pins = pins
+        self.attachedPins = attachedPins
     }
 }
 

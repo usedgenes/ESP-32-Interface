@@ -29,7 +29,7 @@
 		44B3C0282C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0272C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift */; };
 		44B3C02A2C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0292C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift */; };
 		44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C0382C50C97200CAADBC /* ServoView.swift */; };
-		44B3C03B2C50CCE500CAADBC /* AddDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */; };
+		44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C03A2C50CCE500CAADBC /* DeviceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +76,7 @@
 		44B3C0272C50BE6B00CAADBC /* ESP_32_InterfaceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceUITests.swift; sourceTree = "<group>"; };
 		44B3C0292C50BE6B00CAADBC /* ESP_32_InterfaceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		44B3C0382C50C97200CAADBC /* ServoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServoView.swift; sourceTree = "<group>"; };
-		44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDeviceView.swift; sourceTree = "<group>"; };
+		44B3C03A2C50CCE500CAADBC /* DeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +110,7 @@
 				44B3C00D2C50BE6800CAADBC /* HomeScreenView.swift */,
 				44B3C0382C50C97200CAADBC /* ServoView.swift */,
 				449096472C52210F00EF97A3 /* BluetoothConnectView.swift */,
-				44B3C03A2C50CCE500CAADBC /* AddDeviceView.swift */,
+				44B3C03A2C50CCE500CAADBC /* DeviceView.swift */,
 				4480540B2C583D7600A4533F /* AltimeterView.swift */,
 			);
 			path = Views;
@@ -342,7 +342,7 @@
 				44B3C00E2C50BE6800CAADBC /* HomeScreenView.swift in Sources */,
 				448C18A12C5614B900908AB2 /* BMP390_I2CType.swift in Sources */,
 				44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */,
-				44B3C03B2C50CCE500CAADBC /* AddDeviceView.swift in Sources */,
+				44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */,
 				44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */,
 				449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */,
 				448C18A32C5614CF00908AB2 /* BNO08X_I2CType.swift in Sources */,
