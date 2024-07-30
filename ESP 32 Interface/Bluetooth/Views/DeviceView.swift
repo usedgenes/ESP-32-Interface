@@ -16,26 +16,44 @@ struct DeviceTypeView : View {
                 Spacer()
                 Button(action: {self.editAlert(device: device)}) {
                     Text("Edit Pins")
-                }
+                }.buttonStyle(BorderlessButtonStyle())
                 Spacer()
-                Button(action: {self.editAlert(device: device)}) {
+                Button(action: {self.setNameAlert(device : device)}) {
+                    Text("Change Name")
+                }.buttonStyle(BorderlessButtonStyle())
+                Spacer()
+                Button(action: {deviceType.deleteDevice(device: device)}) {
                     Text("Delete")
-                }
+                }.buttonStyle(BorderlessButtonStyle())
             }
+            .environmentObject(device)
         }.padding(.leading)
+    }
+    
+    private func setNameAlert(device: Device) {
+        let alert = UIAlertController(title: "Pin Number", message: "Edit the pins of this device", preferredStyle: .alert)
+        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
+            let input = alert?.textFields![0].text
+            if(input != "") {
+                device.name = input!
+            }
+        })
+        alert.addAction(alertDone)
+        alert.addTextField() { textField in
+                textField.placeholder = "Name: " + device.name
+        }
+        showAlert(alert: alert)
     }
     private func editAlert(device: Device) {
         let alert = UIAlertController(title: "Pin Number", message: "Edit the pins of this device", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in }))
         let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
             for number in 0..<device.attachedPins.count {
-                let input = alert?.textFields[number] ?? -1
-                if(input > 0) {
-                    device.attachedPins[number].setNumber(input)
+                let input = alert?.textFields![number].text
+                if(input != "") {
+                    device.attachedPins[number].setNumber(pinNumber: Int(input!)!)
                 }
             }
         })
-        alertDone.isEnabled = false
         alert.addAction(alertDone)
         for pin in device.attachedPins {
             alert.addTextField() { textField in
@@ -82,7 +100,7 @@ struct DeviceView: View {
             for number in 0..<device.pinTypes.count {
                 attachedPins.append(AttachedPin(pinName: device.pinTypes[number], pinNumber: pinNumbers[number]))
             }
-            let currentDevice = Device(name: device.type + " \(device.devices.count + 1)", attachedPins: attachedPins)
+            let currentDevice = Device(name: device.type /* + " \(device.devices.count + 1)" */, attachedPins: attachedPins)
             device.devices.append(currentDevice)
         })
         alertDone.isEnabled = false
@@ -93,8 +111,8 @@ struct DeviceView: View {
                 textField.keyboardType = .numberPad
                 NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
                                                         {_ in
-                    let text = textField.text ?? "-1"
-                    if (Int(text)! > 0) {
+                    let text = textField.text ?? ""
+                    if (text != "") {
                         pinNumbers[device.pinTypes.firstIndex(of: pinType)!] = Int(text)!
                     }
 

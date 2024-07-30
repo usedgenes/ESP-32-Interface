@@ -7,14 +7,13 @@ class AttachedPin : NSObject, Identifiable, ObservableObject {
         self.pinName = pinName
         self.pinNumber = pinNumber
     }
-    
     func setNumber(pinNumber : Int) {
         self.pinNumber = pinNumber
     }
 }
 
-class Device: NSObject, Identifiable {
-    var name: String
+class Device: NSObject, Identifiable, ObservableObject {
+    @Published var name: String
     var attachedPins : [AttachedPin]
     init(name: String, attachedPins : [AttachedPin]) {
         self.name = name
@@ -31,6 +30,16 @@ class DeviceType: NSObject, Identifiable, ObservableObject {
         self.pinTypes = pinTypes
     }
     
+    func deleteDevice(device: Device) {
+        for number in 0..<devices.count {
+            print(number)
+            if(devices[number] === device) {
+                print(number)
+                devices.remove(at: number)
+                break
+            }
+        }
+    }
     func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {
         
     }
