@@ -7,6 +7,6 @@
 
 import Foundation
 
-class BNO08X_I2CType : DeviceType {
+class BNO08X_SPIType : DeviceType {
 
 }

@@ -23,10 +23,10 @@ struct HomeScreenView: View {
                 }
                 
                 Section(header: Text("Motion")) {
-                    NavigationLink("Servos", destination: ServoView(ESP_32: ESP_32))
+                    NavigationLink("Servos", destination: ServoView(ESP_32: ESP_32, bluetoothDevice: bluetoothDevice))
                 }
                 Section(header: Text("Sensors")) {
-                    NavigationLink("Altimeters", destination: AltimeterView())
+                    NavigationLink("Altimeters", destination: BMP390_I2CView(ESP_32: ESP_32, bluetoothDevice: bluetoothDevice))
                 }
             }
             .navigationBarTitle("ESP32 Assistant")
