@@ -104,4 +104,36 @@ class ESP32 : ObservableObject, Codable, RawRepresentable {
         self.bno08xSPI.devices.append(Device(name: "BNO08X SPI1", attachedPins: [AttachedPin(pinName: "SCK", pinNumber: 5)]))
         self.bno08xSPI.devices.append(Device(name: "BNO08X SPI2", attachedPins: [AttachedPin(pinName: "SCK", pinNumber: 5)]))
     }
+    
+    func saveState() {
+        let encoder = JSONEncoder()
+        for deviceCategories in self.ESP32Devices {
+            for deviceType in deviceCategories.deviceTypes {
+                if let encoded = try? encoder.encode(deviceType) {
+                    let defaults = UserDefaults.standard
+                    defaults.set(encoded, forKey: deviceType.type)
+                    print(deviceType.type + "\(deviceType.devices.count)")
+                }
+            }
+        }
+    }
+    
+    func getState() {
+        let defaults = UserDefaults.standard
+        for deviceCategories in self.ESP32Devices {
+            for deviceType in deviceCategories.deviceTypes {
+                if let savedDevices = defaults.object(forKey: deviceType.type) as? Data {
+                    let decoder = JSONDecoder()
+                    if let loadedDevices = try? decoder.decode(DeviceType.self, from: savedDevices) {
+                        print("hi")
+                        print(loadedDevices.devices.count)
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func cleanState() {
+    }
 }

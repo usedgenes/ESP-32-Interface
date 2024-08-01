@@ -62,7 +62,7 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
 }
 
 
-class DeviceType: NSObject, Identifiable, ObservableObject {
+class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
     var type: String
     @Published var devices : [Device] = []
     var pinTypes: [String] = []
@@ -80,6 +80,18 @@ class DeviceType: NSObject, Identifiable, ObservableObject {
                 break
             }
         }
+    }
+    
+    enum CodingKeys: CodingKey {
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.type = ""
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
     }
     
     func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {
