@@ -115,6 +115,7 @@
 				44B3C03A2C50CCE500CAADBC /* DeviceView.swift */,
 				4480540B2C583D7600A4533F /* BMP390_I2CView.swift */,
 				447422592C599917004D217F /* BNO08X_SPIView.swift */,
+				443A4D7C2C549293004E1D26 /* Device Type */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -170,7 +171,6 @@
 			isa = PBXGroup;
 			children = (
 				449096462C520ED100EF97A3 /* Bluetooth */,
-				443A4D7C2C549293004E1D26 /* Device Type */,
 				44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */,
 				44B3C00F2C50BE6A00CAADBC /* Assets.xcassets */,
 				44B3C0112C50BE6A00CAADBC /* ESP_32_Interface.entitlements */,

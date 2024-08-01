@@ -9,8 +9,7 @@ import SwiftUI
 
 struct HomeScreenView: View {
     @ObservedObject var bluetoothDevice = BluetoothDeviceHelper()
-    @StateObject var ESP_32 = ESP32()
-
+    @AppStorage("ESP_32") var ESP_32 = ESP32()
     @State private var showingServoView = false
     @State private var showingAltimeterView = false
     

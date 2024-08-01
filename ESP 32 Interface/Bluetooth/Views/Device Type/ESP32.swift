@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ESP32 : ObservableObject {
+class ESP32 : ObservableObject, Codable, RawRepresentable {
     var servos = ServoType(type: "Servo", pinTypes: ["Digital"])
     var motors = MotorType(type: "Motor", pinTypes: ["Digital"])
     var motion = DeviceCategory(category: "Motion")
@@ -18,9 +18,48 @@ class ESP32 : ObservableObject {
     var bno08xSPI = BNO08X_SPIType(type: "BNO08X", pinTypes: [""])
     var imu = DeviceCategory(category: "Inertial Measurement Units")
     
+    @Published var label = "Text"
+    @Published var icon = "questionmark.app"
+    
     @Published var ESP32Devices: [DeviceCategory] = [] {
         didSet {
         }
+    }
+    
+    enum CodingKeys: CodingKey {
+        case label, icon
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        label = try container.decode(String.self, forKey: .label)
+        icon = try container.decode(String.self, forKey: .icon)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(label, forKey: .label)
+        try container.encode(icon, forKey: .icon)
+    }
+    
+    // The next two items are to conform to RawRepresentable
+    required init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+              let result = try? JSONDecoder().decode(ESP32.self, from: data)
+        else {
+            return nil
+        }
+        label = result.label
+        icon = result.icon
+    }
+    
+    var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return "[]"
+        }
+        return result
     }
     
     func getServos() -> DeviceType {
