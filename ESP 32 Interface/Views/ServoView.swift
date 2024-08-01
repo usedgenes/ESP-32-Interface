@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ServoView: View {
-    @ObservedObject var ESP_32 : ESP32
-    @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
+    @EnvironmentObject var ESP_32 : ESP32
+    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     var body: some View {
         VStack {
             if(ESP_32.getServos().devices.isEmpty) {
@@ -18,7 +18,7 @@ struct ServoView: View {
             else {
                 List {
                     ForEach(ESP_32.getServos().devices, id: \.self) { servo in
-                        individualServoView(ESP_32: ESP_32, servo: servo, bluetoothDevice: bluetoothDevice)
+                        individualServoView(servo: servo)
                     }
                 }
             }
@@ -27,9 +27,9 @@ struct ServoView: View {
 }
 
 struct individualServoView : View {
-    @ObservedObject var ESP_32: ESP32
+    @EnvironmentObject var ESP_32 : ESP32
     @ObservedObject var servo : Device
-    @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
+    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     var body : some View {
         Section() {
             HStack {
@@ -51,8 +51,6 @@ struct individualServoView : View {
 }
 struct ServoView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        ServoView(ESP_32 : ESP32(servo: ServoType(type: "Servo", pinTypes: ["Digital"])), bluetoothDevice: BluetoothDeviceHelper())
-        
+        ServoView()
     }
 }

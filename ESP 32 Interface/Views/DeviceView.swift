@@ -8,6 +8,7 @@
 import SwiftUI
 struct deviceView : View {
     @ObservedObject var device : Device
+    
     var body: some View {
         Text(device.name)
         Spacer()
@@ -39,7 +40,7 @@ struct DeviceTypeView : View {
 
 struct DeviceView: View {
     @State private var singleSelection: UUID?
-    @ObservedObject var ESP_32 : ESP32
+    @EnvironmentObject var ESP_32 : ESP32
 
     var body: some View {
 
@@ -67,7 +68,7 @@ struct DeviceView: View {
         var pinNumbers : [Int] = Array(repeating: -1, count: device.pinTypes.count)
         let alert = UIAlertController(title: "Attach Pins", message: "Enter the pins this device is attached to on the ESP32", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in }))
-        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
+        let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { _ in
             var attachedPins: [AttachedPin] = []
             for number in 0..<device.pinTypes.count {
                 attachedPins.append(AttachedPin(pinName: device.pinTypes[number], pinNumber: pinNumbers[number]))
@@ -176,6 +177,6 @@ private func topMostViewController(for controller: UIViewController) -> UIViewCo
 
 struct DeviceView_Previews: PreviewProvider {
     static var previews: some View {
-        DeviceView(ESP_32 : ESP32())
+        DeviceView()
     }
 }

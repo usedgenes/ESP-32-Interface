@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ESP32 : ObservableObject, Codable {
+class ESP32 : ObservableObject {
     var servos = ServoType(type: "Servo", pinTypes: ["Digital"])
     var motors = MotorType(type: "Motor", pinTypes: ["Digital"])
     var motion = DeviceCategory(category: "Motion")
@@ -25,14 +25,6 @@ class ESP32 : ObservableObject, Codable {
     
     enum CodingKeys: CodingKey {
         case label, icon
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
     }
     
     func getServos() -> DeviceType {
@@ -61,6 +53,39 @@ class ESP32 : ObservableObject, Codable {
 
     }
     
+    func saveState() {
+        let encoder = JSONEncoder()
+        for deviceCategory in self.ESP32Devices {
+            if let encoded = try? encoder.encode(deviceCategory) {
+                let defaults = UserDefaults.standard
+                defaults.set(encoded, forKey: deviceCategory.category)
+            }
+        }
+    }
+    
+    func getState() {
+        let defaults = UserDefaults.standard
+        var count = 0
+        for deviceCategory in self.ESP32Devices {
+            if let savedDeviceCategory = defaults.object(forKey: deviceCategory.category) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDeviceCategory = try? decoder.decode(DeviceCategory.self, from: savedDeviceCategory) {
+                    self.ESP32Devices[count].deviceTypes = loadedDeviceCategory.deviceTypes
+                }
+            }
+            count += 1
+        }
+    }
+    
+    func cleanState() {
+        for deviceCategory in ESP32Devices {
+            for deviceType in deviceCategory.deviceTypes {
+                deviceType.resetDevices()
+            }
+        }
+    }
+    
+    //For testing previews:
     convenience init(servo : ServoType) {
         self.init()
         self.servos.devices.append(Device(name: "Servo", attachedPins: [AttachedPin(pinName: "Digital", pinNumber: 5)]))
@@ -77,35 +102,5 @@ class ESP32 : ObservableObject, Codable {
         self.init()
         self.bno08xSPI.devices.append(Device(name: "BNO08X SPI1", attachedPins: [AttachedPin(pinName: "SCK", pinNumber: 5)]))
         self.bno08xSPI.devices.append(Device(name: "BNO08X SPI2", attachedPins: [AttachedPin(pinName: "SCK", pinNumber: 5)]))
-    }
-    
-    func saveState() -> Int {
-        let encoder = JSONEncoder()
-        for deviceCategory in self.ESP32Devices {
-            if let encoded = try? encoder.encode(deviceCategory) {
-                let defaults = UserDefaults.standard
-                defaults.set(encoded, forKey: deviceCategory.category)
-                print(deviceCategory.category + " \(deviceCategory.deviceTypes[0].devices.count) saving")
-                return deviceCategory.deviceTypes[0].devices.count
-            }
-        }
-        return 0
-    }
-    
-    func getState() -> Int {
-        let defaults = UserDefaults.standard
-        for deviceCategory in self.ESP32Devices {
-            if let savedDeviceCategory = defaults.object(forKey: deviceCategory.category) as? Data {
-                let decoder = JSONDecoder()
-                if let loadedDeviceCategory = try? decoder.decode(DeviceCategory.self, from: savedDeviceCategory) {
-                    print (String(loadedDeviceCategory.deviceTypes[0].devices.count))
-                    return loadedDeviceCategory.deviceTypes[0].devices.count
-                }
-            }
-        }
-        return 0
-    }
-    
-    func cleanState() {
     }
 }

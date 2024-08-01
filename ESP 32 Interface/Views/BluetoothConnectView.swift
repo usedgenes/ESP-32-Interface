@@ -10,7 +10,7 @@ import CoreBluetooth
 
 
 struct BluetoothConnectView: View {
-    @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
+    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     @State private var showBluetoothAlert: Bool = false
     @State var bluetoothManagerHelper = BluetoothManagerHelper()
     
@@ -98,6 +98,6 @@ struct BluetoothConnectView: View {
 
 struct BluetoothConnectView_Previews: PreviewProvider {
     static var previews: some View {
-        BluetoothConnectView(bluetoothDevice : BluetoothDeviceHelper())
+        BluetoothConnectView()
     }
 }

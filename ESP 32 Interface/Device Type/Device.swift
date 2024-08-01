@@ -52,7 +52,6 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         attachedPins = try container.decode([AttachedPin].self, forKey: .attachedPins)
-        self.attachedPins = []
     }
     
     func encode(to encoder: Encoder) throws {
@@ -68,16 +67,21 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
     var type: String
     @Published var devices : [Device] = []
     var pinTypes: [String] = []
+    
     init(type: String, pinTypes: [String]) {
         self.type = type
         self.pinTypes = pinTypes
     }
     
+    func resetDevices() {
+        for device in devices {
+            deleteDevice(device: device)
+        }
+    }
+    
     func deleteDevice(device: Device) {
         for number in 0..<devices.count {
-            print(number)
             if(devices[number] === device) {
-                print(number)
                 devices.remove(at: number)
                 break
             }
@@ -85,18 +89,23 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
     }
     
     enum CodingKeys: CodingKey {
+        case type
         case devices
+        case pinTypes
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        type = try container.decode(String.self, forKey: .type)
         devices = try container.decode([Device].self, forKey: .devices)
-        self.type = ""
+        pinTypes = try container.decode([String].self, forKey: .pinTypes)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(type, forKey: .type)
         try container.encode(devices, forKey: .devices)
+        try container.encode(pinTypes, forKey: .pinTypes)
     }
     
     func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {

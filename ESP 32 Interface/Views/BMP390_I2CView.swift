@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct BMP390_I2CView: View {
-    @ObservedObject var ESP_32 : ESP32
-    @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
+    @EnvironmentObject var ESP_32 : ESP32
+    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     var body: some View {
         VStack {
             if(ESP_32.getBMP390_I2C().devices.isEmpty) {
@@ -11,7 +11,7 @@ struct BMP390_I2CView: View {
             else {
                 List {
                     ForEach(ESP_32.getBMP390_I2C().devices, id: \.self) { bmp390 in
-                        individualBMP390_I2CView(ESP_32: ESP_32, bmp390: bmp390, bluetoothDevice: bluetoothDevice)
+                        individualBMP390_I2CView(bmp390: bmp390)
                     }
                 }
             }
@@ -20,9 +20,9 @@ struct BMP390_I2CView: View {
 }
 
 struct individualBMP390_I2CView : View {
-    @ObservedObject var ESP_32 : ESP32
+    @EnvironmentObject var ESP_32 : ESP32
     @ObservedObject var bmp390 : Device
-    @ObservedObject var bluetoothDevice : BluetoothDeviceHelper
+    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     var body : some View {
         Section() {
             HStack {
@@ -42,7 +42,7 @@ struct individualBMP390_I2CView : View {
 struct BMP390_I2CView_Previews: PreviewProvider {
     static var previews: some View {
         
-        BMP390_I2CView(ESP_32 : ESP32(bmp390 : BMP390_I2CType(type: "Altimeter", pinTypes: ["SCK", "SDA"])), bluetoothDevice: BluetoothDeviceHelper())
+        BMP390_I2CView()
         
     }
 }
