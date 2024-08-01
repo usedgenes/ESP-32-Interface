@@ -58,8 +58,7 @@ class ESP32 : ObservableObject, Codable {
         ESP32Devices.append(motion)
         ESP32Devices.append(altimeters)
         ESP32Devices.append(imu)
-        
-        getState()
+
     }
     
     convenience init(servo : ServoType) {
@@ -82,14 +81,12 @@ class ESP32 : ObservableObject, Codable {
     
     func saveState() -> Int {
         let encoder = JSONEncoder()
-        for deviceCategories in self.ESP32Devices {
-            for deviceType in deviceCategories.deviceTypes {
-                if let encoded = try? encoder.encode(deviceType) {
-                    let defaults = UserDefaults.standard
-                    defaults.set(encoded, forKey: deviceType.type)
-                    print(deviceType.type + " \(deviceType.devices.count) saving")
-                    return deviceType.devices.count
-                }
+        for deviceCategory in self.ESP32Devices {
+            if let encoded = try? encoder.encode(deviceCategory) {
+                let defaults = UserDefaults.standard
+                defaults.set(encoded, forKey: deviceCategory.category)
+                print(deviceCategory.category + " \(deviceCategory.deviceTypes[0].devices.count) saving")
+                return deviceCategory.deviceTypes[0].devices.count
             }
         }
         return 0
@@ -97,17 +94,12 @@ class ESP32 : ObservableObject, Codable {
     
     func getState() -> Int {
         let defaults = UserDefaults.standard
-        for deviceCategories in self.ESP32Devices {
-            for var deviceType in deviceCategories.deviceTypes {
-                if let savedDeviceType = defaults.object(forKey: deviceType.type) as? Data {
-                    let decoder = JSONDecoder()
-                    if let loadedDeviceType = try? decoder.decode(DeviceType.self, from: savedDeviceType) {
-                        if(loadedDeviceType is ServoType) {
-                            self.servos = (loadedDeviceType as? ServoType)!
-                        }
-                        print(deviceType.type + " \(deviceType.devices.count) getting")
-                        return deviceType.devices.count
-                    }
+        for deviceCategory in self.ESP32Devices {
+            if let savedDeviceCategory = defaults.object(forKey: deviceCategory.category) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDeviceCategory = try? decoder.decode(DeviceCategory.self, from: savedDeviceCategory) {
+                    print (String(loadedDeviceCategory.deviceTypes[0].devices.count))
+                    return loadedDeviceCategory.deviceTypes[0].devices.count
                 }
             }
         }

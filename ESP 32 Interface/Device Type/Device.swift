@@ -104,11 +104,26 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
     }
 }
 
-class DeviceCategory: NSObject, Identifiable {
+class DeviceCategory: NSObject, Identifiable, Codable {
     var category: String
     var deviceTypes: [DeviceType] = []
     init(category: String) {
         self.category = category
+    }
+    
+    enum CodingKeys: CodingKey {
+        case deviceTypes
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        deviceTypes = try container.decode([DeviceType].self, forKey: .deviceTypes)
+        self.category = ""
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(deviceTypes, forKey: .deviceTypes)
     }
     
     func addDevice(deviceType : DeviceType) {
