@@ -9,18 +9,21 @@ class AttachedPin : NSObject, Identifiable, ObservableObject, Codable {
         self.pinNumber = pinNumber
         
     }
+    
     func setNumber(pinNumber : Int) {
         self.pinNumber = pinNumber
     }
     
     enum CodingKeys: CodingKey {
-        case pinName, pinNumber
+        case pinName
+        case pinNumber
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         pinName = try container.decode(String.self, forKey: .pinName)
         pinNumber = try container.decode(Int.self, forKey: .pinNumber)
+        
     }
     
     func encode(to encoder: Encoder) throws {
@@ -28,37 +31,36 @@ class AttachedPin : NSObject, Identifiable, ObservableObject, Codable {
         try container.encode(pinName, forKey: .pinName)
         try container.encode(pinNumber, forKey: .pinNumber)
     }
-    
-    // The next two items are to conform to RawRepresentable
-    required init?(rawValue: String) {
-        guard let data = rawValue.data(using: .utf8),
-              let result = try? JSONDecoder().decode(AttachedPin.self, from: data)
-        else {
-            return nil
-        }
-        pinName = result.pinName
-        pinNumber = result.pinNumber
-    }
-    
-    var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else {
-            return "[]"
-        }
-        return result
-    }
 }
 
-class Device: NSObject, Identifiable, ObservableObject {
+class Device: NSObject, Identifiable, ObservableObject, Codable {
     @Published var name: String
     var attachedPins : [AttachedPin]
     var servoPosition = 0
+    
     init(name: String, attachedPins : [AttachedPin]) {
         self.name = name
         self.attachedPins = attachedPins
     }
+    
+    enum CodingKeys: CodingKey {
+        case name
+        case attachedPins
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        self.attachedPins = []
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+    }
+    
 }
+
 
 class DeviceType: NSObject, Identifiable, ObservableObject {
     var type: String

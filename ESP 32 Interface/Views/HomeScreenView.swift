@@ -27,6 +27,27 @@ struct HomeScreenView: View {
                 Section(header: Text("Sensors")) {
                     NavigationLink("Altimeters", destination: BMP390_I2CView(ESP_32: ESP_32, bluetoothDevice: bluetoothDevice))
                 }
+                Button (action: {
+                    let device = Device(name: "hi", attachedPins: [])
+                    let encoder = JSONEncoder()
+                    if let encoded = try? encoder.encode(device) {
+                        let defaults = UserDefaults.standard
+                        defaults.set(encoded, forKey: "device")
+                    }
+                }) {
+                    Text("Save Devices")
+                }
+                Button (action: {
+                    let defaults = UserDefaults.standard
+                    if let savedDevice = defaults.object(forKey: "device") as? Data {
+                        let decoder = JSONDecoder()
+                        if let loadedDevice = try? decoder.decode(Device.self, from: savedDevice) {
+                            print(loadedDevice.name)
+                        }
+                    }
+                }) {
+                    Text("Retrieve Devices")
+                }
             }
             .navigationBarTitle("ESP32 Assistant")
             
