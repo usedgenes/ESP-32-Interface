@@ -51,12 +51,14 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
+        attachedPins = try container.decode([AttachedPin].self, forKey: .attachedPins)
         self.attachedPins = []
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
+        try container.encode(attachedPins, forKey: .attachedPins)
     }
     
 }
@@ -83,15 +85,18 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
     }
     
     enum CodingKeys: CodingKey {
+        case devices
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        devices = try container.decode([Device].self, forKey: .devices)
         self.type = ""
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(devices, forKey: .devices)
     }
     
     func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {

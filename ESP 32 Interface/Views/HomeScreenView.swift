@@ -9,10 +9,11 @@ import SwiftUI
 
 struct HomeScreenView: View {
     @ObservedObject var bluetoothDevice = BluetoothDeviceHelper()
-    @AppStorage("ESP_32") var ESP_32 = ESP32()
+    @ObservedObject var ESP_32 = ESP32()
     @State private var showingServoView = false
     @State private var showingAltimeterView = false
-    
+    @State var saveTemp = 0
+    @State var getTemp = 0
     var body: some View {
         NavigationView {
             List {
@@ -28,14 +29,24 @@ struct HomeScreenView: View {
                     NavigationLink("Altimeters", destination: BMP390_I2CView(ESP_32: ESP_32, bluetoothDevice: bluetoothDevice))
                 }
                 Button (action: {
-                    ESP_32.saveState()
+                    let encoder = JSONEncoder()
+                    if let encoded = try? encoder.encode(ESP_32) {
+                        let defaults = UserDefaults.standard
+                        defaults.set(encoded, forKey: "ESP32")
+                    }
                 }) {
-                    Text("Save Devices")
+                    Text("Save State")
                 }
                 Button (action: {
-                    ESP_32.getState()
+                    let defaults = UserDefaults.standard
+                    let decoder = JSONDecoder()
+                    if let savedESP32 = defaults.object(forKey: "ESP32") as? Data {
+                        if let loadedESP32 = try? decoder.decode(ESP32.self, from: savedESP32) {
+                                ESP_32 = loadedESP32
+                            }
+                    }
                 }) {
-                    Text("Retrieve Devices")
+                    Text("Get State")
                 }
             }
             .navigationBarTitle("ESP32 Assistant")

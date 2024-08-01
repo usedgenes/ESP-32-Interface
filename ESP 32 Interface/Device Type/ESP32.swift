@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ESP32 : ObservableObject, Codable, RawRepresentable {
+class ESP32 : ObservableObject, Codable {
     var servos = ServoType(type: "Servo", pinTypes: ["Digital"])
     var motors = MotorType(type: "Motor", pinTypes: ["Digital"])
     var motion = DeviceCategory(category: "Motion")
@@ -17,9 +17,6 @@ class ESP32 : ObservableObject, Codable, RawRepresentable {
     
     var bno08xSPI = BNO08X_SPIType(type: "BNO08X", pinTypes: [""])
     var imu = DeviceCategory(category: "Inertial Measurement Units")
-    
-    @Published var label = "Text"
-    @Published var icon = "questionmark.app"
     
     @Published var ESP32Devices: [DeviceCategory] = [] {
         didSet {
@@ -32,34 +29,10 @@ class ESP32 : ObservableObject, Codable, RawRepresentable {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        label = try container.decode(String.self, forKey: .label)
-        icon = try container.decode(String.self, forKey: .icon)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(label, forKey: .label)
-        try container.encode(icon, forKey: .icon)
-    }
-    
-    // The next two items are to conform to RawRepresentable
-    required init?(rawValue: String) {
-        guard let data = rawValue.data(using: .utf8),
-              let result = try? JSONDecoder().decode(ESP32.self, from: data)
-        else {
-            return nil
-        }
-        label = result.label
-        icon = result.icon
-    }
-    
-    var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else {
-            return "[]"
-        }
-        return result
     }
     
     func getServos() -> DeviceType {
@@ -85,6 +58,8 @@ class ESP32 : ObservableObject, Codable, RawRepresentable {
         ESP32Devices.append(motion)
         ESP32Devices.append(altimeters)
         ESP32Devices.append(imu)
+        
+        getState()
     }
     
     convenience init(servo : ServoType) {
@@ -105,33 +80,38 @@ class ESP32 : ObservableObject, Codable, RawRepresentable {
         self.bno08xSPI.devices.append(Device(name: "BNO08X SPI2", attachedPins: [AttachedPin(pinName: "SCK", pinNumber: 5)]))
     }
     
-    func saveState() {
+    func saveState() -> Int {
         let encoder = JSONEncoder()
         for deviceCategories in self.ESP32Devices {
             for deviceType in deviceCategories.deviceTypes {
                 if let encoded = try? encoder.encode(deviceType) {
                     let defaults = UserDefaults.standard
                     defaults.set(encoded, forKey: deviceType.type)
-                    print(deviceType.type + "\(deviceType.devices.count)")
+                    print(deviceType.type + " \(deviceType.devices.count) saving")
+                    return deviceType.devices.count
                 }
             }
         }
+        return 0
     }
     
-    func getState() {
+    func getState() -> Int {
         let defaults = UserDefaults.standard
         for deviceCategories in self.ESP32Devices {
-            for deviceType in deviceCategories.deviceTypes {
-                if let savedDevices = defaults.object(forKey: deviceType.type) as? Data {
+            for var deviceType in deviceCategories.deviceTypes {
+                if let savedDeviceType = defaults.object(forKey: deviceType.type) as? Data {
                     let decoder = JSONDecoder()
-                    if let loadedDevices = try? decoder.decode(DeviceType.self, from: savedDevices) {
-                        print("hi")
-                        print(loadedDevices.devices.count)
+                    if let loadedDeviceType = try? decoder.decode(DeviceType.self, from: savedDeviceType) {
+                        if(loadedDeviceType is ServoType) {
+                            self.servos = (loadedDeviceType as? ServoType)!
+                        }
+                        print(deviceType.type + " \(deviceType.devices.count) getting")
+                        return deviceType.devices.count
                     }
                 }
             }
         }
-        
+        return 0
     }
     
     func cleanState() {

@@ -95,7 +95,6 @@ struct DeviceView: View {
                     else {
                         alertDone.isEnabled = false
                     }
-                    print(pinNumbers)
                 })
 
             }
