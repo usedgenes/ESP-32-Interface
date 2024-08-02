@@ -9,6 +9,10 @@
 import CoreBluetooth
 
 
+extension StringProtocol  {
+    var digits: [Int] { compactMap(\.wholeNumberValue) }
+}
+
 extension CBManagerState: CustomStringConvertible {
     
     public var description: String {

@@ -42,7 +42,7 @@ class BTDevice: NSObject {
         set {
             _servoPosition = newValue
             if let char = servoChar {
-                peripheral.writeValue(Data(bytes:[55]), for: char, type: .withResponse)
+//                peripheral.writeValue(Data(String(servoPosition)), for: char, type: .withResponse)
             }
          }
     }
@@ -54,7 +54,9 @@ class BTDevice: NSObject {
         set {
             _servoPosition = newValue
             if let char = servoChar {
-                peripheral.writeValue(Data(bytes:[55]), for: char, type: .withResponse)
+                peripheral.writeValue(Data(bytes: intToChar(number: _servoPosition)), for: char, type: .withResponse)
+                print("setting servos")
+                print(intToChar(number: _servoPosition))
             }
          }
     }
@@ -72,6 +74,7 @@ class BTDevice: NSObject {
             }
         }
     }
+    
     var name: String {
         return peripheral.name ?? "Unknown device"
     }
@@ -93,6 +96,11 @@ class BTDevice: NSObject {
     
     func disconnect() {
         manager.cancelPeripheralConnection(peripheral)
+    }
+    
+    func intToChar(number: Int) -> [Character] {
+        var temp = String(number)
+        return Array(temp)
     }
 }
 
@@ -121,7 +129,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.esp32Service], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -160,9 +168,13 @@ extension BTDevice: CBPeripheralDelegate {
             delegate?.deviceBlinkChanged(value: b)
         }
         if characteristic.uuid == servoChar?.uuid, let b = characteristic.value?.parseInt() {
-            
+            print("5555")
+        }
+        if characteristic.uuid == blinkChar?.uuid {
+            print ("12345")
         }
     }
+
 }
 
 
