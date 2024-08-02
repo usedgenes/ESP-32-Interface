@@ -7,10 +7,12 @@
 #include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BMP3XX.h"
+#include <ESP32Servo.h>
 
 #define SERVICE_UUID              "9a8ca9ef-e43f-4157-9fee-c37a3d7dc12d"
 #define BLINK_UUID                "e94f85c8-7f57-4dbd-b8d3-2b56e107ed60"
-#define SPEED_UUID                "a8985fda-51aa-4f19-a777-71cf52abba1e"
+#define SERVO_UUID                "cceaf7ab-3160-46fb-9147-93b7fb6540ff"
+#define ALTIMETER_UUID                "a8985fda-51aa-4f19-a777-71cf52abba1e"
 
 #define DEVINFO_UUID              (uint16_t)0x180a
 #define DEVINFO_MANUFACTURER_UUID (uint16_t)0x2a29
@@ -42,7 +44,7 @@ uint8_t blinkOn;
 uint8_t blinkSpeed = 5;
 
 BLECharacteristic *pCharBlink;
-BLECharacteristic *pCharSpeed;
+BLECharacteristic *pServoValue;
 
 Servo servo;
 Adafruit_BMP3XX bmp;
@@ -62,20 +64,6 @@ void setBlink(bool on, bool notify = false) {
   pCharBlink->setValue(&blinkOn, 1);
   if (notify) {
     pCharBlink->notify();
-  }
-}
-
-void setBlinkSpeed(uint8_t v) {
-  blinkSpeed = v;
-  taskBlink.setInterval(v * 100);
-  Serial.println("Blink speed updated");
-}
-
-void buttonCb() {
-  uint8_t btn = digitalRead(PIN_BUTTON) != HIGH;
-  if (btn) {
-    setBlink(!blinkOn, true);
-    taskButton.delay(1000);
   }
 }
 
@@ -112,24 +100,6 @@ class BlinkCallbacks: public BLECharacteristicCallbacks {
     }
 };
 
-class SpeedCallbacks: public BLECharacteristicCallbacks {
-    void onWrite(BLECharacteristic *pCharacteristic) {
-      String value = pCharacteristic->getValue();
-
-      if (value.length() == 1) {
-        uint8_t v = value[0];
-        Serial.print("Got speed value: ");
-        Serial.println(v);
-        if (v >= 1 && v <= 10) {
-          setBlinkSpeed(v);
-          return;
-        }
-      }
-      pCharSpeed->setValue(&blinkSpeed, 1);
-      Serial.println("Invalid data received");
-    }
-};
-
 void setup() {
   Serial.begin(115200);
   Serial.println("Starting...");
@@ -146,32 +116,19 @@ void setup() {
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
-
   BLEService *pService = pServer->createService(SERVICE_UUID);
 
   pCharBlink = pService->createCharacteristic(BLINK_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pCharBlink->setCallbacks(new BlinkCallbacks());
   pCharBlink->addDescriptor(new BLE2902());
 
-  pCharSpeed = pService->createCharacteristic(SPEED_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
-  pCharSpeed->setCallbacks(new SpeedCallbacks());
-  pCharSpeed->setValue(&blinkSpeed, 1);
+  pServoValue = pService>createCharacterstic(SERVO_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
 
   pService->start();
-
-  pService = pServer->createService(DEVINFO_UUID);
 
   BLECharacteristic *pChar = pService->createCharacteristic(DEVINFO_MANUFACTURER_UUID, BLECharacteristic::PROPERTY_READ);
   pChar->setValue(DEVICE_MANUFACTURER);
-
-  pChar = pService->createCharacteristic(DEVINFO_NAME_UUID, BLECharacteristic::PROPERTY_READ);
-  pChar->setValue(DEVICE_NAME);
-
-  pChar = pService->createCharacteristic(DEVINFO_SERIAL_UUID, BLECharacteristic::PROPERTY_READ);
-  pChar->setValue(chipId.c_str());
-
   pService->start();
-
   // ----- Advertising
 
   BLEAdvertising *pAdvertising = pServer->getAdvertising();
@@ -188,9 +145,6 @@ void setup() {
 
   pAdvertising->start();
 
-  Serial.println("Ready");
-  Serial.print("Device name: ");
-  Serial.println(devName);
 }
 
 void loop() {
