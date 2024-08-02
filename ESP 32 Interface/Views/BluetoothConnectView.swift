@@ -76,11 +76,10 @@ struct BluetoothConnectView: View {
         List {
             ForEach(bluetoothManagerHelper.devices, id: \.self) { device in
                 HStack {
-                    Text("\(device.name)")
-                        .onTapGesture {
-                            bluetoothManagerHelper.connectDevice(BTDevice: device)
-                            bluetoothDevice.device = device
-                            bluetoothDevice.connect()
+                    Button(action: {bluetoothManagerHelper.connectDevice(BTDevice: device)
+                        bluetoothDevice.device = device
+                        bluetoothDevice.connect()}) {
+                            Text("\(device.name)")
                         }
                     Spacer()
                 }

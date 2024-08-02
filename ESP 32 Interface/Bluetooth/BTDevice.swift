@@ -26,9 +26,39 @@ class BTDevice: NSObject {
     private var blinkChar: CBCharacteristic?
     private var speedChar: CBCharacteristic?
     public var _blink: Bool = false
-    private var _speed: Int = 5
+    
+    private var servoChar: CBCharacteristic?
+    private var _servoPosition : Int = 0
+    
+    private var bmp390Char: CBCharacteristic?
+    private var _bmp390data: Int = 0
     
     weak var delegate: BTDeviceDelegate?
+    
+    var bmp390data: Int {
+        get {
+            return _servoPosition
+        }
+        set {
+            _servoPosition = newValue
+            if let char = servoChar {
+                peripheral.writeValue(Data(bytes:[55]), for: char, type: .withResponse)
+            }
+         }
+    }
+    
+    var servoPosition: Int {
+        get {
+            return _servoPosition
+        }
+        set {
+            _servoPosition = newValue
+            if let char = servoChar {
+                peripheral.writeValue(Data(bytes:[55]), for: char, type: .withResponse)
+            }
+         }
+    }
+    
     var blink: Bool {
         get {
             return _blink
@@ -70,7 +100,7 @@ extension BTDevice {
     // these are called from BTManager, do not call directly
     
     func connectedCallback() {
-        peripheral.discoverServices([BTUUIDs.blinkService])
+        peripheral.discoverServices([BTUUIDs.esp32Service])
         delegate?.deviceConnected()
     }
     
@@ -90,8 +120,8 @@ extension BTDevice: CBPeripheralDelegate {
         print("Device: discovered services")
         peripheral.services?.forEach {
             print("  \($0)")
-            if $0.uuid == BTUUIDs.blinkService {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkOn], for: $0)
+            if $0.uuid == BTUUIDs.esp32Service {
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.esp32Service], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -104,10 +134,16 @@ extension BTDevice: CBPeripheralDelegate {
         service.characteristics?.forEach {
             print("   \($0)")
             
-            if $0.uuid == BTUUIDs.blinkOn {
+            if $0.uuid == BTUUIDs.blinkUUID {
                 self.blinkChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
+                print("!! blink")
+            } else if $0.uuid == BTUUIDs.servoUUID {
+                self.servoChar = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
+                print("!! servo")
             }
         }
         print()
@@ -119,8 +155,12 @@ extension BTDevice: CBPeripheralDelegate {
         print("Device: updated value for \(characteristic)")
         
         if characteristic.uuid == blinkChar?.uuid, let b = characteristic.value?.parseBool() {
+            print ("1234" + String(b))
             _blink = b
             delegate?.deviceBlinkChanged(value: b)
+        }
+        if characteristic.uuid == servoChar?.uuid, let b = characteristic.value?.parseInt() {
+            
         }
     }
 }

@@ -108,7 +108,7 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
         try container.encode(pinTypes, forKey: .pinTypes)
     }
     
-    func sendData(device : Device, bluetoothDevice : BluetoothDeviceHelper) {
+    func sendData(device : Device) {
         
     }
 }

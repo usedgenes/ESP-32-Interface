@@ -42,7 +42,8 @@ struct individualServoView : View {
                 Text("Servo Position: ")
                 TextField("\(servo.servoPosition)", value: $servo.servoPosition, formatter: NumberFormatter())
                 Button(action: {
-                    ESP_32.servos.sendData(device: servo, bluetoothDevice: bluetoothDevice)}) {
+                    bluetoothDevice.setServoPosition(position: servo.servoPosition)
+                    }) {
                         Text("Send")
                     }
             }

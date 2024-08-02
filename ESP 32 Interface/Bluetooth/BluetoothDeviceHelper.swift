@@ -52,7 +52,10 @@ class BluetoothDeviceHelper: ObservableObject {
         }
         return device!._blink
     }
-
+    
+    func setServoPosition(position : Int) {
+        device!.servoPosition = position
+    }
 }
 
 extension BluetoothDeviceHelper: BTDeviceDelegate {
