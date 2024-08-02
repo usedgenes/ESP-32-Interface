@@ -8,6 +8,17 @@
 #define BLINK_UUID "e94f85c8-7f57-4dbd-b8d3-2b56e107ed60"
 #define SERVO_UUID "f74fb3de-61d1-4f49-bd77-419b61d188da"
 
+#define UUID_1 "94cbc7dc-ff62-4958-9665-0ed477877581"
+#define UUID_2 "c91b34b8-90f3-4fee-89f7-58c108ab198f"
+#define UUID_3 "21072f3b-b950-4b29-bf97-9a7be82d93e7"
+#define UUID_4 "78c611e3-0d36-491f-afe4-60ecc0c26a85"
+#define UUID_5 "6492bdaa-60e3-4e8a-a978-c923dec9fc37"
+#define UUID_6 "56e48048-19da-4136-a323-d2f3e9cb2a5d"
+#define UUID_7 "83e6a4bd-8347-409c-87f3-d8c896f15d3d"
+#define UUID_8 "680f38b9-6898-40ea-9098-47e30e97dbb5"
+#define UUID_9 "fb02a2fa-2a86-4e95-8110-9ded202af76b"
+#define UUID_10 "a979c0ba-a2be-45e5-9d7b-079b06e06096"
+
 #define DEVICE_NAME "ESP_32"
 
 #define PIN_LED LED_BUILTIN
@@ -79,6 +90,12 @@ class BlinkCallbacks : public BLECharacteristicCallbacks {
   }
 };
 
+class ServoCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue();
+    Serial.println(value);
+  }
+};
 
 void setup() {
   Serial.begin(115200);
@@ -100,9 +117,9 @@ void setup() {
 
   pCharBlink = pService->createCharacteristic(BLINK_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pCharBlink->setCallbacks(new BlinkCallbacks());
-  pCharBlink->addDescriptor(new BLE2902());
 
-  // ----- Advertising
+  pServo = pService->createCharacteristic(SERVO_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
+  pServo->setCallbacks(new ServoCallbacks());
 
   pService->start();
 
