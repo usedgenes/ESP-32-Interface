@@ -6,7 +6,7 @@
 
 #define SERVICE_UUID              "9a8ca9ef-e43f-4157-9fee-c37a3d7dc12d"
 #define BLINK_UUID                "e94f85c8-7f57-4dbd-b8d3-2b56e107ed60"
-#define SERVO_UUID                "a8985fda-51aa-4f19-a777-71cf52abba1e"
+#define SPEED_UUID                "a8985fda-51aa-4f19-a777-71cf52abba1e"
 
 #define DEVICE_NAME         "ESP_32"
 
@@ -24,9 +24,7 @@ uint8_t blinkOn;
 uint8_t blinkSpeed = 5;
 
 BLECharacteristic *pCharBlink;
-BLECharacteristic *pServo;
-
-void(* resetFunc) (void) = 0; //declare reset function @ address 0
+BLECharacteristic *pCharSpeed;
 
 void setBlink(bool on, bool notify = false) {
   if (blinkOn == on) return;
@@ -67,7 +65,6 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
     void onDisconnect(BLEServer* pServer) {
       Serial.println("Disconnected");
-      resetFunc();
     }
 };
 
@@ -86,11 +83,22 @@ class BlinkCallbacks: public BLECharacteristicCallbacks {
     }
 };
 
-class ServoCallbacks: public BLECharacteristicCallbacks {
+class SpeedCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       String value = pCharacteristic->getValue();
 
-      Serial.println(value);
+      if (value.length() == 1) {
+        uint8_t v = value[0];
+        Serial.print("Got speed value: ");
+        Serial.println(v);
+        if (v >= 1 && v <= 10) {
+          setBlinkSpeed(v);
+          return;
+        }
+      }
+      pCharSpeed->setValue(&blinkSpeed, 1);
+      Serial.println("Invalid data received");
+    }
 };
 
 void setup() {
@@ -114,9 +122,12 @@ void setup() {
   pCharBlink->setCallbacks(new BlinkCallbacks());
   pCharBlink->addDescriptor(new BLE2902());
 
-  pServo = pService-> pService->createCharacteristic(SERVO_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
-  pServo->setCallbacks(new ServoCallbacks());
+  pCharSpeed = pService->createCharacteristic(SPEED_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
+  pCharSpeed->setCallbacks(new SpeedCallbacks());
+  pCharSpeed->setValue(&blinkSpeed, 1);
+
   pService->start();
+
 
   // ----- Advertising
 
