@@ -30,6 +30,7 @@ struct individualServoView : View {
     @EnvironmentObject var ESP_32 : ESP32
     @ObservedObject var servo : Device
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
+    @State var servoPosition = 0
     var body : some View {
         Section() {
             HStack {
@@ -40,9 +41,18 @@ struct individualServoView : View {
             .contentShape(Rectangle())
             HStack {
                 Text("Servo Position: ")
-                TextField("\(servo.servoPosition)", value: $servo.servoPosition, formatter: NumberFormatter())
+                TextField("\(servo.servoPosition)", text: Binding<String>(
+                    get: { String(servo.servoPosition) },
+                    set: {
+                        if let value = NumberFormatter().number(from: $0) {
+                            self.servoPosition = value.intValue
+
+                        }
+                    }))
+                    .keyboardType(UIKeyboardType.numberPad)
                 Button(action: {
-                    bluetoothDevice.setServoPosition(position: servo.servoPosition)
+                    servo.servoPosition = servoPosition
+                    bluetoothDevice.setServoPosition(position: servoPosition)
                     }) {
                         Text("Send")
                     }

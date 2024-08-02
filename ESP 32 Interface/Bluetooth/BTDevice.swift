@@ -54,9 +54,9 @@ class BTDevice: NSObject {
         set {
             _servoPosition = newValue
             if let char = servoChar {
-                peripheral.writeValue(Data(bytes: intToChar(number: _servoPosition)), for: char, type: .withResponse)
+                var temp = String(_servoPosition)
+                peripheral.writeValue(Data(temp.utf8), for: char, type: .withResponse)
                 print("setting servos")
-                print(intToChar(number: _servoPosition))
             }
          }
     }
@@ -146,12 +146,10 @@ extension BTDevice: CBPeripheralDelegate {
                 self.blinkChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
-                print("!! blink")
             } else if $0.uuid == BTUUIDs.servoUUID {
                 self.servoChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
-                print("!! servo")
             }
         }
         print()
@@ -162,19 +160,21 @@ extension BTDevice: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         print("Device: updated value for \(characteristic)")
         
-        if characteristic.uuid == blinkChar?.uuid, let b = characteristic.value?.parseBool() {
-            print ("1234" + String(b))
-            _blink = b
-            delegate?.deviceBlinkChanged(value: b)
+        if characteristic.uuid == blinkChar?.uuid, let b = characteristic.value {
+            var temp = String(decoding: b, as: UTF8.self)
+            if(temp == "On") {
+                _blink = true
+            }
+            else {
+                _blink = false
+            }
+            print(_blink)
+            delegate?.deviceBlinkChanged(value: _blink)
         }
-        if characteristic.uuid == servoChar?.uuid, let b = characteristic.value?.parseInt() {
-            print("5555")
-        }
-        if characteristic.uuid == blinkChar?.uuid {
-            print ("12345")
+        if characteristic.uuid == servoChar?.uuid, let b = characteristic.value {
+            let value = String(decoding: b, as: UTF8.self)
         }
     }
-
 }
 
 

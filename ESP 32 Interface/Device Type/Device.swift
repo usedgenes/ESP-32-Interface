@@ -36,7 +36,10 @@ class AttachedPin : NSObject, Identifiable, ObservableObject, Codable {
 class Device: NSObject, Identifiable, ObservableObject, Codable {
     @Published var name: String
     var attachedPins : [AttachedPin]
-    var servoPosition = 0
+    var servoPosition = 0 {
+        didSet{
+        }
+    }
     
     init(name: String, attachedPins : [AttachedPin]) {
         self.name = name

@@ -13,7 +13,7 @@ struct BluetoothConnectView: View {
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     @State private var showBluetoothAlert: Bool = false
     @State var bluetoothManagerHelper = BluetoothManagerHelper()
-    
+    @State var LED_On = false
     var body: some View {
         
         VStack {
@@ -41,10 +41,10 @@ struct BluetoothConnectView: View {
                     }
                     else {
                         showBluetoothAlert = true
-                        
                     }
+                    LED_On = bluetoothDevice.blinkState()
                 }
-                Text(bluetoothDevice.blinkState() ? "On" : "Off")
+                Text(LED_On ? "On" : "Off")
             }
             .alert(isPresented: $showBluetoothAlert) {
                 Alert(
