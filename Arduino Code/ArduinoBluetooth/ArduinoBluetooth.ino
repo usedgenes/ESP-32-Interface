@@ -34,8 +34,6 @@ uint8_t blinkSpeed = 5;
 BLECharacteristic *pCharBlink;
 BLECharacteristic *pCharSpeed;
 
-
-
 void setBlink(bool on, bool notify = false) {
   if (blinkOn == on) return;
 
