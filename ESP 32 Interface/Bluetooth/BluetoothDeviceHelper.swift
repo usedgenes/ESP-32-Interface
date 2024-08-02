@@ -50,7 +50,7 @@ class BluetoothDeviceHelper: ObservableObject {
         if(device?.blink == nil) {
             return false
         }
-        return device!.blink
+        return device!._blink
     }
 
 }
