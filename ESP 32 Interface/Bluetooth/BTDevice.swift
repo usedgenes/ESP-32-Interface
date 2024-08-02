@@ -83,7 +83,7 @@ extension BTDevice {
     // these are called from BTManager, do not call directly
     
     func connectedCallback() {
-        peripheral.discoverServices([BTUUIDs.blinkService, BTUUIDs.infoService])
+        peripheral.discoverServices([BTUUIDs.blinkService])
         delegate?.deviceConnected()
     }
     
@@ -103,16 +103,15 @@ extension BTDevice: CBPeripheralDelegate {
         print("Device: discovered services")
         peripheral.services?.forEach {
             print("  \($0)")
-            if $0.uuid == BTUUIDs.infoService {
-                peripheral.discoverCharacteristics([BTUUIDs.infoSerial], for: $0)
+            if $0.uuid == BTUUIDs.servo {
+                peripheral.discoverCharacteristics([], for: $0)
             } else if $0.uuid == BTUUIDs.blinkService {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkOn,BTUUIDs.blinkSpeed], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkOn], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
             
         }
-        print()
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
@@ -124,10 +123,10 @@ extension BTDevice: CBPeripheralDelegate {
                 self.blinkChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
-            } else if $0.uuid == BTUUIDs.blinkSpeed {
+            } else if $0.uuid == BTUUIDs.servo {
                 self.speedChar = $0
                 peripheral.readValue(for: $0)
-            } else if $0.uuid == BTUUIDs.infoSerial {
+            } else if $0.uuid == BTUUIDs.servo {
                 peripheral.readValue(for: $0)
             }
         }
@@ -147,7 +146,7 @@ extension BTDevice: CBPeripheralDelegate {
             _speed = Int(s)
             delegate?.deviceSpeedChanged(value: _speed)
         }
-        if characteristic.uuid == BTUUIDs.infoSerial, let d = characteristic.value {
+        if characteristic.uuid == BTUUIDs.servo, let d = characteristic.value {
             serial = String(data: d, encoding: .utf8)
             if let serial = serial {
                 delegate?.deviceSerialChanged(value: serial)

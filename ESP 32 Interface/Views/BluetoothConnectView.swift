@@ -21,11 +21,8 @@ struct BluetoothConnectView: View {
             Button("Refresh") {
                 bluetoothDevice.refresh()
             }
-            .padding()
+            .padding(.top)
             
-            Button("Check Devices") {
-                let _ = print(bluetoothManagerHelper.devices[0].name)
-            }
             Button("Disconnect") {
                 if(bluetoothDevice.isConnected) {
                     bluetoothDevice.disconnect()
