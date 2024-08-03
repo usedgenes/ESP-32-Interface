@@ -3,6 +3,11 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include <TaskScheduler.h>
+#include <ESP32Servo.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include "Adafruit_BMP3XX.h"
 
 #define SERVICE_UUID "9a8ca9ef-e43f-4157-9fee-c37a3d7dc12d"
 #define BLINK_UUID "e94f85c8-7f57-4dbd-b8d3-2b56e107ed60"
@@ -23,6 +28,8 @@
 
 #define PIN_LED LED_BUILTIN
 
+#define SEALEVELPRESSURE_HPA (1013.25)
+
 Scheduler scheduler;
 
 void blinkCb();
@@ -31,6 +38,12 @@ void blinkOffCb();
 Task taskBlink(500, TASK_FOREVER, &blinkCb, &scheduler, false, NULL, &blinkOffCb);
 
 uint8_t blinkOn;
+
+Servo *servoArray;
+int servoArraySize;
+
+Adafruit_BMP3xx *bmp390Array;
+int bmp390ArraySize;
 
 BLECharacteristic *pCharBlink;
 BLECharacteristic *pServo;
@@ -84,6 +97,13 @@ class BlinkCallbacks : public BLECharacteristicCallbacks {
       Serial.print("Got blink value: ");
       Serial.println(v);
       setBlink(v ? true : false);
+      if(v) {
+        pCharacteristic->setValue("On");
+      }
+      else {
+        pCharacteristic->setValue("Off");
+      }
+      pCharacteristic->notify();
     } else {
       Serial.println("Invalid data received");
     }
@@ -93,6 +113,44 @@ class BlinkCallbacks : public BLECharacteristicCallbacks {
 class ServoCallbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
+    if(value.substring(0,1) = "0") {
+      servoArraySize = value.substring(1, value.length()).toInt();
+      servoArray = new Servo[servoArraySize];
+    }
+    if(value.substring(0,1) = "1") {
+      for(int i = 0; i < servoArraySize; i++) {
+        servoArray[i].attach(value.substring(2*i+1, 2*i+3).toInt());
+      }
+    }
+    if(value.substring(0,1) = "2") {
+      servoArray[value.substring(1,3).toInt()].write(value.substring(3, value.length()).toInt());
+    }
+    pCharacteristic->setValue(value);
+    pCharacteristic->notify();
+    Serial.println(value);
+  }
+};
+
+class BMP390Callbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue();
+    if(value.substring(0,1) = "0") {
+      arraySize = value.substring(1, value.length()).toInt();
+      servoArray = new Servo[arraySize];
+      Serial.println("Allocating servos");
+    }
+    if(value.substring(0,1) = "1") {
+      for(int i = 0; i < arraySize; i++) {
+        servoArray[i].attach(value.substring(2*i+1, 2*i+3).toInt());
+      }
+      Serial.println("Attaching servos");
+    }
+    if(value.substring(0,1) = "2") {
+      servoArray[value.substring(1,3).toInt()].write(value.substring(3, value.length()).toInt());
+      Serial.println("Writing servos");
+    }
+    pCharacteristic->setValue(value);
+    pCharacteristic->notify();
     Serial.println(value);
   }
 };
