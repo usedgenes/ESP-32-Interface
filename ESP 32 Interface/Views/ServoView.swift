@@ -60,7 +60,9 @@ struct individualServoView : View {
                     .keyboardType(UIKeyboardType.numberPad)
                 Button(action: {
                     servo.servoPosition = servoPosition
-                    bluetoothDevice.setServos(input: "2" + String(format: "%02d", servo.getPinNumber(name: "Digital")))
+                    bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servoPosition))
+                    print(ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo))
+                    print(servoPosition)
                     }) {
                         Text("Send")
                     }

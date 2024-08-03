@@ -20,6 +20,7 @@ class ESP32 : ObservableObject {
     
     @Published var ESP32Devices: [DeviceCategory] = [] {
         didSet {
+            
         }
     }
     

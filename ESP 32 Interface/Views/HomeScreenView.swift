@@ -18,15 +18,17 @@ struct HomeScreenView: View {
         NavigationView {
             List {
                 Section(header: Text("ESP32 Options")) {
+                    NavigationLink("App Help", destination: AppHelpView())
                     NavigationLink("Connect to Bluetooth", destination: BluetoothConnectView())
                     NavigationLink("View Devices", destination: DeviceView())
                     Button(action: {
                         ESP_32.cleanState()
+                        if let bundleID = Bundle.main.bundleIdentifier {
+                            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+                        }
                     }) {
                         Text("Reset Devices")
                     }
-                    NavigationLink("App Help", destination: AppHelpView())
-                    
                 }
                 
                 Section(header: Text("Motion")) {
@@ -40,8 +42,6 @@ struct HomeScreenView: View {
             
         }.onAppear(perform: {
             ESP_32.getState()
-            ESP_32.saveState()
-            print("Saving and Getting State")
         })
         .navigationViewStyle(StackNavigationViewStyle())
     }

@@ -61,6 +61,9 @@ struct DeviceView: View {
                 }
             }
         }
+        .onDisappear(perform: {
+            ESP_32.saveState()
+        })
         .navigationTitle("Device List")
     }
 
