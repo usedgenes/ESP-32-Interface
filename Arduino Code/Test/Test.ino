@@ -116,17 +116,22 @@ class ServoCallbacks : public BLECharacteristicCallbacks {
     if(value.substring(0,1) == "0") {
       servoArraySize = value.substring(1, value.length()).toInt();
       servoArray = new Servo[servoArraySize];
+      Serial.println(servoArraySize);
+      Serial.println("Initializing servos");
     }
     if(value.substring(0,1) == "1") {
       for(int i = 0; i < servoArraySize; i++) {
         servoArray[i].attach(value.substring(2*i+1, 2*i+3).toInt());
+        Serial.println(value.substring(2*i+1, 2*i+3).toInt());
       }
+      Serial.println("Attaching servos");
     }
     if(value.substring(0,1) == "2") {
       servoArray[value.substring(1,3).toInt()].write(value.substring(3, value.length()).toInt());
+      Serial.println(value.substring(1,3).toInt());
+      Serial.println(value.substring(3, value.length()).toInt());
+      Serial.println("Writing servos");
     }
-    Serial.println(value.substring(0,1));
-    Serial.println("hi");
     pCharacteristic->setValue(value);
     pCharacteristic->notify();
     Serial.println(value);
