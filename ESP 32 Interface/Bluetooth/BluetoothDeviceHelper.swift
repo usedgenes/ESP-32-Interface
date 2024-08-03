@@ -53,8 +53,8 @@ class BluetoothDeviceHelper: ObservableObject {
         return device!._blink
     }
     
-    func setServoPosition(position : Int) {
-        device!.servoPosition = position
+    func setServos(input : String) {
+        device!.servoString = input
     }
 }
 

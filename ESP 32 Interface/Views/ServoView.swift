@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct ServoView: View {
     @EnvironmentObject var ESP_32 : ESP32
@@ -52,12 +53,14 @@ struct individualServoView : View {
                     .keyboardType(UIKeyboardType.numberPad)
                 Button(action: {
                     servo.servoPosition = servoPosition
-                    bluetoothDevice.setServoPosition(position: servoPosition)
+                    bluetoothDevice.setServos(input: "2" + String(format: "%02d", servo.getPinNumber(name: "Digital")))
                     }) {
                         Text("Send")
                     }
             }
-        }
+        }.onAppear(perform: {
+            bluetoothDevice.setServos(input: "5")
+        })
     }
 }
 struct ServoView_Previews: PreviewProvider {
