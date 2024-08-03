@@ -48,7 +48,7 @@ int bmp390ArraySize;
 BLECharacteristic *pCharBlink;
 BLECharacteristic *pServo;
 
-void(* resetFunc) (void) = 0; // create a standard reset function
+void (*resetFunc)(void) = 0;  // create a standard reset function
 
 void setBlink(bool on, bool notify = false) {
   if (blinkOn == on) return;
@@ -97,10 +97,9 @@ class BlinkCallbacks : public BLECharacteristicCallbacks {
       Serial.print("Got blink value: ");
       Serial.println(v);
       setBlink(v ? true : false);
-      if(v) {
+      if (v) {
         pCharacteristic->setValue("On");
-      }
-      else {
+      } else {
         pCharacteristic->setValue("Off");
       }
       pCharacteristic->notify();
@@ -113,22 +112,25 @@ class BlinkCallbacks : public BLECharacteristicCallbacks {
 class ServoCallbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
-    if(value.substring(0,1) == "0") {
+    if (value.substring(0, 1) == "0") {
       servoArraySize = value.substring(1, value.length()).toInt();
       servoArray = new Servo[servoArraySize];
+      Serial.println(servoArraySize);
+      Serial.println("Initializing servos");
     }
-    if(value.substring(0,1) == "1") {
-      for(int i = 0; i < servoArraySize; i++) {
-        servoArray[i].attach(value.substring(2*i+1, 2*i+3).toInt());
+    if (value.substring(0, 1) == "1") {
+      for (int i = 0; i < servoArraySize; i++) {
+        servoArray[i].attach(value.substring(2 * i + 1, 2 * i + 3).toInt());
+        Serial.println(value.substring(2 * i + 1, 2 * i + 3).toInt());
       }
+      Serial.println("Attaching servos");
     }
-    if(value.substring(0,1) == "2") {
-      servoArray[value.substring(1,3).toInt()].write(value.substring(3, value.length()).toInt());
+    if (value.substring(0, 1) == "2") {
+      servoArray[value.substring(1, 3).toInt()].write(value.substring(3, value.length()).toInt());
+      Serial.println(value.substring(1, 3).toInt());
+      Serial.println(value.substring(3, value.length()).toInt());
+      Serial.println("Writing servos");
     }
-    Serial.println(value.substring(0,1));
-    Serial.println("hi");
-    pCharacteristic->setValue(value);
-    pCharacteristic->notify();
     Serial.println(value);
   }
 };
@@ -136,24 +138,33 @@ class ServoCallbacks : public BLECharacteristicCallbacks {
 class BMP390Callbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
-    if(value.substring(0,1) == "0") {
+    if (value.substring(0, 1) == "0") {
       bmp390ArraySize = value.substring(1, value.length()).toInt();
-      servoArray = new Servo[servoArraySize];
-      Serial.println("Allocating servos");
+      bmp390Array = new Adafruit_BMP3XX[bmp390ArraySize];
+      Serial.println("Allocating bmp390s");
     }
-    if(value.substring(0,1) == "1") {
-      for(int i = 0; i < bmp390ArraySize; i++) {
-        servoArray[i].attach(value.substring(2*i+1, 2*i+3).toInt());
-      }
-      Serial.println("Attaching servos");
+    if (value.substring(0, 1) == "1") {
+      //beginSPI: CS, SCK, MISO, MOSI
+      bmp390Array[value.substring(1, 3).toInt()].begin_SPI(value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt(), value.substring(9, 11).toInt());
+      bmp390Array[value.substring(1, 3).toInt()].setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
+      bmp390Array[value.substring(1, 3).toInt()].setPressureOversampling(BMP3_OVERSAMPLING_4X);
+      bmp390Array[value.substring(1, 3).toInt()].setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
+      bmp390Array[value.substring(1, 3).toInt()].setOutputDataRate(BMP3_ODR_50_HZ);
+      Serial.println("Attaching bmp390s");
     }
-    if(value.substring(0,1) == "2") {
-      servoArray[value.substring(1,3).toInt()].write(value.substring(3, value.length()).toInt());
-      Serial.println("Writing servos");
+    if (value.substring(0, 1) == "2") {
+      bmp390Array[value.substring(1,3).toInt()].performReading();
+      Serial.println("Writing bmp390s");
+      pCharacteristic->setValue("3" + String(bmp390Array[value.substring(1,3).toInt()].temperature));
+      pCharacteristic->notify();
+      delay(5);
+      pCharacteristic->setValue("4" + String(bmp390Array[value.substring(1,3).toInt()].pressure));
+      pCharacteristic->notify();
+      delay(5);
+      pCharacteristic->setValue("5" + String(bmp390Array[value.substring(1,3).toInt()].readAltitude(SEALEVELPRESSURE_HPA)));
+      pCharacteristic->notify();
     }
-    Serial.println(value.substring(0,1));
-    pCharacteristic->setValue(value);
-    pCharacteristic->notify();
+
     Serial.println(value);
   }
 };
