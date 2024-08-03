@@ -21,7 +21,14 @@ struct ServoView: View {
                     ForEach(ESP_32.getServos().devices, id: \.self) { servo in
                         individualServoView(servo: servo)
                     }
-                }
+                }.onAppear(perform: {
+                    bluetoothDevice.setServos(input: "0" + String(ESP_32.getServos().devices.count))
+                    var servoDigitalPins = ""
+                    for servo in ESP_32.getServos().devices {
+                        servoDigitalPins += String(servo.getPinNumber(name: "Digital"))
+                    }
+                    bluetoothDevice.setServos(input: "1" + String(servoDigitalPins))
+                })
             }
         }
     }
@@ -58,9 +65,7 @@ struct individualServoView : View {
                         Text("Send")
                     }
             }
-        }.onAppear(perform: {
-            bluetoothDevice.setServos(input: "5")
-        })
+        }
     }
 }
 struct ServoView_Previews: PreviewProvider {

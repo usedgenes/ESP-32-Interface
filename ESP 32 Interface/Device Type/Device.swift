@@ -54,7 +54,7 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
         }
         return -1
     }
-    
+        
     enum CodingKeys: CodingKey {
         case name
         case attachedPins
@@ -80,6 +80,17 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
     @Published var devices : [Device] = []
     var pinTypes: [String] = []
     
+    func getDeviceNumberInArray(inputDevice: Device) -> Int {
+        var counter = 0
+        for device in devices {
+            if(device === inputDevice) {
+                return counter
+            }
+            counter += 1
+        }
+        return -1
+    }
+
     init(type: String, pinTypes: [String]) {
         self.type = type
         self.pinTypes = pinTypes

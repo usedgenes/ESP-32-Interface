@@ -50,7 +50,6 @@ class BTDevice: NSObject {
         set {
             if let char = servoChar {
                 peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
-                print("setting servos")
             }
          }
     }

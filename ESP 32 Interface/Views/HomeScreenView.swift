@@ -25,6 +25,8 @@ struct HomeScreenView: View {
                     }) {
                         Text("Reset Devices")
                     }
+                    NavigationLink("App Help", destination: AppHelpView())
+                    
                 }
                 
                 Section(header: Text("Motion")) {
@@ -33,20 +35,14 @@ struct HomeScreenView: View {
                 Section(header: Text("Sensors")) {
                     NavigationLink("Altimeters", destination: BMP390_I2CView())
                 }
-                Button (action: {
-                    ESP_32.saveState()
-                }) {
-                    Text("Save State")
-                }
-                Button (action: {
-                    ESP_32.getState()
-                }) {
-                    Text("Get State")
-                }
             }
             .navigationBarTitle("ESP32 Assistant")
             
-        }
+        }.onAppear(perform: {
+            ESP_32.getState()
+            ESP_32.saveState()
+            print("Saving and Getting State")
+        })
         .navigationViewStyle(StackNavigationViewStyle())
     }
     
