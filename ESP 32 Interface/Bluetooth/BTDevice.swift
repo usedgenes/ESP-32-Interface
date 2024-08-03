@@ -28,7 +28,6 @@ class BTDevice: NSObject {
     public var _blink: Bool = false
     
     private var servoChar: CBCharacteristic?
-    private var _servoPosition : Int = 0
     
     private var bmp390Char: CBCharacteristic?
     private var _bmp390data: Int = 0
@@ -37,25 +36,20 @@ class BTDevice: NSObject {
     
     var bmp390data: Int {
         get {
-            return _servoPosition
+            return 0
         }
         set {
-            _servoPosition = newValue
-            if let char = servoChar {
-//                peripheral.writeValue(Data(String(servoPosition)), for: char, type: .withResponse)
-            }
+
          }
     }
     
-    var servoPosition: Int {
+    var servoString: String {
         get {
-            return _servoPosition
+            return self.servoString
         }
         set {
-            _servoPosition = newValue
             if let char = servoChar {
-                var temp = String(_servoPosition)
-                peripheral.writeValue(Data(temp.utf8), for: char, type: .withResponse)
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
                 print("setting servos")
             }
          }

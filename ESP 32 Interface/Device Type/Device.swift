@@ -46,6 +46,15 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
         self.attachedPins = attachedPins
     }
     
+    func getPinNumber(name: String) -> Int {
+        for attachedPin in attachedPins {
+            if(attachedPin.pinName == name) {
+                return attachedPin.pinNumber
+            }
+        }
+        return -1
+    }
+    
     enum CodingKeys: CodingKey {
         case name
         case attachedPins
