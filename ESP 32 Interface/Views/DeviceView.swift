@@ -45,6 +45,15 @@ struct DeviceView: View {
     var body: some View {
 
         List() {
+            Section(header: Text("Motion")) {
+                
+            }
+            Section(header: Text("Altimeters")) {
+                
+            }
+            Section(header: Text("Inertial Measurement Units")) {
+                
+            }
             ForEach(ESP_32.ESP32Devices, id: \.self) { deviceCategory in
                 Section(header: Text("\(deviceCategory.category)")) {
                     ForEach(deviceCategory.deviceTypes, id: \.id) { deviceType in
@@ -80,6 +89,7 @@ struct DeviceView: View {
             print(device.type)
             print(device.deviceType)
             device.devices.append(currentDevice)
+            ESP_32.saveState()
         })
         alertDone.isEnabled = false
         alert.addAction(alertDone)

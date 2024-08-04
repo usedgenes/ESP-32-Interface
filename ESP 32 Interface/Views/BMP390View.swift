@@ -1,7 +1,7 @@
 import SwiftUI
 import Charts
 
-struct BMP390_SPIView: View {
+struct BMP390View: View {
     @EnvironmentObject var ESP_32 : ESP32
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     var body: some View {
@@ -12,10 +12,14 @@ struct BMP390_SPIView: View {
             else {
                 List {
                     ForEach(ESP_32.getBMP390_SPI().devices, id: \.self) { bmp390 in
-                        individualBMP390_SPIView(bmp390: bmp390)
+                        individualBMP390_SPIView(bmp390: bmp390 as! BMP390)
+                    }
+                    ForEach(ESP_32.getBMP390_I2C().devices, id:\.self) {
+                        bmp390 in
+                        individualBMP390_SPIView(bmp390: bmp390 as! BMP390)
                     }
                 }.onAppear(perform: {
-                    bluetoothDevice.setBMP390SPI(input: "0" + String(ESP_32.getBMP390_SPI().devices.count))
+                    bluetoothDevice.setBMP390SPI(input: "0" + String((ESP_32.getBMP390_SPI().devices.count + ESP_32.getBMP390_I2C().devices.count)))
                     for bmp390SPI in ESP_32.getBMP390_SPI().devices {
                         var bmp390PinString = "1"
                         bmp390PinString += String(format: "%02d", ESP_32.getBMP390_SPI().getDeviceNumberInArray(inputDevice: bmp390SPI))
@@ -23,6 +27,14 @@ struct BMP390_SPIView: View {
                         bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"SCK"))
                         bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"MISO"))
                         bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"MOSI"))
+                        bluetoothDevice.setBMP390SPI(input: bmp390PinString)
+                        print(bmp390PinString)
+                    }
+                    for bmp390I2C in ESP_32.getBMP390_SPI().devices {
+                        var bmp390PinString = "1"
+                        bmp390PinString += String(format: "%02d", ESP_32.getBMP390_I2C().getDeviceNumberInArray(inputDevice: bmp390I2C))
+                        bmp390PinString += String(format: "%02d", bmp390I2C.getPinNumber(name:"SCK"))
+                        bmp390PinString += String(format: "%02d", bmp390I2C.getPinNumber(name:"SDA"))
                         bluetoothDevice.setBMP390SPI(input: bmp390PinString)
                         print(bmp390PinString)
                     }
@@ -34,7 +46,7 @@ struct BMP390_SPIView: View {
 
 struct individualBMP390_SPIView : View {
     @EnvironmentObject var ESP_32 : ESP32
-    @ObservedObject var bmp390 : Device
+    @ObservedObject var bmp390 : BMP390
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     var body : some View {
         Section() {
@@ -53,17 +65,17 @@ struct individualBMP390_SPIView : View {
                         Text("Get Data")
                     }
             }
-//            Chart(data, id: \.type) { dataSeries in
-//                       ForEach(dataSeries.petData) { data in
-//                           LineMark(x: .value("Year", data.year),
-//                                    y: .value("Population", data.population))
-//                       }
-//                       .foregroundStyle(by: .value("Pet type", dataSeries.type))
-//                       .symbol(by: .value("Pet type", dataSeries.type))
-//                   }
-//                   .chartXScale(domain: 1998...2024)
-//                   .aspectRatio(1, contentMode: .fit)
-//                   .padding()
+            Chart(data, id: \.type) { dataSeries in
+                       ForEach(dataSeries.petData) { data in
+                           LineMark(x: .value("Year", data.year),
+                                    y: .value("Population", data.population))
+                       }
+                       .foregroundStyle(by: .value("Pet type", dataSeries.type))
+                       .symbol(by: .value("Pet type", dataSeries.type))
+                   }
+                   .chartXScale(domain: 1998...2024)
+                   .aspectRatio(1, contentMode: .fit)
+                   .padding()
         }
     }
 }

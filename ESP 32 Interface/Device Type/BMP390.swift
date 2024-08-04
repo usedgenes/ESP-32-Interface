@@ -7,9 +7,16 @@
 
 import Foundation
 
-class BMP390_SPI : Device {
+class BMP390 : Device {
     var temperatureData : [Int] = []
     var pressureData : [Int] = []
     var AltitudeData : [Int] = []
+    
+    var I2C_or_SPI : SerialCommunicationProtocol {
+    }
+}
 
+enum SerialCommunicationProtocol {
+    case I2C
+    case SPI
 }

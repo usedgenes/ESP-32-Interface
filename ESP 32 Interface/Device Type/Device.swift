@@ -71,29 +71,31 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
     
 }
 
+class DeviceArray: NSObject, Identifiable, ObservableObject {
+    var name : String
+    var devices : [Device]
+    
+    init(name: String, devices : [Device]) {
+        self.name = name
+        self.devices = devices
+    }
+    
+    func getDevices() -> [Device] {
+        return devices
+    }
+}
 
-class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
+class DeviceType: NSObject, Identifiable, ObservableObject {
     var type: String
     var deviceType : Device.Type
-    @Published var devices : [Device] = []
+    @Published var devices : DeviceArray
     var pinTypes: [String] = []
-    
-    func getDeviceNumberInArray(inputDevice: Device) -> Int {
-        var counter = 0
-        for device in devices {
-            if(device === inputDevice) {
-                return counter
-            }
-            counter += 1
-        }
-        return -1
-    }
 
-    init(type: String, pinTypes: [String], deviceType: Device.Type) {
+    init(type: String, pinTypes: [String], deviceType: Device.Type, devices : DeviceArray) {
         self.type = type
         self.pinTypes = pinTypes
         self.deviceType = deviceType
-        print("init")
+        self.devices = devices
     }
     
     func resetDevices() {
@@ -111,57 +113,6 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
         }
     }
     
-    enum CodingKeys: CodingKey {
-        case type
-        case devices
-        case pinTypes
-        case deviceType
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        type = try container.decode(String.self, forKey: .type)
-        devices = try container.decode([Device].self, forKey: .devices)
-        pinTypes = try container.decode([String].self, forKey: .pinTypes)
-        self.deviceType = Device.self
-        print("required init")
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(type, forKey: .type)
-        try container.encode(devices, forKey: .devices)
-        try container.encode(pinTypes, forKey: .pinTypes)
-        try container.encode(co, forKey: .pinTypes)
-
-    }
-    
 }
 
-class DeviceCategory: NSObject, Identifiable, Codable {
-    var category: String
-    var deviceTypes: [DeviceType] = []
-    init(category: String) {
-        self.category = category
-    }
-    
-    enum CodingKeys: CodingKey {
-        case deviceTypes
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        deviceTypes = try container.decode([DeviceType].self, forKey: .deviceTypes)
-        self.category = ""
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(deviceTypes, forKey: .deviceTypes)
-    }
-    
-    func addDevice(deviceType : DeviceType) {
-        deviceTypes.append(deviceType)
-    }
-}
 

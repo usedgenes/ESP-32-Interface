@@ -8,85 +8,64 @@
 import Foundation
 
 class ESP32 : ObservableObject {
-    var servos = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self)
-    var motors = DeviceType(type: "Motor", pinTypes: ["Digital"], deviceType: Motor.self)
-    var motion = DeviceCategory(category: "Motion")
+    var servos : DeviceArray
+    var servo_Type : DeviceType
     
-    var bmp390I2C = DeviceType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"], deviceType: BMP390_I2C.self)
-    var bmp390SPI = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390_SPI.self)
-    var altimeters = DeviceCategory(category: "Altimeters")
+    var bmp390s : DeviceArray
+    var bmp390I2C_Type : DeviceType
+    var bmp390SPI_Type : DeviceType
     
-    var bno08xSPI = DeviceType(type: "BNO08X", pinTypes: [""], deviceType: BNO08X_SPI.self)
-    var imu = DeviceCategory(category: "Inertial Measurement Units")
+    var ESP32Devices : [DeviceArray]
     
-    @Published var ESP32Devices: [DeviceCategory] = [] {
-        didSet {
-            
-        }
+    func getServos() -> [Servo] {
+        return servos
+    }
+    
+    func getBMP390s() -> [BMP390] {
+        return bmp390s
+    }
+    
+    init() {
+        servo_Type = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self, devices: servos)
+        
+        bmp390I2C_Type = DeviceType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"], deviceType: BMP390.self, devices: bmp390s)
+        bmp390SPI_Type = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390.self, devices: bmp390s)
+        
+        ESP32Devices.append(DeviceArray)
+        ESP32Devices.append(bmp390s)
     }
     
     enum CodingKeys: CodingKey {
         case label, icon
     }
     
-    func getServos() -> DeviceType {
-        return ESP32Devices[0].deviceTypes[0]
-    }
-    
-    func getBMP390_I2C() -> DeviceType {
-        return ESP32Devices[1].deviceTypes[0]
-    }
-    
-    func getBMP390_SPI() -> DeviceType {
-        return ESP32Devices[1].deviceTypes[1]
-    }
-    
-    func getBNO08X_SPI() -> DeviceType {
-        return ESP32Devices[2].deviceTypes[0]
-    }
-    
-    init() {
-        motion.addDevice(deviceType: servos)
-        motion.addDevice(deviceType: motors)
-        
-        altimeters.addDevice(deviceType: bmp390I2C)
-        altimeters.addDevice(deviceType: bmp390SPI)
-        
-        imu.addDevice(deviceType: bno08xSPI)
-        
-        ESP32Devices.append(motion)
-        ESP32Devices.append(altimeters)
-        ESP32Devices.append(imu)
-//        print("init")
-//        for deviceCategory in ESP32Devices {
-//            for deviceType in deviceCategory.deviceTypes {
-//                print(deviceType.type)
-//            }
-//        }
-
-    }
-    
     func saveState() {
         let encoder = JSONEncoder()
-        for deviceCategory in self.ESP32Devices {
-            if let encoded = try? encoder.encode(deviceCategory) {
-                let defaults = UserDefaults.standard
-                defaults.set(encoded, forKey: deviceCategory.category)
+        for devices in self.ESP32Devices {
+                if let encoded = try? encoder.encode(devices) {
+                    let defaults = UserDefaults.standard
+                    defaults.set(encoded, forKey: deviceType.type)
+                }
             }
         }
     }
     
     func getState() {
         let defaults = UserDefaults.standard
-        var count = 0
+        var i = 0
         for deviceCategory in self.ESP32Devices {
-            if let savedDeviceCategory = defaults.object(forKey: deviceCategory.category) as? Data {
-                let decoder = JSONDecoder()
-                if let loadedDeviceCategory = try? decoder.decode(DeviceCategory.self, from: savedDeviceCategory) {
-                    self.ESP32Devices[count].deviceTypes = loadedDeviceCategory.deviceTypes
+            var j = 0
+            for deviceType in deviceCategory.deviceTypes {
+                if let savedDevices = defaults.object(forKey: deviceType.type) as? Data {
+                    let decoder = JSONDecoder()
+                    if let loadedDevices = try? decoder.decode([Device].self, from: savedDevices) {
+                        self.ESP32Devices[i].deviceTypes[j].devices = loadedDevices
+                    }
                 }
+                j += 1
             }
-            count += 1
+            i += 1
+
         }
     }
     
