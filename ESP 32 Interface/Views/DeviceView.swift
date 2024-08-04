@@ -53,9 +53,9 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.servo_Type)
                     }) {
                         Text("Add")
-                    }.contentShape(Rectangle())
-                    DeviceArrayView(deviceArray : ESP_32.servos)
+                    }
                 }
+                DeviceArrayView(deviceArray : ESP_32.servos)
             }
             Section(header: Text("Altimeters")) {
                 HStack{
@@ -65,14 +65,14 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.bmp390I2C_Type)
                     }) {
                         Text("Add I2C")
-                    }.contentShape(Rectangle())
+                    }.buttonStyle(BorderlessButtonStyle())
                     Button(action:{
                         self.addDeviceAlert(deviceType: ESP_32.bmp390SPI_Type)
                     }) {
                         Text("Add SPI")
-                    }.contentShape(Rectangle())
-                    DeviceArrayView(deviceArray : ESP_32.bmp390s)
+                    }.buttonStyle(BorderlessButtonStyle())
                 }
+                DeviceArrayView(deviceArray : ESP_32.bmp390s)
             }
             Section(header: Text("Inertial Measurement Units")) {
                 
@@ -94,10 +94,7 @@ struct DeviceView: View {
                 attachedPins.append(AttachedPin(pinName: deviceType.pinTypes[number], pinNumber: pinNumbers[number]))
             }
             let currentDevice = deviceType.deviceType.init(name: deviceType.type /* + " \(device.devices.count + 1)" */, attachedPins: attachedPins)
-            var tempDeviceArray = deviceType.devices.getDevices()
-
-            tempDeviceArray.append(currentDevice)
-            
+            deviceType.devices.addDevice(device: currentDevice)
             ESP_32.saveState()
         })
         alertDone.isEnabled = false

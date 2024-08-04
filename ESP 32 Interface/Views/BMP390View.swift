@@ -15,27 +15,26 @@ struct BMP390View: View {
                         individualBMP390View(bmp390: bmp390 as! BMP390)
                     }
                 }
-//                .onAppear(perform: {
-//                    bluetoothDevice.setBMP390SPI(input: "0" + String((ESP_32.getBMP390_SPI().devices.count + ESP_32.getBMP390_I2C().devices.count)))
-//                    for bmp390SPI in ESP_32.getBMP390_SPI().devices {
-//                        var bmp390PinString = "1"
-//                        bmp390PinString += String(format: "%02d", ESP_32.getBMP390_SPI().getDeviceNumberInArray(inputDevice: bmp390SPI))
-//                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"CS"))
-//                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"SCK"))
-//                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"MISO"))
-//                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"MOSI"))
-//                        bluetoothDevice.setBMP390SPI(input: bmp390PinString)
-//                        print(bmp390PinString)
-//                    }
-//                    for bmp390I2C in ESP_32.getBMP390_SPI().devices {
-//                        var bmp390PinString = "1"
-//                        bmp390PinString += String(format: "%02d", ESP_32.getBMP390_I2C().getDeviceNumberInArray(inputDevice: bmp390I2C))
-//                        bmp390PinString += String(format: "%02d", bmp390I2C.getPinNumber(name:"SCK"))
-//                        bmp390PinString += String(format: "%02d", bmp390I2C.getPinNumber(name:"SDA"))
-//                        bluetoothDevice.setBMP390SPI(input: bmp390PinString)
-//                        print(bmp390PinString)
-//                    }
-//                })
+                .onAppear(perform: {
+                    bluetoothDevice.setBMP390(input: "0" + String(ESP_32.getBMP390s().devices.count))
+                    for bmp390 in ESP_32.getBMP390s().devices {
+                        var bmp390PinString = "1"
+                        bmp390PinString += String(format: "%02d", ESP_32.getBMP390s().getDeviceNumberInArray(inputDevice: bmp390))
+                        if(bmp390.attachedPins.count == 2) {
+                            bmp390PinString += String(format: "%02d", bmp390.getPinNumber(name:"SDA"))
+                            bmp390PinString += String(format: "%02d", bmp390.getPinNumber(name:"SCL"))
+                        }
+                        else {
+                            bmp390PinString += String(format: "%02d", bmp390.getPinNumber(name:"CS"))
+                            bmp390PinString += String(format: "%02d", bmp390.getPinNumber(name:"SCK"))
+                            bmp390PinString += String(format: "%02d", bmp390.getPinNumber(name:"MISO"))
+                            bmp390PinString += String(format: "%02d", bmp390.getPinNumber(name:"MOSI"))
+                        }
+                        
+                        bluetoothDevice.setBMP390(input: bmp390PinString)
+                        print(bmp390PinString)
+                    }
+                })
             }
         }
     }
