@@ -28,7 +28,7 @@ class ESP32 : ObservableObject {
     init() {
         servo_Type = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self, devices: servos)
         
-        bmp390I2C_Type = DeviceType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"], deviceType: BMP390.self, devices: bmp390s)
+        bmp390I2C_Type = DeviceType(type: "BMP390 I2C", pinTypes: ["SDA", "SCL"], deviceType: BMP390.self, devices: bmp390s)
         bmp390SPI_Type = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390.self, devices: bmp390s)
         
         ESP32Devices.append(servos)
