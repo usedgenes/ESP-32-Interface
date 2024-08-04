@@ -1,5 +1,6 @@
 import Foundation
 
+
 class AttachedPin : NSObject, Identifiable, ObservableObject, Codable {
     @Published var pinName : String
     @Published var pinNumber : Int

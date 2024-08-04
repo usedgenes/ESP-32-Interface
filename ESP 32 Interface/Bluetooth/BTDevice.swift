@@ -1,11 +1,7 @@
-//
-//  BTDevice.swift
-//  BLEDemo
-//
-//  Created by Jindrich Dolezy on 11/04/2018.
-//  Copyright © 2018 Dzindra. All rights reserved.
-//
-
+//To add new device:
+//create new device cbcharacteristic variable
+//update the three peripheral functions in extension BTDevice: CBPeripheralDelegate
+//create a function in BTDevice
 import Foundation
 import CoreBluetooth
 
@@ -29,8 +25,9 @@ class BTDevice: NSObject {
     
     private var servoChar: CBCharacteristic?
     
-    private var bmp390Char: CBCharacteristic?
+    private var bmp390_SPI_Char: CBCharacteristic?
     private var _bmp390data: Int = 0
+
     
     weak var delegate: BTDeviceDelegate?
     
@@ -41,6 +38,17 @@ class BTDevice: NSObject {
         set {
 
          }
+    }
+    
+    var bmp390_SPI_String: String{
+        get {
+            return self.servoString
+        }
+        set {
+            if let char = bmp390_SPI_Char {
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
+            }
+        }
     }
     
     var servoString: String {
@@ -92,8 +100,7 @@ class BTDevice: NSObject {
     }
     
     func intToChar(number: Int) -> [Character] {
-        var temp = String(number)
-        return Array(temp)
+        return Array(String(number))
     }
 }
 
@@ -122,7 +129,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390_SPI_UUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -143,6 +150,10 @@ extension BTDevice: CBPeripheralDelegate {
                 self.servoChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
+            } else if $0.uuid == BTUUIDs.bmp390_SPI_UUID {
+                self.bmp390_SPI_Char = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
             }
         }
         print()
@@ -154,7 +165,7 @@ extension BTDevice: CBPeripheralDelegate {
         print("Device: updated value for \(characteristic)")
         
         if characteristic.uuid == blinkChar?.uuid, let b = characteristic.value {
-            var temp = String(decoding: b, as: UTF8.self)
+            let temp = String(decoding: b, as: UTF8.self)
             if(temp == "On") {
                 _blink = true
             }
@@ -165,7 +176,10 @@ extension BTDevice: CBPeripheralDelegate {
             delegate?.deviceBlinkChanged(value: _blink)
         }
         if characteristic.uuid == servoChar?.uuid, let b = characteristic.value {
-            let value = String(decoding: b, as: UTF8.self)
+//            let value = String(decoding: b, as: UTF8.self)
+        }
+        if characteristic.uuid == bmp390_SPI_Char?.uuid, let b = characteristic.value {
+            
         }
     }
 }

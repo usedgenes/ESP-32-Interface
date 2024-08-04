@@ -10,10 +10,22 @@ struct BMP390_SPIView: View {
             }
             else {
                 List {
-                    ForEach(ESP_32.getBMP390_I2C().devices, id: \.self) { bmp390 in
-                        individualBMP390_I2CView(bmp390: bmp390)
+                    ForEach(ESP_32.getBMP390_SPI().devices, id: \.self) { bmp390 in
+                        individualBMP390_SPIView(bmp390: bmp390)
                     }
-                }
+                }.onAppear(perform: {
+                    bluetoothDevice.setBMP390SPI(input: "0" + String(ESP_32.getBMP390_SPI().devices.count))
+                    for bmp390SPI in ESP_32.getBMP390_SPI().devices {
+                        var bmp390PinString = "1"
+                        bmp390PinString += String(format: "%02d", ESP_32.getBMP390_SPI().getDeviceNumberInArray(inputDevice: bmp390SPI))
+                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"CS"))
+                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"SCK"))
+                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"MISO"))
+                        bmp390PinString += String(format: "%02d", bmp390SPI.getPinNumber(name:"MOSI"))
+                        bluetoothDevice.setBMP390SPI(input: bmp390PinString)
+                        print(bmp390PinString)
+                    }
+                })
             }
         }
     }

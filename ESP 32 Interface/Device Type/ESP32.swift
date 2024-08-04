@@ -57,6 +57,12 @@ class ESP32 : ObservableObject {
         ESP32Devices.append(motion)
         ESP32Devices.append(altimeters)
         ESP32Devices.append(imu)
+//        print("init")
+//        for deviceCategory in ESP32Devices {
+//            for deviceType in deviceCategory.deviceTypes {
+//                print(deviceType.type)
+//            }
+//        }
 
     }
     
