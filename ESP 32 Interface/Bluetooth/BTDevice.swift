@@ -25,7 +25,7 @@ class BTDevice: NSObject {
     
     private var servoChar: CBCharacteristic?
     
-    private var bmp390_SPI_Char: CBCharacteristic?
+    private var bmp390Char: CBCharacteristic?
     private var _bmp390data: Int = 0
 
     
@@ -40,12 +40,12 @@ class BTDevice: NSObject {
          }
     }
     
-    var bmp390_SPI_String: String{
+    var bmp390String: String{
         get {
-            return self.servoString
+            return self.bmp390String
         }
         set {
-            if let char = bmp390_SPI_Char {
+            if let char = bmp390Char {
                 peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
             }
         }
@@ -129,7 +129,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390_SPI_UUID], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -150,8 +150,8 @@ extension BTDevice: CBPeripheralDelegate {
                 self.servoChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
-            } else if $0.uuid == BTUUIDs.bmp390_SPI_UUID {
-                self.bmp390_SPI_Char = $0
+            } else if $0.uuid == BTUUIDs.bmp390UUID {
+                self.bmp390Char = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
             }
@@ -178,7 +178,7 @@ extension BTDevice: CBPeripheralDelegate {
         if characteristic.uuid == servoChar?.uuid, let b = characteristic.value {
 //            let value = String(decoding: b, as: UTF8.self)
         }
-        if characteristic.uuid == bmp390_SPI_Char?.uuid, let b = characteristic.value {
+        if characteristic.uuid == bmp390Char?.uuid, let b = characteristic.value {
             let value = String(decoding: b, as: UTF8.self)
             print(value)
         }

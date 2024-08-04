@@ -23,13 +23,13 @@ struct deviceView : View {
     }
 }
 
-struct DeviceTypeView : View {
-    @ObservedObject var deviceType : DeviceType
+struct DeviceArrayView : View {
+    @ObservedObject var deviceArray : DeviceArray
     var body: some View {
-        ForEach(deviceType.devices, id: \.self) { device in
+        ForEach(deviceArray.devices, id: \.self) { device in
             HStack {
                 deviceView(device: device)
-                Button(action: {deviceType.deleteDevice(device: device)}) {
+                Button(action: {deviceArray.deleteDevice(device: device)}) {
                     Text("Delete")
                 }.buttonStyle(BorderlessButtonStyle())
             }
@@ -46,28 +46,36 @@ struct DeviceView: View {
 
         List() {
             Section(header: Text("Motion")) {
-                
+                HStack{
+                    Text("Servos")
+                    Spacer()
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.servo_Type)
+                    }) {
+                        Text("Add")
+                    }.contentShape(Rectangle())
+                    DeviceArrayView(deviceArray : ESP_32.servos)
+                }
             }
             Section(header: Text("Altimeters")) {
-                
+                HStack{
+                    Text("BMP390")
+                    Spacer()
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.bmp390I2C_Type)
+                    }) {
+                        Text("Add I2C")
+                    }.contentShape(Rectangle())
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.bmp390SPI_Type)
+                    }) {
+                        Text("Add SPI")
+                    }.contentShape(Rectangle())
+                    DeviceArrayView(deviceArray : ESP_32.bmp390s)
+                }
             }
             Section(header: Text("Inertial Measurement Units")) {
                 
-            }
-            ForEach(ESP_32.ESP32Devices, id: \.self) { deviceCategory in
-                Section(header: Text("\(deviceCategory.category)")) {
-                    ForEach(deviceCategory.deviceTypes, id: \.id) { deviceType in
-                        HStack {
-                            Text("\(deviceType.type)")
-                            Spacer()
-                            Button(action: {self.addDeviceAlert(device: deviceType)}) {
-                                Text("Add")
-                            }
-                        }
-                        .contentShape(Rectangle())
-                        DeviceTypeView(deviceType : deviceType)
-                    }
-                }
             }
         }
         .onDisappear(perform: {
@@ -76,24 +84,25 @@ struct DeviceView: View {
         .navigationTitle("Device List")
     }
 
-    private func addDeviceAlert(device: DeviceType) {
-        var pinNumbers : [Int] = Array(repeating: -1, count: device.pinTypes.count)
+    private func addDeviceAlert(deviceType: DeviceType) {
+        var pinNumbers : [Int] = Array(repeating: -1, count: deviceType.pinTypes.count)
         let alert = UIAlertController(title: "Attach Pins", message: "Enter the pins this device is attached to on the ESP32", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in }))
         let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { _ in
             var attachedPins: [AttachedPin] = []
-            for number in 0..<device.pinTypes.count {
-                attachedPins.append(AttachedPin(pinName: device.pinTypes[number], pinNumber: pinNumbers[number]))
+            for number in 0..<deviceType.pinTypes.count {
+                attachedPins.append(AttachedPin(pinName: deviceType.pinTypes[number], pinNumber: pinNumbers[number]))
             }
-            let currentDevice = device.deviceType.init(name: device.type /* + " \(device.devices.count + 1)" */, attachedPins: attachedPins)
-            print(device.type)
-            print(device.deviceType)
-            device.devices.append(currentDevice)
+            let currentDevice = deviceType.deviceType.init(name: deviceType.type /* + " \(device.devices.count + 1)" */, attachedPins: attachedPins)
+            var tempDeviceArray = deviceType.devices.getDevices()
+
+            tempDeviceArray.append(currentDevice)
+            
             ESP_32.saveState()
         })
         alertDone.isEnabled = false
         alert.addAction(alertDone)
-        for pinType in device.pinTypes {
+        for pinType in deviceType.pinTypes {
             alert.addTextField() { textField in
                 textField.placeholder = pinType
                 textField.keyboardType = .numberPad
@@ -101,10 +110,10 @@ struct DeviceView: View {
                                                         {_ in
                     let text = textField.text ?? ""
                     if (text != "") {
-                        pinNumbers[device.pinTypes.firstIndex(of: pinType)!] = Int(text)!
+                        pinNumbers[deviceType.pinTypes.firstIndex(of: pinType)!] = Int(text)!
                     }
                     else {
-                        pinNumbers[device.pinTypes.firstIndex(of:pinType)!] = -1                    }
+                        pinNumbers[deviceType.pinTypes.firstIndex(of:pinType)!] = -1                    }
                     if(pinNumbers.allSatisfy({$0 >= 0})) {
                         alertDone.isEnabled = true
                     }
@@ -133,6 +142,7 @@ private func setNameAlert(device: Device) {
     }
     showAlert(alert: alert)
 }
+
 private func editAlert(device: Device) {
     let alert = UIAlertController(title: "Pin Number", message: "Edit the pins of this device", preferredStyle: .alert)
     let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in

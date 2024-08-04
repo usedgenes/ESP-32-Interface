@@ -8,20 +8,20 @@
 import Foundation
 
 class ESP32 : ObservableObject {
-    var servos : DeviceArray
+    var servos : DeviceArray = DeviceArray(name: "Servo")
     var servo_Type : DeviceType
     
-    var bmp390s : DeviceArray
+    var bmp390s : DeviceArray = DeviceArray(name: "BMP390")
     var bmp390I2C_Type : DeviceType
     var bmp390SPI_Type : DeviceType
     
-    var ESP32Devices : [DeviceArray]
+    var ESP32Devices : [DeviceArray] = []
     
-    func getServos() -> [Servo] {
+    func getServos() -> DeviceArray {
         return servos
     }
     
-    func getBMP390s() -> [BMP390] {
+    func getBMP390s() -> DeviceArray {
         return bmp390s
     }
     
@@ -31,7 +31,7 @@ class ESP32 : ObservableObject {
         bmp390I2C_Type = DeviceType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"], deviceType: BMP390.self, devices: bmp390s)
         bmp390SPI_Type = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390.self, devices: bmp390s)
         
-        ESP32Devices.append(DeviceArray)
+        ESP32Devices.append(servos)
         ESP32Devices.append(bmp390s)
     }
     
@@ -42,10 +42,9 @@ class ESP32 : ObservableObject {
     func saveState() {
         let encoder = JSONEncoder()
         for devices in self.ESP32Devices {
-                if let encoded = try? encoder.encode(devices) {
+            if let encoded = try? encoder.encode(devices.getDevices()) {
                     let defaults = UserDefaults.standard
-                    defaults.set(encoded, forKey: deviceType.type)
-                }
+                defaults.set(encoded, forKey: devices.name)
             }
         }
     }
@@ -53,16 +52,12 @@ class ESP32 : ObservableObject {
     func getState() {
         let defaults = UserDefaults.standard
         var i = 0
-        for deviceCategory in self.ESP32Devices {
-            var j = 0
-            for deviceType in deviceCategory.deviceTypes {
-                if let savedDevices = defaults.object(forKey: deviceType.type) as? Data {
+        for devices in self.ESP32Devices {
+            if let savedDevices = defaults.object(forKey: devices.name) as? Data {
                     let decoder = JSONDecoder()
                     if let loadedDevices = try? decoder.decode([Device].self, from: savedDevices) {
-                        self.ESP32Devices[i].deviceTypes[j].devices = loadedDevices
-                    }
+                        self.ESP32Devices[i].devices = loadedDevices
                 }
-                j += 1
             }
             i += 1
 
@@ -70,10 +65,8 @@ class ESP32 : ObservableObject {
     }
     
     func cleanState() {
-        for deviceCategory in ESP32Devices {
-            for deviceType in deviceCategory.deviceTypes {
-                deviceType.resetDevices()
-            }
+        for devices in self.ESP32Devices {
+            devices.resetDevices()
         }
     }
 }

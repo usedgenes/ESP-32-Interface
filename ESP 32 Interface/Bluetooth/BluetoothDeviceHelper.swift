@@ -57,8 +57,8 @@ class BluetoothDeviceHelper: ObservableObject {
         device!.servoString = input
     }
     
-    func setBMP390SPI(input: String) {
-        device!.bmp390_SPI_String = input
+    func setBMP390(input: String) {
+        device!.bmp390String = input
     }
 }
 

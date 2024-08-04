@@ -73,29 +73,18 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
 
 class DeviceArray: NSObject, Identifiable, ObservableObject {
     var name : String
-    var devices : [Device]
+    @Published var devices : [Device] = []
     
-    init(name: String, devices : [Device]) {
+    init(name: String) {
         self.name = name
-        self.devices = devices
     }
     
     func getDevices() -> [Device] {
         return devices
     }
-}
-
-class DeviceType: NSObject, Identifiable, ObservableObject {
-    var type: String
-    var deviceType : Device.Type
-    @Published var devices : DeviceArray
-    var pinTypes: [String] = []
-
-    init(type: String, pinTypes: [String], deviceType: Device.Type, devices : DeviceArray) {
-        self.type = type
-        self.pinTypes = pinTypes
-        self.deviceType = deviceType
-        self.devices = devices
+    
+    func addDevice(device: Device) {
+        devices.append(device)
     }
     
     func resetDevices() {
@@ -113,6 +102,30 @@ class DeviceType: NSObject, Identifiable, ObservableObject {
         }
     }
     
+    func getDeviceNumberInArray(inputDevice: Device) -> Int {
+            var counter = 0
+            for device in devices {
+                if(device === inputDevice) {
+                    return counter
+                }
+                counter += 1
+            }
+            return -1
+    }
+}
+
+class DeviceType: NSObject, Identifiable, ObservableObject {
+    var type: String
+    var deviceType : Device.Type
+    @Published var devices : DeviceArray
+    var pinTypes: [String] = []
+
+    init(type: String, pinTypes: [String], deviceType: Device.Type, devices : DeviceArray) {
+        self.type = type
+        self.pinTypes = pinTypes
+        self.deviceType = deviceType
+        self.devices = devices
+    }
 }
 
 

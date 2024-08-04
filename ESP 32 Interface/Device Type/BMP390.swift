@@ -12,11 +12,17 @@ class BMP390 : Device {
     var pressureData : [Int] = []
     var AltitudeData : [Int] = []
     
-    var I2C_or_SPI : SerialCommunicationProtocol {
+    var I2C_or_SPI : SerialCommunicationProtocol = .noInit
+    
+    enum SerialCommunicationProtocol {
+        case noInit
+        case I2C
+        case SPI
+    }
+    
+    func setSerialCommunicationProtocol(I2C_or_SPI : SerialCommunicationProtocol) {
+        self.I2C_or_SPI = I2C_or_SPI
     }
 }
 
-enum SerialCommunicationProtocol {
-    case I2C
-    case SPI
-}
+

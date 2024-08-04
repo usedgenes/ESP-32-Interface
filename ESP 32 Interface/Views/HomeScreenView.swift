@@ -36,9 +36,7 @@ struct HomeScreenView: View {
 //                        .disabled(!bluetoothDevice.isConnected)
                 }
                 Section(header: Text("Sensors")) {
-                    NavigationLink("BMP390 I2C", destination: BMP390_I2CView())
-//                        .disabled(!bluetoothDevice.isConnected)
-                    NavigationLink("BMP390 SPI", destination: BMP390View())
+                    NavigationLink("BMP390", destination: BMP390View())
 //                        .disabled(!bluetoothDevice.isConnected)
                 }
             }
