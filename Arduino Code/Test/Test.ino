@@ -12,8 +12,8 @@
 #define SERVICE_UUID "9a8ca9ef-e43f-4157-9fee-c37a3d7dc12d"
 #define BLINK_UUID "e94f85c8-7f57-4dbd-b8d3-2b56e107ed60"
 #define SERVO_UUID "f74fb3de-61d1-4f49-bd77-419b61d188da"
+#define BMP390SPI_UUID "94cbc7dc-ff62-4958-9665-0ed477877581"
 
-#define UUID_1 "94cbc7dc-ff62-4958-9665-0ed477877581"
 #define UUID_2 "c91b34b8-90f3-4fee-89f7-58c108ab198f"
 #define UUID_3 "21072f3b-b950-4b29-bf97-9a7be82d93e7"
 #define UUID_4 "78c611e3-0d36-491f-afe4-60ecc0c26a85"
@@ -47,6 +47,7 @@ int bmp390ArraySize;
 
 BLECharacteristic *pCharBlink;
 BLECharacteristic *pServo;
+BLECharacteristic *pBMP390SPI;
 
 void (*resetFunc)(void) = 0;  // create a standard reset function
 
@@ -135,7 +136,7 @@ class ServoCallbacks : public BLECharacteristicCallbacks {
   }
 };
 
-class BMP390Callbacks : public BLECharacteristicCallbacks {
+class BMP390_SPI_Callbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
     if (value.substring(0, 1) == "0") {
@@ -192,6 +193,9 @@ void setup() {
 
   pServo = pService->createCharacteristic(SERVO_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pServo->setCallbacks(new ServoCallbacks());
+
+  pBMP390SPI = pService->createCharacteristic(BMP390SPI_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
+  pBMP390SPI->setCallbacks(new BMP390_SPI_Callbacks());
 
   pService->start();
 
