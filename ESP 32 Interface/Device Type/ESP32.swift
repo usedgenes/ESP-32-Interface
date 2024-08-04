@@ -8,15 +8,15 @@
 import Foundation
 
 class ESP32 : ObservableObject {
-    var servos = DeviceType(type: "Servo", pinTypes: ["Digital"])
-    var motors = DeviceType(type: "Motor", pinTypes: ["Digital"])
+    var servos = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self)
+    var motors = DeviceType(type: "Motor", pinTypes: ["Digital"], deviceType: Motor.self)
     var motion = DeviceCategory(category: "Motion")
     
-    var bmp390I2C = DeviceType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"])
-    var bmp390SPI = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"])
+    var bmp390I2C = DeviceType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"], deviceType: BMP390_I2C.self)
+    var bmp390SPI = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390_SPI.self)
     var altimeters = DeviceCategory(category: "Altimeters")
     
-    var bno08xSPI = DeviceType(type: "BNO08X", pinTypes: [""])
+    var bno08xSPI = DeviceType(type: "BNO08X", pinTypes: [""], deviceType: BNO08X_SPI.self)
     var imu = DeviceCategory(category: "Inertial Measurement Units")
     
     @Published var ESP32Devices: [DeviceCategory] = [] {

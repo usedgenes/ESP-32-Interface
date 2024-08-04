@@ -76,7 +76,9 @@ struct DeviceView: View {
             for number in 0..<device.pinTypes.count {
                 attachedPins.append(AttachedPin(pinName: device.pinTypes[number], pinNumber: pinNumbers[number]))
             }
-            let currentDevice = Device(name: device.type /* + " \(device.devices.count + 1)" */, attachedPins: attachedPins)
+            let currentDevice = device.deviceType.init(name: device.type /* + " \(device.devices.count + 1)" */, attachedPins: attachedPins)
+            print(device.type)
+            print(device.deviceType)
             device.devices.append(currentDevice)
         })
         alertDone.isEnabled = false
@@ -108,7 +110,7 @@ struct DeviceView: View {
 }
 
 private func setNameAlert(device: Device) {
-    let alert = UIAlertController(title: "Pin Number", message: "Edit the pins of this device", preferredStyle: .alert)
+    let alert = UIAlertController(title: "Device Name", message: "Edit the name of this device", preferredStyle: .alert)
     let alertDone = UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
         let input = alert?.textFields![0].text
         if(input != "") {

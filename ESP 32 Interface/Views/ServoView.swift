@@ -19,7 +19,7 @@ struct ServoView: View {
             else {
                 List {
                     ForEach(ESP_32.getServos().devices, id: \.self) { servo in
-                        individualServoView(servo: servo)
+                        individualServoView(servo: servo as! Servo)
                     }
                 }.onAppear(perform: {
                     bluetoothDevice.setServos(input: "0" + String(ESP_32.getServos().devices.count))
@@ -36,7 +36,7 @@ struct ServoView: View {
 
 struct individualServoView : View {
     @EnvironmentObject var ESP_32 : ESP32
-    @ObservedObject var servo : Device
+    @ObservedObject var servo : Servo
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     @State var servoPosition = 0
     var body : some View {

@@ -179,7 +179,8 @@ extension BTDevice: CBPeripheralDelegate {
 //            let value = String(decoding: b, as: UTF8.self)
         }
         if characteristic.uuid == bmp390_SPI_Char?.uuid, let b = characteristic.value {
-            
+            let value = String(decoding: b, as: UTF8.self)
+            print(value)
         }
     }
 }

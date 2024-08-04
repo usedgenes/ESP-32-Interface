@@ -37,12 +37,8 @@ class AttachedPin : NSObject, Identifiable, ObservableObject, Codable {
 class Device: NSObject, Identifiable, ObservableObject, Codable {
     @Published var name: String
     var attachedPins : [AttachedPin]
-    var servoPosition = 0 {
-        didSet{
-        }
-    }
     
-    init(name: String, attachedPins : [AttachedPin]) {
+    required init(name: String, attachedPins : [AttachedPin]) {
         self.name = name
         self.attachedPins = attachedPins
     }
@@ -78,6 +74,7 @@ class Device: NSObject, Identifiable, ObservableObject, Codable {
 
 class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
     var type: String
+    var deviceType : Device.Type
     @Published var devices : [Device] = []
     var pinTypes: [String] = []
     
@@ -92,9 +89,11 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
         return -1
     }
 
-    init(type: String, pinTypes: [String]) {
+    init(type: String, pinTypes: [String], deviceType: Device.Type) {
         self.type = type
         self.pinTypes = pinTypes
+        self.deviceType = deviceType
+        print("init")
     }
     
     func resetDevices() {
@@ -116,6 +115,7 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
         case type
         case devices
         case pinTypes
+        case deviceType
     }
     
     required init(from decoder: Decoder) throws {
@@ -123,6 +123,8 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
         type = try container.decode(String.self, forKey: .type)
         devices = try container.decode([Device].self, forKey: .devices)
         pinTypes = try container.decode([String].self, forKey: .pinTypes)
+        self.deviceType = Device.self
+        print("required init")
     }
     
     func encode(to encoder: Encoder) throws {
@@ -130,11 +132,10 @@ class DeviceType: NSObject, Identifiable, ObservableObject, Codable {
         try container.encode(type, forKey: .type)
         try container.encode(devices, forKey: .devices)
         try container.encode(pinTypes, forKey: .pinTypes)
+        try container.encode(co, forKey: .pinTypes)
+
     }
     
-    func sendData(device : Device) {
-        
-    }
 }
 
 class DeviceCategory: NSObject, Identifiable, Codable {

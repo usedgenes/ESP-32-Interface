@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 
 struct BMP390_SPIView: View {
     @EnvironmentObject var ESP_32 : ESP32
@@ -46,7 +47,23 @@ struct individualBMP390_SPIView : View {
             }
             .contentShape(Rectangle())
             HStack {
+                Button(action: {
+                    bluetoothDevice.setBMP390SPI(input: "2" + String(format: "%02d", ESP_32.getBMP390_SPI().getDeviceNumberInArray(inputDevice: bmp390))
+                    )}) {
+                        Text("Get Data")
+                    }
             }
+//            Chart(data, id: \.type) { dataSeries in
+//                       ForEach(dataSeries.petData) { data in
+//                           LineMark(x: .value("Year", data.year),
+//                                    y: .value("Population", data.population))
+//                       }
+//                       .foregroundStyle(by: .value("Pet type", dataSeries.type))
+//                       .symbol(by: .value("Pet type", dataSeries.type))
+//                   }
+//                   .chartXScale(domain: 1998...2024)
+//                   .aspectRatio(1, contentMode: .fit)
+//                   .padding()
         }
     }
 }
