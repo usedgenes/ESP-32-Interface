@@ -47,7 +47,9 @@ int bmp390ArraySize;
 
 BLECharacteristic *pCharBlink;
 BLECharacteristic *pServo;
-BLECharacteristic *pBMP390SPI;
+BLECharacteristic *pBMP390;
+
+TwoWire I2C = TwoWire(0);
 
 void (*resetFunc)(void) = 0;  // create a standard reset function
 
@@ -136,7 +138,7 @@ class ServoCallbacks : public BLECharacteristicCallbacks {
   }
 };
 
-class BMP390_SPI_Callbacks : public BLECharacteristicCallbacks {
+class BMP390Callbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
     if (value.substring(0, 1) == "0") {
@@ -145,25 +147,42 @@ class BMP390_SPI_Callbacks : public BLECharacteristicCallbacks {
       Serial.println("Allocating bmp390s");
     }
     if (value.substring(0, 1) == "1") {
+      //beginI2C: int address, twowire *wire
+      if(value.length() == 7) {
+        int SDA = value.substring(3, 5).toInt();
+        int SCL = value.substring(5, 7).toInt();
+        I2C.begin(SDA, SCL, 100000);
+        bmp390Array[value.substring(1, 3).toInt()].begin_I2C(0x77, &I2C);
+        bmp390Array[value.substring(1, 3).toInt()].setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
+        bmp390Array[value.substring(1, 3).toInt()].setPressureOversampling(BMP3_OVERSAMPLING_4X);
+        bmp390Array[value.substring(1, 3).toInt()].setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
+        bmp390Array[value.substring(1, 3).toInt()].setOutputDataRate(BMP3_ODR_50_HZ);
+      }
       //beginSPI: CS, SCK, MISO, MOSI
-      bmp390Array[value.substring(1, 3).toInt()].begin_SPI(value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt(), value.substring(9, 11).toInt());
-      bmp390Array[value.substring(1, 3).toInt()].setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
-      bmp390Array[value.substring(1, 3).toInt()].setPressureOversampling(BMP3_OVERSAMPLING_4X);
-      bmp390Array[value.substring(1, 3).toInt()].setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
-      bmp390Array[value.substring(1, 3).toInt()].setOutputDataRate(BMP3_ODR_50_HZ);
+      else {
+        bmp390Array[value.substring(1, 3).toInt()].begin_SPI(value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt(), value.substring(9, 11).toInt());
+        bmp390Array[value.substring(1, 3).toInt()].setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
+        bmp390Array[value.substring(1, 3).toInt()].setPressureOversampling(BMP3_OVERSAMPLING_4X);
+        bmp390Array[value.substring(1, 3).toInt()].setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
+        bmp390Array[value.substring(1, 3).toInt()].setOutputDataRate(BMP3_ODR_50_HZ);
+      }
       Serial.println("Attaching bmp390s");
     }
     if (value.substring(0, 1) == "2") {
-      bmp390Array[value.substring(1,3).toInt()].performReading();
+      String bmp390Number = value.substring(1,3);
+      bmp390Array[bmp390Numbe.toInt()].performReading();
       Serial.println("Writing bmp390s");
-      pCharacteristic->setValue("3" + String(bmp390Array[value.substring(1,3).toInt()].temperature));
+      pCharacteristic->setValue("3" + bmp390Number + String(bmp390Array[value.substring(1,3).toInt()].temperature));
+      Serial.println(bmp390Array[value.substring(1,3).toInt()].temperature);
       pCharacteristic->notify();
       delay(5);
-      pCharacteristic->setValue("4" + String(bmp390Array[value.substring(1,3).toInt()].pressure));
+      pCharacteristic->setValue("4" + bmp390Number + String(bmp390Array[value.substring(1,3).toInt()].pressure));
       pCharacteristic->notify();
+      Serial.println(bmp390Array[value.substring(1,3).toInt()].pressure);
       delay(5);
-      pCharacteristic->setValue("5" + String(bmp390Array[value.substring(1,3).toInt()].readAltitude(SEALEVELPRESSURE_HPA)));
+      pCharacteristic->setValue("5" + bmp390Number + String(bmp390Array[value.substring(1,3).toInt()].readAltitude(SEALEVELPRESSURE_HPA)));
       pCharacteristic->notify();
+      Serial.println(bmp390Array[value.substring(1,3).toInt()].readAltitude(SEALEVELPRESSURE_HPA));
     }
 
     Serial.println(value);
@@ -194,8 +213,8 @@ void setup() {
   pServo = pService->createCharacteristic(SERVO_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pServo->setCallbacks(new ServoCallbacks());
 
-  pBMP390SPI = pService->createCharacteristic(BMP390SPI_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
-  pBMP390SPI->setCallbacks(new BMP390_SPI_Callbacks());
+  pBMP390 = pService->createCharacteristic(BMP390SPI_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
+  pBMP390->setCallbacks(new BMP390Callbacks());
 
   pService->start();
 
