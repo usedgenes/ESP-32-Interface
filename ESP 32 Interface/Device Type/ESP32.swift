@@ -9,13 +9,14 @@ import Foundation
 
 class ESP32 : ObservableObject {
     var servos = DeviceType(type: "Servo", pinTypes: ["Digital"])
-    var motors = MotorType(type: "Motor", pinTypes: ["Digital"])
+    var motors = DeviceType(type: "Motor", pinTypes: ["Digital"])
     var motion = DeviceCategory(category: "Motion")
     
-    var bmp390I2C = BMP390_I2CType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"])
+    var bmp390I2C = DeviceType(type: "BMP390 I2C", pinTypes: ["SCK", "SDA"])
+    var bmp390SPI = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"])
     var altimeters = DeviceCategory(category: "Altimeters")
     
-    var bno08xSPI = BNO08X_SPIType(type: "BNO08X", pinTypes: [""])
+    var bno08xSPI = DeviceType(type: "BNO08X", pinTypes: [""])
     var imu = DeviceCategory(category: "Inertial Measurement Units")
     
     @Published var ESP32Devices: [DeviceCategory] = [] {
@@ -36,6 +37,10 @@ class ESP32 : ObservableObject {
         return ESP32Devices[1].deviceTypes[0]
     }
     
+    func getBMP390_SPI() -> DeviceType {
+        return ESP32Devices[1].deviceTypes[1]
+    }
+    
     func getBNO08X_SPI() -> DeviceType {
         return ESP32Devices[2].deviceTypes[0]
     }
@@ -45,6 +50,7 @@ class ESP32 : ObservableObject {
         motion.addDevice(deviceType: motors)
         
         altimeters.addDevice(deviceType: bmp390I2C)
+        altimeters.addDevice(deviceType: bmp390SPI)
         
         imu.addDevice(deviceType: bno08xSPI)
         

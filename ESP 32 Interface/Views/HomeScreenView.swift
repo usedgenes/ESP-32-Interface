@@ -33,9 +33,11 @@ struct HomeScreenView: View {
                 
                 Section(header: Text("Motion")) {
                     NavigationLink("Servos", destination: ServoView())
+                        .disabled(!bluetoothDevice.isConnected)
                 }
                 Section(header: Text("Sensors")) {
                     NavigationLink("Altimeters", destination: BMP390_I2CView())
+                        .disabled(!bluetoothDevice.isConnected)
                 }
             }
             .navigationBarTitle("ESP32 Assistant")
