@@ -10,6 +10,7 @@ import CoreBluetooth
 
 
 struct BluetoothConnectView: View {
+    @EnvironmentObject var ESP_32 : ESP32
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     @State private var showBluetoothAlert: Bool = false
     @State var bluetoothManagerHelper = BluetoothManagerHelper()
@@ -76,9 +77,14 @@ struct BluetoothConnectView: View {
         List {
             ForEach(bluetoothManagerHelper.devices, id: \.self) { device in
                 HStack {
-                    Button(action: {bluetoothManagerHelper.connectDevice(BTDevice: device)
-                        bluetoothDevice.device = device
-                        bluetoothDevice.connect()}) {
+                    Button(action: {
+                        if(bluetoothDevice.isConnected == false) {
+                            bluetoothManagerHelper.connectDevice(BTDevice: device)
+                            bluetoothDevice.device = device
+                            bluetoothDevice.connect()
+                            bluetoothDevice.ESP_32 = ESP_32
+                        }
+                    }) {
                             Text("\(device.name)")
                         }
                     Spacer()

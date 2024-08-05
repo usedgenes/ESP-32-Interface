@@ -21,6 +21,12 @@ class BluetoothDeviceHelper: ObservableObject {
         }
     }
     
+    @Published var ESP_32: ESP32? {
+        didSet {
+            device?.ESP_32 = ESP_32
+        }
+    }
+    
     init() {
         device?.delegate = self
     }

@@ -8,10 +8,12 @@
 import Foundation
 
 class BMP390 : Device {
+    
     var temperatureData : [Int] = []
     var pressureData : [Int] = []
     var AltitudeData : [Int] = []
     
+
 }
 
 

@@ -25,6 +25,10 @@ class ESP32 : ObservableObject {
         return bmp390s
     }
     
+    func getBMP390(index: Int) -> BMP390 {
+        return bmp390s.getDevice(index: index) as! BMP390
+    }
+    
     init() {
         servo_Type = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self, devices: servos)
         

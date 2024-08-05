@@ -27,7 +27,8 @@ class BTDevice: NSObject {
     
     private var bmp390Char: CBCharacteristic?
     private var _bmp390data: Int = 0
-
+    
+    var ESP_32 : ESP32?
     
     weak var delegate: BTDeviceDelegate?
     
@@ -175,11 +176,34 @@ extension BTDevice: CBPeripheralDelegate {
             print(_blink)
             delegate?.deviceBlinkChanged(value: _blink)
         }
-        if characteristic.uuid == servoChar?.uuid, let b = characteristic.value {
-//            let value = String(decoding: b, as: UTF8.self)
-        }
+
         if characteristic.uuid == bmp390Char?.uuid, let b = characteristic.value {
-            let value = String(decoding: b, as: UTF8.self)
+            var value = String(decoding: b, as: UTF8.self)
+            let end =  String.Index(utf16Offset: 1, in: value)
+            //temperature
+            if(Int(value[...value.startIndex]) == 3) {
+                value.remove(at: value.startIndex)
+                var deviceNumber = Int(value[...value.startIndex])
+                value.remove(at: value.startIndex)
+                var bmp390Data = Float(value)
+                ESP_32.
+            }
+            //pressure
+            if(Int(value[...value.startIndex]) == 4) {
+                value.remove(at: value.startIndex)
+                var deviceNumber = Int(value[...value.startIndex])
+                value.remove(at: value.startIndex)
+                var bmp390Data = Float(value)
+                ESP_32.
+            }
+            //altitude
+            if(Int(value[...value.startIndex]) == 5) {
+                value.remove(at: value.startIndex)
+                var deviceNumber = Int(value[...value.startIndex])
+                value.remove(at: value.startIndex)
+                var bmp390Data = Float(value)
+                ESP_32.
+            }
             print(value)
         }
     }
