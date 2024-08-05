@@ -1,5 +1,5 @@
 import SwiftUI
-import LineChartView
+import SwiftUICharts
 
 struct BMP390View: View {
     
@@ -45,7 +45,6 @@ struct BMP390View: View {
 struct individualBMP390View : View {
     @EnvironmentObject var ESP_32 : ESP32
     @ObservedObject var bmp390 : BMP390
-    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     var body : some View {
         Section() {
             HStack {
@@ -57,25 +56,83 @@ struct individualBMP390View : View {
             }
             .contentShape(Rectangle())
             HStack {
-                Button(action: {
-                    bluetoothDevice.setBMP390(input: "2" + String(format: "%02d", ESP_32.getBMP390s().getDeviceNumberInArray(inputDevice: bmp390))
-                    )}) {
-                        Text("Get Data")
-                    }
+//                NavigationLink("View Data", destination: BMP390ChartView(bmp390: bmp390))
             }
-            Chart(0..<$bmp390.altitudeData.count, id: \.self) { altitude in
-                LineMark(x: .value("Time", altitude), y: .value("Altitude", altitude), series: .value("Company", "A"))
-                    .foregroundStyle(.blue)
-                   }
-//                   .chartXScale(domain: 1998...2024)
-                   .aspectRatio(1, contentMode: .fit)
-                   .padding()
+            
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
+}
+
+struct BMP390ChartView : View {
+//    @ObservedObject var bmp390 : BMP390
+    let data : LineChartData = weekOfData()
+    var body : some View {
+        VStack {
+                    LineChart(chartData: data)
+                        .pointMarkers(chartData: data)
+                        .touchOverlay(chartData: data, specifier: "%.0f")
+                        .xAxisGrid(chartData: data)
+                        .yAxisGrid(chartData: data)
+                        .xAxisLabels(chartData: data)
+                        .yAxisLabels(chartData: data)
+                        .infoBox(chartData: data)
+                        .headerBox(chartData: data)
+                        .id(data.id)
+                        .frame(minWidth: 150, maxWidth: 390, minHeight: 150, idealHeight: 150, maxHeight: 400, alignment: .center)
+                        .padding()
+                }
+                .navigationTitle("Week of Data")
+    }
+    
+    static func weekOfData() -> LineChartData {
+           let data = LineDataSet(dataPoints: [
+               LineChartDataPoint(value: 12000, xAxisLabel: "M", description: "Monday"),
+               LineChartDataPoint(value: 10000, xAxisLabel: "T", description: "Tuesday"),
+               LineChartDataPoint(value: 8000,  xAxisLabel: "W", description: "Wednesday"),
+               LineChartDataPoint(value: 17500, xAxisLabel: "T", description: "Thursday"),
+               LineChartDataPoint(value: 16000, xAxisLabel: "F", description: "Friday"),
+               LineChartDataPoint(value: 11000, xAxisLabel: "S", description: "Saturday"),
+               LineChartDataPoint(value: 9000,  xAxisLabel: "S", description: "Sunday")
+           ],
+           pointStyle: LineStyle(),
+           style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .curvedLine))
+           
+           let metadata = ChartMetadata(title: "Step Count", subtitle: "Over a Week")
+           
+           let gridStyle = GridStyle(numberOfLines: 7, lineColour: Color(.lightGray).opacity(0.5),
+                                      lineWidth    : 1,
+                                      dash         : [8],
+                                      dashPhase    : 0)
+           
+           let chartStyle = LineChartStyle(infoBoxPlacement    : .infoBox(isStatic: false),
+                                           infoBoxBorderColour : Color.primary,
+                                           infoBoxBorderStyle  : StrokeStyle(lineWidth: 1),
+                                           
+                                           markerType          : .vertical(attachment: .line(dot: .style(DotStyle()))),
+                                           
+                                           xAxisGridStyle      : gridStyle,
+                                           xAxisLabelPosition  : .bottom,
+                                           xAxisLabelColour    : Color.primary,
+                                           xAxisLabelsFrom     : .dataPoint(rotation: .degrees(0)),
+                                           
+                                           yAxisGridStyle      : gridStyle,
+                                           yAxisLabelPosition  : .leading,
+                                           yAxisLabelColour    : Color.primary,
+                                           yAxisNumberOfLabels : 7,
+                                           
+                                           baseline            : .minimumWithMaximum(of: 5000),
+                                           topLine             : .maximum(of: 20000))
+           
+           return LineChartData(dataSets       : data,
+                                metadata       : metadata,
+                                chartStyle     : chartStyle)
+           
+       }
 }
 
 struct BMP390View_Previews: PreviewProvider {
     static var previews: some View {
-        BMP390View()
+        BMP390ChartView()
     }
 }

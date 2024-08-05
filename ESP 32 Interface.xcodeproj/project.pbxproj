@@ -18,6 +18,10 @@
 		443A4D7B2C549284004E1D26 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7A2C549284004E1D26 /* Device.swift */; };
 		443A4D802C549B90004E1D26 /* ESP32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7F2C549B90004E1D26 /* ESP32.swift */; };
 		4474225A2C599917004D217F /* BNO08XView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447422592C599917004D217F /* BNO08XView.swift */; };
+		448DA9BE2C61710C0088F60E /* ChartSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9BB2C61710C0088F60E /* ChartSeries.swift */; };
+		448DA9BF2C61710C0088F60E /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9BC2C61710C0088F60E /* Chart.swift */; };
+		448DA9C02C61710C0088F60E /* ChartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9BD2C61710C0088F60E /* ChartColors.swift */; };
+		448DA9C32C6173CA0088F60E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 448DA9C22C6173CA0088F60E /* SwiftUICharts */; };
 		449096422C520ECD00EF97A3 /* BTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963E2C520ECD00EF97A3 /* BTManager.swift */; };
 		449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963F2C520ECD00EF97A3 /* BTDevice.swift */; };
 		449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096402C520ECD00EF97A3 /* BTUUIDs.swift */; };
@@ -63,6 +67,9 @@
 		443A4D7A2C549284004E1D26 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		443A4D7F2C549B90004E1D26 /* ESP32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP32.swift; sourceTree = "<group>"; };
 		447422592C599917004D217F /* BNO08XView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08XView.swift; sourceTree = "<group>"; };
+		448DA9BB2C61710C0088F60E /* ChartSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartSeries.swift; sourceTree = "<group>"; };
+		448DA9BC2C61710C0088F60E /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
+		448DA9BD2C61710C0088F60E /* ChartColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartColors.swift; sourceTree = "<group>"; };
 		4490963E2C520ECD00EF97A3 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
 		4490963F2C520ECD00EF97A3 /* BTDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
 		449096402C520ECD00EF97A3 /* BTUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUUIDs.swift; sourceTree = "<group>"; };
@@ -90,6 +97,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4426E2B62C6167EB00B863F8 /* LineChartView in Frameworks */,
+				448DA9C32C6173CA0088F60E /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +145,16 @@
 			path = "Device Type";
 			sourceTree = "<group>";
 		};
+		448DA9B92C6170F80088F60E /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				448DA9BB2C61710C0088F60E /* ChartSeries.swift */,
+				448DA9BC2C61710C0088F60E /* Chart.swift */,
+				448DA9BD2C61710C0088F60E /* ChartColors.swift */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
 		449096462C520ED100EF97A3 /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +191,7 @@
 		44B3C00A2C50BE6800CAADBC /* ESP 32 Interface */ = {
 			isa = PBXGroup;
 			children = (
+				448DA9B92C6170F80088F60E /* Charts */,
 				443A4D7C2C549293004E1D26 /* Device Type */,
 				443A4D792C548F70004E1D26 /* Views */,
 				449096462C520ED100EF97A3 /* Bluetooth */,
@@ -227,6 +246,7 @@
 			name = "ESP 32 Interface";
 			packageProductDependencies = (
 				4426E2B52C6167EB00B863F8 /* LineChartView */,
+				448DA9C22C6173CA0088F60E /* SwiftUICharts */,
 			);
 			productName = "ESP 32 Interface";
 			productReference = 44B3C0082C50BE6800CAADBC /* ESP 32 Interface.app */;
@@ -302,6 +322,7 @@
 			mainGroup = 44B3BFFF2C50BE6800CAADBC;
 			packageReferences = (
 				4426E2B42C6167EB00B863F8 /* XCRemoteSwiftPackageReference "LineChartView" */,
+				448DA9C12C6173CA0088F60E /* XCRemoteSwiftPackageReference "SwiftUICharts" */,
 			);
 			productRefGroup = 44B3C0092C50BE6800CAADBC /* Products */;
 			projectDirPath = "";
@@ -345,6 +366,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448DA9BE2C61710C0088F60E /* ChartSeries.swift in Sources */,
+				448DA9C02C61710C0088F60E /* ChartColors.swift in Sources */,
 				449096482C52210F00EF97A3 /* BluetoothConnectView.swift in Sources */,
 				449096422C520ECD00EF97A3 /* BTManager.swift in Sources */,
 				443A4D7B2C549284004E1D26 /* Device.swift in Sources */,
@@ -358,6 +381,7 @@
 				44B3C00E2C50BE6800CAADBC /* HomeScreenView.swift in Sources */,
 				443A04F12C5F46B4008F4F21 /* Servo.swift in Sources */,
 				44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */,
+				448DA9BF2C61710C0088F60E /* Chart.swift in Sources */,
 				443A04EF2C5F45B5008F4F21 /* BMP390.swift in Sources */,
 				443A04ED2C5EE749008F4F21 /* BMP390View.swift in Sources */,
 				44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */,
@@ -724,6 +748,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		448DA9C12C6173CA0088F60E /* XCRemoteSwiftPackageReference "SwiftUICharts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/willdale/SwiftUICharts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -731,6 +763,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4426E2B42C6167EB00B863F8 /* XCRemoteSwiftPackageReference "LineChartView" */;
 			productName = LineChartView;
+		};
+		448DA9C22C6173CA0088F60E /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 448DA9C12C6173CA0088F60E /* XCRemoteSwiftPackageReference "SwiftUICharts" */;
+			productName = SwiftUICharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

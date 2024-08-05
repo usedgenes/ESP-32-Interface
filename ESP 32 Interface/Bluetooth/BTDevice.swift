@@ -5,7 +5,6 @@
 import Foundation
 import CoreBluetooth
 
-
 protocol BTDeviceDelegate: class {
     func deviceConnected()
     func deviceReady()
