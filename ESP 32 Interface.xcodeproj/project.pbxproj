@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4426E2B62C6167EB00B863F8 /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = 4426E2B52C6167EB00B863F8 /* LineChartView */; };
 		443A04EB2C5ECE94008F4F21 /* AppHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04EA2C5ECE94008F4F21 /* AppHelpView.swift */; };
 		443A04ED2C5EE749008F4F21 /* BMP390View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04EC2C5EE749008F4F21 /* BMP390View.swift */; };
 		443A04EF2C5F45B5008F4F21 /* BMP390.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04EE2C5F45B5008F4F21 /* BMP390.swift */; };
@@ -88,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4426E2B62C6167EB00B863F8 /* LineChartView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +225,9 @@
 			dependencies = (
 			);
 			name = "ESP 32 Interface";
+			packageProductDependencies = (
+				4426E2B52C6167EB00B863F8 /* LineChartView */,
+			);
 			productName = "ESP 32 Interface";
 			productReference = 44B3C0082C50BE6800CAADBC /* ESP 32 Interface.app */;
 			productType = "com.apple.product-type.application";
@@ -295,6 +300,9 @@
 				Base,
 			);
 			mainGroup = 44B3BFFF2C50BE6800CAADBC;
+			packageReferences = (
+				4426E2B42C6167EB00B863F8 /* XCRemoteSwiftPackageReference "LineChartView" */,
+			);
 			productRefGroup = 44B3C0092C50BE6800CAADBC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -706,6 +714,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4426E2B42C6167EB00B863F8 /* XCRemoteSwiftPackageReference "LineChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Jonathan-Gander/LineChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4426E2B52C6167EB00B863F8 /* LineChartView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4426E2B42C6167EB00B863F8 /* XCRemoteSwiftPackageReference "LineChartView" */;
+			productName = LineChartView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 44B3C0002C50BE6800CAADBC /* Project object */;
 }

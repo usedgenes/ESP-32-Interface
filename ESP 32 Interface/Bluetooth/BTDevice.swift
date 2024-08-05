@@ -179,27 +179,29 @@ extension BTDevice: CBPeripheralDelegate {
         if characteristic.uuid == bmp390Char?.uuid, let b = characteristic.value {
             var value = String(decoding: b, as: UTF8.self)
             if(value != "") {
-                var deviceNumber = Int(value[...value.startIndex])!
-                print("number")
-                print(deviceNumber)
-                value.remove(at: value.startIndex)
+                let deviceNumber = Int(value[...value.index(value.startIndex, offsetBy: 1)])!
+                value.removeSubrange(...value.index(value.startIndex, offsetBy: 1))
+
                 //temperature
                 if(Int(value[...value.startIndex]) == 3) {
                     value.remove(at: value.startIndex)
-                    var bmp390Data = Float(value)!
+                    let bmp390Data = Float(value)!
                     ESP_32!.getBMP390(index: deviceNumber).addTemperature(temperature: bmp390Data)
+                    print(bmp390Data)
                 }
                 //pressure
                 if(Int(value[...value.startIndex]) == 4) {
                     value.remove(at: value.startIndex)
-                    var bmp390Data = Float(value)!
+                    let bmp390Data = Float(value)!
                     ESP_32!.getBMP390(index: deviceNumber).addPressure(pressure: bmp390Data)
+                    print(bmp390Data)
                 }
                 //altitude
                 if(Int(value[...value.startIndex]) == 5) {
                     value.remove(at: value.startIndex)
-                    var bmp390Data = Float(value)!
+                    let bmp390Data = Float(value)!
                     ESP_32!.getBMP390(index: deviceNumber).addAltitude(altitude: bmp390Data)
+                    print(bmp390Data)
                 }
                 print(value)
             }

@@ -14,9 +14,7 @@ class ESP32 : ObservableObject {
     var bmp390s : DeviceArray = DeviceArray(name: "BMP390")
     var bmp390I2C_Type : DeviceType
     var bmp390SPI_Type : DeviceType
-    
-    var ESP32Devices : [DeviceArray] = []
-    
+        
     func getServos() -> DeviceArray {
         return servos
     }
@@ -35,8 +33,6 @@ class ESP32 : ObservableObject {
         bmp390I2C_Type = DeviceType(type: "BMP390 I2C", pinTypes: ["SDA", "SCL"], deviceType: BMP390.self, devices: bmp390s)
         bmp390SPI_Type = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390.self, devices: bmp390s)
         
-        ESP32Devices.append(servos)
-        ESP32Devices.append(bmp390s)
     }
     
     enum CodingKeys: CodingKey {
@@ -45,43 +41,38 @@ class ESP32 : ObservableObject {
     
     func saveState() {
         let encoder = JSONEncoder()
-//        for devices in self.ESP32Devices {
-//            if let encoded = try? encoder.encode(devices.getDevices()) {
-//                    let defaults = UserDefaults.standard
-//                defaults.set(encoded, forKey: devices.name)
-//            }
-//        }
+        //servos
         if let encoded = try? encoder.encode(self.getServos().getDevices()) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: self.getServos().name)
+        }
+        //bmp390s
+        if let encoded = try? encoder.encode(self.getBMP390s().getDevices()) {
+            let defaults = UserDefaults.standard
+            defaults.set(encoded, forKey: self.getBMP390s().name)
         }
     }
     
     func getState() {
         let defaults = UserDefaults.standard
+        //servos
         if let savedDevices = defaults.object(forKey: self.getServos().name) as? Data {
                 let decoder = JSONDecoder()
                 if let loadedDevices = try? decoder.decode([Servo].self, from: savedDevices) {
-                    if let <#identifier#> = loadedDevices {
-                        self.servos.setDevices(device: identifier)
-                    }
+                    self.servos.setDevices(devices: loadedDevices)
             }
         }
-//        for devices in self.ESP32Devices {
-//            if let savedDevices = defaults.object(forKey: devices.name) as? Data {
-//                    let decoder = JSONDecoder()
-//                    if let loadedDevices = try? decoder.decode([Device].self, from: savedDevices) {
-//                        if let <#identifier#> = loadedDevices as [Servo] {
-//                            self.ESP32Devices[i].devices = loadedDevices
-//                        }
-//                }
-//            }
-//        }
+        //bmp390s
+        if let savedDevices = defaults.object(forKey: self.getBMP390s().name) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDevices = try? decoder.decode([BMP390].self, from: savedDevices) {
+                    self.bmp390s.setDevices(devices: loadedDevices)
+            }
+        }
     }
     
     func cleanState() {
-        for devices in self.ESP32Devices {
-            devices.resetDevices()
-        }
+        servos.resetDevices()
+        bmp390s.resetDevices()
     }
 }
