@@ -39,11 +39,10 @@ struct HomeScreenView: View {
                     NavigationLink("BMP390", destination: BMP390View())
                         .disabled(!bluetoothDevice.isConnected)
                 }
-                
-                NavigationLink("BMP390 Charts", destination: BMP390ChartView())
+                NavigationLink("Test", destination: LineChartDemoView())
+                LineChartDemoView()
             }
             .navigationBarTitle("ESP32 Assistant")
-            
         }.onAppear(perform: {
             ESP_32.getState()
         })

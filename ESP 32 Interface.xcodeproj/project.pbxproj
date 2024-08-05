@@ -18,10 +18,9 @@
 		443A4D7B2C549284004E1D26 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7A2C549284004E1D26 /* Device.swift */; };
 		443A4D802C549B90004E1D26 /* ESP32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7F2C549B90004E1D26 /* ESP32.swift */; };
 		4474225A2C599917004D217F /* BNO08XView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447422592C599917004D217F /* BNO08XView.swift */; };
-		448DA9BE2C61710C0088F60E /* ChartSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9BB2C61710C0088F60E /* ChartSeries.swift */; };
-		448DA9BF2C61710C0088F60E /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9BC2C61710C0088F60E /* Chart.swift */; };
-		448DA9C02C61710C0088F60E /* ChartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9BD2C61710C0088F60E /* ChartColors.swift */; };
 		448DA9C32C6173CA0088F60E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 448DA9C22C6173CA0088F60E /* SwiftUICharts */; };
+		448DA9C52C617E330088F60E /* ChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9C42C617E330088F60E /* ChartStyle.swift */; };
+		448DA9C72C6184290088F60E /* LineChartDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9C62C6184290088F60E /* LineChartDemoView.swift */; };
 		449096422C520ECD00EF97A3 /* BTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963E2C520ECD00EF97A3 /* BTManager.swift */; };
 		449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4490963F2C520ECD00EF97A3 /* BTDevice.swift */; };
 		449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096402C520ECD00EF97A3 /* BTUUIDs.swift */; };
@@ -67,9 +66,8 @@
 		443A4D7A2C549284004E1D26 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		443A4D7F2C549B90004E1D26 /* ESP32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP32.swift; sourceTree = "<group>"; };
 		447422592C599917004D217F /* BNO08XView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08XView.swift; sourceTree = "<group>"; };
-		448DA9BB2C61710C0088F60E /* ChartSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartSeries.swift; sourceTree = "<group>"; };
-		448DA9BC2C61710C0088F60E /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
-		448DA9BD2C61710C0088F60E /* ChartColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartColors.swift; sourceTree = "<group>"; };
+		448DA9C42C617E330088F60E /* ChartStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyle.swift; sourceTree = "<group>"; };
+		448DA9C62C6184290088F60E /* LineChartDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartDemoView.swift; sourceTree = "<group>"; };
 		4490963E2C520ECD00EF97A3 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
 		4490963F2C520ECD00EF97A3 /* BTDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
 		449096402C520ECD00EF97A3 /* BTUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUUIDs.swift; sourceTree = "<group>"; };
@@ -122,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				44B3C00D2C50BE6800CAADBC /* HomeScreenView.swift */,
+				448DA9C62C6184290088F60E /* LineChartDemoView.swift */,
 				443A04EA2C5ECE94008F4F21 /* AppHelpView.swift */,
 				44B3C0382C50C97200CAADBC /* ServoView.swift */,
 				449096472C52210F00EF97A3 /* BluetoothConnectView.swift */,
@@ -143,16 +142,6 @@
 				443A04F62C5F48E3008F4F21 /* BNO08X_SPI.swift */,
 			);
 			path = "Device Type";
-			sourceTree = "<group>";
-		};
-		448DA9B92C6170F80088F60E /* Charts */ = {
-			isa = PBXGroup;
-			children = (
-				448DA9BB2C61710C0088F60E /* ChartSeries.swift */,
-				448DA9BC2C61710C0088F60E /* Chart.swift */,
-				448DA9BD2C61710C0088F60E /* ChartColors.swift */,
-			);
-			path = Charts;
 			sourceTree = "<group>";
 		};
 		449096462C520ED100EF97A3 /* Bluetooth */ = {
@@ -191,11 +180,11 @@
 		44B3C00A2C50BE6800CAADBC /* ESP 32 Interface */ = {
 			isa = PBXGroup;
 			children = (
-				448DA9B92C6170F80088F60E /* Charts */,
 				443A4D7C2C549293004E1D26 /* Device Type */,
 				443A4D792C548F70004E1D26 /* Views */,
 				449096462C520ED100EF97A3 /* Bluetooth */,
 				44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */,
+				448DA9C42C617E330088F60E /* ChartStyle.swift */,
 				44B3C00F2C50BE6A00CAADBC /* Assets.xcassets */,
 				44B3C0112C50BE6A00CAADBC /* ESP_32_Interface.entitlements */,
 				44B3C0122C50BE6A00CAADBC /* Preview Content */,
@@ -366,14 +355,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				448DA9BE2C61710C0088F60E /* ChartSeries.swift in Sources */,
-				448DA9C02C61710C0088F60E /* ChartColors.swift in Sources */,
 				449096482C52210F00EF97A3 /* BluetoothConnectView.swift in Sources */,
 				449096422C520ECD00EF97A3 /* BTManager.swift in Sources */,
 				443A4D7B2C549284004E1D26 /* Device.swift in Sources */,
 				4474225A2C599917004D217F /* BNO08XView.swift in Sources */,
 				449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */,
 				449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */,
+				448DA9C72C6184290088F60E /* LineChartDemoView.swift in Sources */,
 				443A04F32C5F48AE008F4F21 /* Motor.swift in Sources */,
 				443A04F72C5F48E3008F4F21 /* BNO08X_SPI.swift in Sources */,
 				443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */,
@@ -381,7 +369,6 @@
 				44B3C00E2C50BE6800CAADBC /* HomeScreenView.swift in Sources */,
 				443A04F12C5F46B4008F4F21 /* Servo.swift in Sources */,
 				44B3C0392C50C97200CAADBC /* ServoView.swift in Sources */,
-				448DA9BF2C61710C0088F60E /* Chart.swift in Sources */,
 				443A04EF2C5F45B5008F4F21 /* BMP390.swift in Sources */,
 				443A04ED2C5EE749008F4F21 /* BMP390View.swift in Sources */,
 				44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */,
@@ -389,6 +376,7 @@
 				449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */,
 				443A4D802C549B90004E1D26 /* ESP32.swift in Sources */,
 				443A04EB2C5ECE94008F4F21 /* AppHelpView.swift in Sources */,
+				448DA9C52C617E330088F60E /* ChartStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

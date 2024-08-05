@@ -1,28 +1,26 @@
 import Foundation
-import LineChartView
+import SwiftUICharts
 
 class BMP390 : Device {
     
-    @Published var temperatureData : [Float] = []
-    @Published var pressureData : [Float] = []
-    @Published var altitudeData : [Float] = []
-    
-    @Published var temperatureChart : [LineChartData] = []
-    @Published var pressureChart : [LineChartData] = []
-    @Published var altitudeChart : [LineChartData] = []
-    
+    @Published var temperatureData : [LineChartDataPoint] = []
+
     func addTemperature(temperature: Float) {
-        temperatureChart.append(LineChartData(Double(temperature)))
+        temperatureData.append(LineChartDataPoint(value: Double(temperature), description: "Temperature"))
     }
     
     func addPressure(pressure: Float) {
-        altitudeChart.append(LineChartData(Double(pressure)))
     }
     
     func addAltitude(altitude: Float) {
-        altitudeChart.append(LineChartData(Double(altitude)))
     }
     
+    func getTemperatureDataSet() -> LineDataSet {
+        return LineDataSet(dataPoints: temperatureData,
+                           legendTitle: "Temperature",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
+    }
 }
 
 
