@@ -19,6 +19,8 @@ struct ServoView: View {
             else {
                 List {
                     ForEach(ESP_32.getServos().devices, id: \.self) { servo in
+                        let _ = print("hi")
+                        let _ = print(ESP_32.getServos().getDevice(index: 0))
                         individualServoView(servo: servo as! Servo)
                     }
                 }.onAppear(perform: {

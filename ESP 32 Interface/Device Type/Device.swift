@@ -79,6 +79,10 @@ class DeviceArray: NSObject, Identifiable, ObservableObject {
         self.name = name
     }
     
+    func setDevices(devices: [Device]) {
+        self.devices = devices
+    }
+    
     func getDevice(index: Int) -> Device {
         return devices[index]
     }

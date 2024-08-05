@@ -173,38 +173,36 @@ extension BTDevice: CBPeripheralDelegate {
             else {
                 _blink = false
             }
-            print(_blink)
             delegate?.deviceBlinkChanged(value: _blink)
         }
 
         if characteristic.uuid == bmp390Char?.uuid, let b = characteristic.value {
             var value = String(decoding: b, as: UTF8.self)
-            let end =  String.Index(utf16Offset: 1, in: value)
-            //temperature
-            if(Int(value[...value.startIndex]) == 3) {
+            if(value != "") {
+                var deviceNumber = Int(value[...value.startIndex])!
+                print("number")
+                print(deviceNumber)
                 value.remove(at: value.startIndex)
-                var deviceNumber = Int(value[...value.startIndex])
-                value.remove(at: value.startIndex)
-                var bmp390Data = Float(value)
-                ESP_32.
+                //temperature
+                if(Int(value[...value.startIndex]) == 3) {
+                    value.remove(at: value.startIndex)
+                    var bmp390Data = Float(value)!
+                    ESP_32!.getBMP390(index: deviceNumber).addTemperature(temperature: bmp390Data)
+                }
+                //pressure
+                if(Int(value[...value.startIndex]) == 4) {
+                    value.remove(at: value.startIndex)
+                    var bmp390Data = Float(value)!
+                    ESP_32!.getBMP390(index: deviceNumber).addPressure(pressure: bmp390Data)
+                }
+                //altitude
+                if(Int(value[...value.startIndex]) == 5) {
+                    value.remove(at: value.startIndex)
+                    var bmp390Data = Float(value)!
+                    ESP_32!.getBMP390(index: deviceNumber).addAltitude(altitude: bmp390Data)
+                }
+                print(value)
             }
-            //pressure
-            if(Int(value[...value.startIndex]) == 4) {
-                value.remove(at: value.startIndex)
-                var deviceNumber = Int(value[...value.startIndex])
-                value.remove(at: value.startIndex)
-                var bmp390Data = Float(value)
-                ESP_32.
-            }
-            //altitude
-            if(Int(value[...value.startIndex]) == 5) {
-                value.remove(at: value.startIndex)
-                var deviceNumber = Int(value[...value.startIndex])
-                value.remove(at: value.startIndex)
-                var bmp390Data = Float(value)
-                ESP_32.
-            }
-            print(value)
         }
     }
 }

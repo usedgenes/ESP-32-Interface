@@ -9,11 +9,21 @@ import Foundation
 
 class BMP390 : Device {
     
-    var temperatureData : [Int] = []
-    var pressureData : [Int] = []
-    var AltitudeData : [Int] = []
+    var temperatureData : [Float] = []
+    var pressureData : [Float] = []
+    var altitudeData : [Float] = []
     
-
+    func addTemperature(temperature: Float) {
+        temperatureData.append(temperature)
+    }
+    
+    func addPressure(pressure: Float) {
+        pressureData.append(pressure)
+    }
+    
+    func addAltitude(altitude: Float) {
+        altitudeData.append(altitude)
+    }
 }
 
 

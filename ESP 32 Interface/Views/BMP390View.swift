@@ -12,6 +12,7 @@ struct BMP390View: View {
             else {
                 List {
                     ForEach(ESP_32.getBMP390s().devices, id: \.self) { bmp390 in
+                        let _ = print(bmp390)
                         individualBMP390View(bmp390: bmp390 as! BMP390)
                     }
                 }

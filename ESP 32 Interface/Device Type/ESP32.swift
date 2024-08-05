@@ -45,27 +45,38 @@ class ESP32 : ObservableObject {
     
     func saveState() {
         let encoder = JSONEncoder()
-        for devices in self.ESP32Devices {
-            if let encoded = try? encoder.encode(devices.getDevices()) {
-                    let defaults = UserDefaults.standard
-                defaults.set(encoded, forKey: devices.name)
-            }
+//        for devices in self.ESP32Devices {
+//            if let encoded = try? encoder.encode(devices.getDevices()) {
+//                    let defaults = UserDefaults.standard
+//                defaults.set(encoded, forKey: devices.name)
+//            }
+//        }
+        if let encoded = try? encoder.encode(self.getServos().getDevices()) {
+            let defaults = UserDefaults.standard
+            defaults.set(encoded, forKey: self.getServos().name)
         }
     }
     
     func getState() {
         let defaults = UserDefaults.standard
-        var i = 0
-        for devices in self.ESP32Devices {
-            if let savedDevices = defaults.object(forKey: devices.name) as? Data {
-                    let decoder = JSONDecoder()
-                    if let loadedDevices = try? decoder.decode([Device].self, from: savedDevices) {
-                        self.ESP32Devices[i].devices = loadedDevices
-                }
+        if let savedDevices = defaults.object(forKey: self.getServos().name) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDevices = try? decoder.decode([Servo].self, from: savedDevices) {
+                    if let <#identifier#> = loadedDevices {
+                        self.servos.setDevices(device: identifier)
+                    }
             }
-            i += 1
-
         }
+//        for devices in self.ESP32Devices {
+//            if let savedDevices = defaults.object(forKey: devices.name) as? Data {
+//                    let decoder = JSONDecoder()
+//                    if let loadedDevices = try? decoder.decode([Device].self, from: savedDevices) {
+//                        if let <#identifier#> = loadedDevices as [Servo] {
+//                            self.ESP32Devices[i].devices = loadedDevices
+//                        }
+//                }
+//            }
+//        }
     }
     
     func cleanState() {
