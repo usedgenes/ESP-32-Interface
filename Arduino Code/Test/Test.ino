@@ -180,12 +180,13 @@ class BMP390Callbacks : public BLECharacteristicCallbacks {
       Serial.println("Writing bmp390s");
       pCharacteristic->setValue(bmp390Number + "3" + String(bmp390Array[value.substring(1,3).toInt()].temperature));
       pCharacteristic->notify();
-      delay(5);
+      delay(15);
       pCharacteristic->setValue(bmp390Number + "4" + String(bmp390Array[value.substring(1,3).toInt()].pressure));
       pCharacteristic->notify();
-      delay(5);
+      delay(15);
       pCharacteristic->setValue(bmp390Number + "5" + String(bmp390Array[value.substring(1,3).toInt()].readAltitude(SEALEVELPRESSURE_HPA)));
       pCharacteristic->notify();
+      delay(15);
     }
     // Serial.println(value);
   }
@@ -215,7 +216,7 @@ class BNO08XCallbacks : public BLECharacteristicCallbacks {
       //spi.begin: SCK, MISO, MOSI, CS
       else {
         vspi.begin(value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt(), value.substring(9, 11).toInt());
-        bno08xArray[value.substring(1, 3).toInt()].beginSPI(value.substring(11, 13).toInt(), value.substring(13, 15).toInt(), value.substring(15, 17).toInt(), 1000000, vspi);
+        bno08xArray[value.substring(1, 3).toInt()].beginSPI(value.substring(3, 5).toInt(), value.substring(11, 13).toInt(), value.substring(13, 15).toInt(), 1000000, vspi);
         bno08xArray[value.substring(1, 3).toInt()].enableRotationVector();
         delay(100);
         bno08xArray[value.substring(1, 3).toInt()].enableGyro();
