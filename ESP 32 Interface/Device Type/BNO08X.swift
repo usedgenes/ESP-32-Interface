@@ -16,39 +16,39 @@ class BNO08X : Device {
 
 
     func addRotationX(rotationX: Float) {
-        rotationXData.append(LineChartDataPoint(value: Double(rotationX), xAxisLabel: "", description: "Rotation X"))
+        rotationXData.append(LineChartDataPoint(value: Double(rotationX), xAxisLabel: " ", description: "X"))
     }
     
     func addRotationY(rotationY: Float) {
-        rotationYData.append(LineChartDataPoint(value: Double(rotationY), xAxisLabel: "", description: "Rotation Y"))
+        rotationYData.append(LineChartDataPoint(value: Double(rotationY), xAxisLabel: " ", description: "Y"))
     }
     
     func addRotationZ(rotationZ: Float) {
-        rotationZData.append(LineChartDataPoint(value: Double(rotationZ), xAxisLabel: "", description: "Rotation Z"))
+        rotationZData.append(LineChartDataPoint(value: Double(rotationZ), xAxisLabel: " ", description: "Z"))
     }
     
     func addGyroX(gyroX: Float) {
-        gyroXData.append(LineChartDataPoint(value: Double(gyroX), xAxisLabel: "", description: "Gyro X"))
+        gyroXData.append(LineChartDataPoint(value: Double(gyroX), xAxisLabel: " ", description: "X"))
     }
     
     func addGyroY(gyroY: Float) {
-        gyroZData.append(LineChartDataPoint(value: Double(gyroY), xAxisLabel: "", description: "Gyro Y"))
+        gyroZData.append(LineChartDataPoint(value: Double(gyroY), xAxisLabel: " ", description: "Y"))
     }
     
     func addGyroZ(gyroZ: Float) {
-        gyroZData.append(LineChartDataPoint(value: Double(gyroZ), xAxisLabel: "", description: "Gyro Z"))
+        gyroZData.append(LineChartDataPoint(value: Double(gyroZ), xAxisLabel: " ", description: "Z"))
     }
     
     func addAccelerometerX(accelerometerX: Float) {
-        accelerometerXData.append(LineChartDataPoint(value: Double(accelerometerX), xAxisLabel: "", description: "Accelerometer X"))
+        accelerometerXData.append(LineChartDataPoint(value: Double(accelerometerX), xAxisLabel: " ", description: "X"))
     }
     
     func addAccelerometerY(accelerometerY: Float) {
-        accelerometerYData.append(LineChartDataPoint(value: Double(accelerometerY), xAxisLabel: "", description: "Accelerometer Y"))
+        accelerometerYData.append(LineChartDataPoint(value: Double(accelerometerY), xAxisLabel: " ", description: "Y"))
     }
     
     func addAccelerometerZ(accelerometerZ: Float) {
-        accelerometerZData.append(LineChartDataPoint(value: Double(accelerometerZ), xAxisLabel: "", description: "Accelerometer Z"))
+        accelerometerZData.append(LineChartDataPoint(value: Double(accelerometerZ), xAxisLabel: " ", description: "Z"))
     }
     
     func getRotationX() -> LineDataSet {
@@ -114,6 +114,17 @@ class BNO08X : Device {
                            style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
     }
     
+    func getRotation() -> MultiLineDataSet {
+        return MultiLineDataSet(dataSets: [getRotationX(), getRotationY(), getRotationZ()])
+    }
+    
+    func getGyro() -> MultiLineDataSet {
+        return MultiLineDataSet(dataSets: [getGyroX(), getGyroY(), getGyroZ()])
+    }
+    
+    func getAccelerometer() -> MultiLineDataSet {
+        return MultiLineDataSet(dataSets: [getAccelerometerX(), getAccelerometerY(), getAccelerometerZ()])
+    }
     
     func resetData() {
         rotationXData.removeAll()

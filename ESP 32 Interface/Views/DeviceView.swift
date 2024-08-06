@@ -75,7 +75,21 @@ struct DeviceView: View {
                 DeviceArrayView(deviceArray : ESP_32.bmp390s)
             }
             Section(header: Text("Inertial Measurement Units")) {
-                
+                HStack{
+                    Text("BNO08X")
+                    Spacer()
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.bno08xI2C_Type)
+                    }) {
+                        Text("Add I2C")
+                    }.buttonStyle(BorderlessButtonStyle())
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.bno08xSPI_Type)
+                    }) {
+                        Text("Add SPI")
+                    }.buttonStyle(BorderlessButtonStyle())
+                }
+                DeviceArrayView(deviceArray : ESP_32.bno08xs)
             }
         }
         .onDisappear(perform: {

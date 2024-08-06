@@ -32,7 +32,7 @@ class ESP32 : ObservableObject {
     }
     
     func getBNO08Xs() -> DeviceArray {
-        return bmp390s
+        return bno08xs
     }
     
     func getBNO08X(index: Int) -> BNO08X {
@@ -46,7 +46,7 @@ class ESP32 : ObservableObject {
         bmp390SPI_Type = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390.self, devices: bmp390s)
         
         bno08xI2C_Type = DeviceType(type: "BNO08X I2C", pinTypes: ["SDA", "SCL"], deviceType: BNO08X.self, devices: bno08xs)
-        bno08xSPI_Type = DeviceType(type: "BNO08X I2C", pinTypes: ["CS", "SCK", "MISO", "MOSI", "INT", "RST"], deviceType: BNO08X.self, devices: bno08xs)
+        bno08xSPI_Type = DeviceType(type: "BNO08X SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI", "INT", "RST"], deviceType: BNO08X.self, devices: bno08xs)
     }
     
     enum CodingKeys: CodingKey {
@@ -64,6 +64,11 @@ class ESP32 : ObservableObject {
         if let encoded = try? encoder.encode(self.getBMP390s().getDevices()) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: self.getBMP390s().name)
+        }
+        //bno08xs
+        if let encoded = try? encoder.encode(self.getBNO08Xs().getDevices()) {
+            let defaults = UserDefaults.standard
+            defaults.set(encoded, forKey: self.getBNO08Xs().name)
         }
     }
     
@@ -83,10 +88,18 @@ class ESP32 : ObservableObject {
                     self.bmp390s.setDevices(devices: loadedDevices)
             }
         }
+        //bno08x
+        if let savedDevices = defaults.object(forKey: self.getBNO08Xs().name) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDevices = try? decoder.decode([BNO08X].self, from: savedDevices) {
+                    self.bno08xs.setDevices(devices: loadedDevices)
+            }
+        }
     }
     
     func cleanState() {
         servos.resetDevices()
         bmp390s.resetDevices()
+        bno08xs.resetDevices()
     }
 }
