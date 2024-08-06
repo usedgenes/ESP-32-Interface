@@ -8,50 +8,42 @@ class BMP390 : Device {
     @Published var altitudeData : [LineChartDataPoint] = []
 
     func addTemperature(temperature: Float) {
-        temperatureData.append(LineChartDataPoint(value: Double(temperature), description: "Temperature"))
+        temperatureData.append(LineChartDataPoint(value: Double(temperature), xAxisLabel: "", description: "Temperature"))
     }
     
     func addPressure(pressure: Float) {
-        pressureData.append(LineChartDataPoint(value: Double(pressure), description: "Test"))
+        pressureData.append(LineChartDataPoint(value: Double(pressure), xAxisLabel: "", description: "Pressure"))
     }
     
     func addAltitude(altitude: Float) {
-        altitudeData.append(LineChartDataPoint(value: Double(altitude), description: "Altitude"))
+        altitudeData.append(LineChartDataPoint(value: Double(altitude), xAxisLabel: "", description: "Altitude"))
     }
     
     func getTemperatureDataSet() -> LineDataSet {
         return LineDataSet(dataPoints: temperatureData,
-                           legendTitle: "Temperature",
+                           legendTitle: "Celsius",
                            pointStyle: PointStyle(),
                            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
     }
     
     func getPressureDataSet() -> LineDataSet {
         return LineDataSet(dataPoints: pressureData,
-                           legendTitle: "Pressure",
+                           legendTitle: "Pascals",
                            pointStyle: PointStyle(),
                            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
     }
     
     func getAltitudeDataSet() -> LineDataSet {
         return LineDataSet(dataPoints: altitudeData,
-                           legendTitle: "Altitude",
+                           legendTitle: "Meters",
                            pointStyle: PointStyle(),
                            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
     }
     
     func resetData() {
-        for number in 0..<temperatureData.count {
-            temperatureData.remove(at: number)
-        }
-        
-        for number in 0..<pressureData.count {
-            pressureData.remove(at: number)
-        }
-        
-        for number in 0..<altitudeData.count {
-            altitudeData.remove(at: number)
-        }
+        temperatureData.removeAll()
+        pressureData.removeAll()
+        altitudeData.removeAll()
     }
 }
 
