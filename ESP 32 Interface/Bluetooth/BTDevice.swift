@@ -25,22 +25,25 @@ class BTDevice: NSObject {
     private var servoChar: CBCharacteristic?
     
     private var bmp390Char: CBCharacteristic?
-    private var _bmp390data: Int = 0
+    
+    private var bno08xChar: CBCharacteristic?
     
     var ESP_32 : ESP32?
     
     weak var delegate: BTDeviceDelegate?
     
-    var bmp390data: Int {
+    var bno08xString: String {
         get {
-            return 0
+            return self.bno08xString
         }
         set {
-
-         }
+            if let char = bno08xChar {
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
+            }
+        }
     }
     
-    var bmp390String: String{
+    var bmp390String: String {
         get {
             return self.bmp390String
         }
@@ -129,7 +132,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -152,6 +155,10 @@ extension BTDevice: CBPeripheralDelegate {
                 peripheral.setNotifyValue(true, for: $0)
             } else if $0.uuid == BTUUIDs.bmp390UUID {
                 self.bmp390Char = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
+            } else if $0.uuid == BTUUIDs.bno08xUUID {
+                self.bno08xChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
             }
@@ -186,21 +193,46 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     let bmp390Data = Float(value)!
                     ESP_32!.getBMP390(index: deviceNumber).addTemperature(temperature: bmp390Data)
-                    print(bmp390Data)
                 }
                 //pressure
                 if(Int(value[...value.startIndex]) == 4) {
                     value.remove(at: value.startIndex)
                     let bmp390Data = Float(value)!
                     ESP_32!.getBMP390(index: deviceNumber).addPressure(pressure: bmp390Data)
-                    print(bmp390Data)
                 }
                 //altitude
                 if(Int(value[...value.startIndex]) == 5) {
                     value.remove(at: value.startIndex)
                     let bmp390Data = Float(value)!
                     ESP_32!.getBMP390(index: deviceNumber).addAltitude(altitude: bmp390Data)
-                    print(bmp390Data)
+                }
+                print(value)
+            }
+        }
+        
+        if characteristic.uuid == bno08xChar?.uuid, let b = characteristic.value {
+            var value = String(decoding: b, as: UTF8.self)
+            if(value != "") {
+                let deviceNumber = Int(value[...value.index(value.startIndex, offsetBy: 1)])!
+                value.removeSubrange(...value.index(value.startIndex, offsetBy: 1))
+
+                //temperature
+                if(Int(value[...value.startIndex]) == 3) {
+                    value.remove(at: value.startIndex)
+                    let bmp390Data = Float(value)!
+                    ESP_32!.getBMP390(index: deviceNumber).addTemperature(temperature: bmp390Data)
+                }
+                //pressure
+                if(Int(value[...value.startIndex]) == 4) {
+                    value.remove(at: value.startIndex)
+                    let bmp390Data = Float(value)!
+                    ESP_32!.getBMP390(index: deviceNumber).addPressure(pressure: bmp390Data)
+                }
+                //altitude
+                if(Int(value[...value.startIndex]) == 5) {
+                    value.remove(at: value.startIndex)
+                    let bmp390Data = Float(value)!
+                    ESP_32!.getBMP390(index: deviceNumber).addAltitude(altitude: bmp390Data)
                 }
                 print(value)
             }

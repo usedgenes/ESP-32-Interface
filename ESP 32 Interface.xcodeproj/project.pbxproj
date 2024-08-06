@@ -13,7 +13,7 @@
 		443A04EF2C5F45B5008F4F21 /* BMP390.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04EE2C5F45B5008F4F21 /* BMP390.swift */; };
 		443A04F12C5F46B4008F4F21 /* Servo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04F02C5F46B4008F4F21 /* Servo.swift */; };
 		443A04F32C5F48AE008F4F21 /* Motor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04F22C5F48AE008F4F21 /* Motor.swift */; };
-		443A04F72C5F48E3008F4F21 /* BNO08X_SPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04F62C5F48E3008F4F21 /* BNO08X_SPI.swift */; };
+		443A04F72C5F48E3008F4F21 /* BNO08X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04F62C5F48E3008F4F21 /* BNO08X.swift */; };
 		443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */; };
 		443A4D7B2C549284004E1D26 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7A2C549284004E1D26 /* Device.swift */; };
 		443A4D802C549B90004E1D26 /* ESP32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7F2C549B90004E1D26 /* ESP32.swift */; };
@@ -61,7 +61,7 @@
 		443A04EE2C5F45B5008F4F21 /* BMP390.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMP390.swift; sourceTree = "<group>"; };
 		443A04F02C5F46B4008F4F21 /* Servo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servo.swift; sourceTree = "<group>"; };
 		443A04F22C5F48AE008F4F21 /* Motor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Motor.swift; sourceTree = "<group>"; };
-		443A04F62C5F48E3008F4F21 /* BNO08X_SPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08X_SPI.swift; sourceTree = "<group>"; };
+		443A04F62C5F48E3008F4F21 /* BNO08X.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08X.swift; sourceTree = "<group>"; };
 		443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceHelper.swift; sourceTree = "<group>"; };
 		443A4D7A2C549284004E1D26 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		443A4D7F2C549B90004E1D26 /* ESP32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP32.swift; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 				443A04F22C5F48AE008F4F21 /* Motor.swift */,
 				443A04EE2C5F45B5008F4F21 /* BMP390.swift */,
 				443A04F02C5F46B4008F4F21 /* Servo.swift */,
-				443A04F62C5F48E3008F4F21 /* BNO08X_SPI.swift */,
+				443A04F62C5F48E3008F4F21 /* BNO08X.swift */,
 			);
 			path = "Device Type";
 			sourceTree = "<group>";
@@ -363,7 +363,7 @@
 				449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */,
 				449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */,
 				443A04F32C5F48AE008F4F21 /* Motor.swift in Sources */,
-				443A04F72C5F48E3008F4F21 /* BNO08X_SPI.swift in Sources */,
+				443A04F72C5F48E3008F4F21 /* BNO08X.swift in Sources */,
 				443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */,
 				449840492C53532400A7AF05 /* BluetoothManagerHelper.swift in Sources */,
 				44B3C00E2C50BE6800CAADBC /* HomeScreenView.swift in Sources */,

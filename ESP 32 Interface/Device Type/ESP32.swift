@@ -14,7 +14,11 @@ class ESP32 : ObservableObject {
     var bmp390s : DeviceArray = DeviceArray(name: "BMP390")
     var bmp390I2C_Type : DeviceType
     var bmp390SPI_Type : DeviceType
-        
+    
+    var bno08xs : DeviceArray = DeviceArray(name: "BNO08X")
+    var bno08xI2C_Tye : DeviceType
+    var bno08xSPI_Type : DeviceType
+    
     func getServos() -> DeviceArray {
         return servos
     }
@@ -25,6 +29,14 @@ class ESP32 : ObservableObject {
     
     func getBMP390(index: Int) -> BMP390 {
         return bmp390s.getDevice(index: index) as! BMP390
+    }
+    
+    func getBNO08Xs() -> DeviceArray {
+        return bmp390s
+    }
+    
+    func getBNO08X(index: Int) -> BNO08X {
+        return bno08xs.getDevice(index: index) as! BNO08X
     }
     
     init() {

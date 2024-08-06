@@ -18,7 +18,8 @@ struct BTUUIDs {
     
     static let bmp390UUID = CBUUID(string:"94cbc7dc-ff62-4958-9665-0ed477877581")
     
-//    #define UUID_2 "c91b34b8-90f3-4fee-89f7-58c108ab198f"
+    static let bno08xUUID = CBUUID(string:"c91b34b8-90f3-4fee-89f7-58c108ab198f")
+    
 //    #define UUID_3 "21072f3b-b950-4b29-bf97-9a7be82d93e7"
 //    #define UUID_4 "78c611e3-0d36-491f-afe4-60ecc0c26a85"
 //    #define UUID_5 "6492bdaa-60e3-4e8a-a978-c923dec9fc37"
