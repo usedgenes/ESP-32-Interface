@@ -38,6 +38,8 @@ struct HomeScreenView: View {
                 Section(header: Text("Sensors")) {
                     NavigationLink("BMP390", destination: BMP390View())
                         .disabled(!bluetoothDevice.isConnected)
+                    NavigationLink("BNO08X", destination: BNO08XView())
+                        .disabled(!bluetoothDevice.isConnected)
                 }
             }
             .navigationBarTitle("ESP32 Assistant")

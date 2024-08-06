@@ -66,6 +66,10 @@ class BluetoothDeviceHelper: ObservableObject {
     func setBMP390(input: String) {
         device!.bmp390String = input
     }
+    
+    func setBNO08X(input: String) {
+        device!.bno08xString = input
+    }
 }
 
 extension BluetoothDeviceHelper: BTDeviceDelegate {

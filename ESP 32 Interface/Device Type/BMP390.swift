@@ -8,15 +8,15 @@ class BMP390 : Device {
     @Published var altitudeData : [LineChartDataPoint] = []
 
     func addTemperature(temperature: Float) {
-        temperatureData.append(LineChartDataPoint(value: Double(temperature), xAxisLabel: "", description: "Temperature"))
+        temperatureData.append(LineChartDataPoint(value: Double(temperature), xAxisLabel: " ", description: "Temperature"))
     }
     
     func addPressure(pressure: Float) {
-        pressureData.append(LineChartDataPoint(value: Double(pressure), xAxisLabel: "", description: "Pressure"))
+        pressureData.append(LineChartDataPoint(value: Double(pressure), xAxisLabel: " ", description: "Pressure"))
     }
     
     func addAltitude(altitude: Float) {
-        altitudeData.append(LineChartDataPoint(value: Double(altitude), xAxisLabel: "", description: "Altitude"))
+        altitudeData.append(LineChartDataPoint(value: Double(altitude), xAxisLabel: " ", description: "Altitude"))
     }
     
     func getTemperatureDataSet() -> LineDataSet {

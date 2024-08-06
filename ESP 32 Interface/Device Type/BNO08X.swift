@@ -39,34 +39,91 @@ class BNO08X : Device {
         gyroZData.append(LineChartDataPoint(value: Double(gyroZ), xAxisLabel: "", description: "Gyro Z"))
     }
     
-    func addAltitude(altitude: Float) {
-        accelerometerData.append(LineChartDataPoint(value: Double(altitude), xAxisLabel: "", description: "Accelerometer"))
+    func addAccelerometerX(accelerometerX: Float) {
+        accelerometerXData.append(LineChartDataPoint(value: Double(accelerometerX), xAxisLabel: "", description: "Accelerometer X"))
     }
     
-    func getTemperatureDataSet() -> LineDataSet {
-        return LineDataSet(dataPoints: temperatureData,
-                           legendTitle: "Celsius",
+    func addAccelerometerY(accelerometerY: Float) {
+        accelerometerYData.append(LineChartDataPoint(value: Double(accelerometerY), xAxisLabel: "", description: "Accelerometer Y"))
+    }
+    
+    func addAccelerometerZ(accelerometerZ: Float) {
+        accelerometerZData.append(LineChartDataPoint(value: Double(accelerometerZ), xAxisLabel: "", description: "Accelerometer Z"))
+    }
+    
+    func getRotationX() -> LineDataSet {
+        return LineDataSet(dataPoints: rotationXData,
+                           legendTitle: "Quaternions",
                            pointStyle: PointStyle(),
                            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
     }
     
-    func getPressureDataSet() -> LineDataSet {
-        return LineDataSet(dataPoints: pressureData,
-                           legendTitle: "Pascals",
+    func getRotationY() -> LineDataSet {
+        return LineDataSet(dataPoints: rotationYData,
+                           legendTitle: "Quaternions",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .green), lineType: .line))
+    }
+    
+    func getRotationZ() -> LineDataSet {
+        return LineDataSet(dataPoints: rotationZData,
+                           legendTitle: "Quaternions",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
+    }
+    
+    func getGyroX() -> LineDataSet {
+        return LineDataSet(dataPoints: gyroXData,
+                           legendTitle: "degrees/s",
                            pointStyle: PointStyle(),
                            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
     }
     
-    func getAltitudeDataSet() -> LineDataSet {
-        return LineDataSet(dataPoints: altitudeData,
-                           legendTitle: "Meters",
+    func getGyroY() -> LineDataSet {
+        return LineDataSet(dataPoints: gyroYData,
+                           legendTitle: "degrees/s",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .green), lineType: .line))
+    }
+    
+    func getGyroZ() -> LineDataSet {
+        return LineDataSet(dataPoints: gyroZData,
+                           legendTitle: "degrees/s",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
+    }
+    
+    func getAccelerometerX() -> LineDataSet {
+        return LineDataSet(dataPoints: accelerometerXData,
+                           legendTitle: "m/s^2",
                            pointStyle: PointStyle(),
                            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
     }
+    
+    func getAccelerometerY() -> LineDataSet {
+        return LineDataSet(dataPoints: accelerometerYData,
+                           legendTitle: "m/s^2",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .green), lineType: .line))
+    }
+    
+    func getAccelerometerZ() -> LineDataSet {
+        return LineDataSet(dataPoints: accelerometerZData,
+                           legendTitle: "m/s^2",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
+    }
+    
     
     func resetData() {
-        temperatureData.removeAll()
-        pressureData.removeAll()
-        altitudeData.removeAll()
+        rotationXData.removeAll()
+        rotationYData.removeAll()
+        rotationZData.removeAll()
+        gyroXData.removeAll()
+        gyroYData.removeAll()
+        gyroZData.removeAll()
+        accelerometerXData.removeAll()
+        accelerometerYData.removeAll()
+        accelerometerZData.removeAll()
     }
 }

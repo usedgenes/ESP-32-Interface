@@ -16,7 +16,7 @@ class ESP32 : ObservableObject {
     var bmp390SPI_Type : DeviceType
     
     var bno08xs : DeviceArray = DeviceArray(name: "BNO08X")
-    var bno08xI2C_Tye : DeviceType
+    var bno08xI2C_Type : DeviceType
     var bno08xSPI_Type : DeviceType
     
     func getServos() -> DeviceArray {
@@ -45,6 +45,8 @@ class ESP32 : ObservableObject {
         bmp390I2C_Type = DeviceType(type: "BMP390 I2C", pinTypes: ["SDA", "SCL"], deviceType: BMP390.self, devices: bmp390s)
         bmp390SPI_Type = DeviceType(type: "BMP390 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMP390.self, devices: bmp390s)
         
+        bno08xI2C_Type = DeviceType(type: "BNO08X I2C", pinTypes: ["SDA", "SCL"], deviceType: BNO08X.self, devices: bno08xs)
+        bno08xSPI_Type = DeviceType(type: "BNO08X I2C", pinTypes: ["CS", "SCK", "MISO", "MOSI", "INT", "RST"], deviceType: BNO08X.self, devices: bno08xs)
     }
     
     enum CodingKeys: CodingKey {

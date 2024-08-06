@@ -70,7 +70,7 @@ struct BMP390ChartView : View {
     @EnvironmentObject var ESP_32 : ESP32
     @State var timerOn = false
     @State var timer : Timer?
-    @State var delayTime = 500
+    @State var delayTime = 1000
     var body : some View {
         VStack {
             HStack {
@@ -84,40 +84,32 @@ struct BMP390ChartView : View {
                 }) {
                     Text("Get Data")
                 }.disabled(timerOn)
-                    .padding()
+                    .buttonStyle(BorderlessButtonStyle())
                 
                 Button(action: {
-                    timer?.invalidate()
-                    timer = nil
-                    timerOn.toggle()
+                    if timer != nil {
+                        timer?.invalidate()
+                        timer = nil
+                        timerOn.toggle()
+                        print("invalidating")
+                    }
                 }) {
                     Text("Stop")
                 }.disabled(!timerOn)
-                    .padding()
+                .buttonStyle(BorderlessButtonStyle())
+                
             }
             HStack {
-                Text("Delay (ms):")
+                Text("Delay: 1 second")
                     .padding()
-//                TextField("\(delayTime)", text: Binding<String>(
-//                    get: { String(delayTime) },
-//                    set: {
-//                        if let value = NumberFormatter().number(from: $0) {
-//                            self.delayTime = value.intValue
-//
-//                        }
-//                    }))
-//                    .keyboardType(UIKeyboardType.numberPad)
-//                    .disabled(timerOn)
                 Spacer()
                 Button(action: {
-                    timer?.invalidate()
-                    timer = nil
-                    timerOn.toggle()
                     bmp390.resetData()
                 }) {
                     Text("Reset Altimeter Data")
-                }.padding()
+                }.buttonStyle(BorderlessButtonStyle())
             }
+            
             let temperatureData = LineChartData(dataSets: bmp390.getTemperatureDataSet(), chartStyle: ChartStyle().getChartStyle())
             
             //temperature

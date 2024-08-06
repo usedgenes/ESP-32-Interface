@@ -169,7 +169,7 @@ extension BTDevice: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        print("Device: updated value for \(characteristic)")
+//        print("Device: updated value for \(characteristic)")
         
         if characteristic.uuid == blinkChar?.uuid, let b = characteristic.value {
             let temp = String(decoding: b, as: UTF8.self)
@@ -206,7 +206,6 @@ extension BTDevice: CBPeripheralDelegate {
                     let bmp390Data = Float(value)!
                     ESP_32!.getBMP390(index: deviceNumber).addAltitude(altitude: bmp390Data)
                 }
-                print(value)
             }
         }
         
@@ -219,20 +218,26 @@ extension BTDevice: CBPeripheralDelegate {
                 //temperature
                 if(Int(value[...value.startIndex]) == 3) {
                     value.remove(at: value.startIndex)
-                    let bmp390Data = Float(value)!
-                    ESP_32!.getBMP390(index: deviceNumber).addTemperature(temperature: bmp390Data)
+                    let bno08xXData = Float(value[..<value.firstIndex(of: ",")!])!
+                    value.removeSubrange(...value.firstIndex(of: ",")!)
+                    let bno08xYData = Float(value[..<value.firstIndex(of: ",")!])!
+                    value.removeSubrange(...value.firstIndex(of: ",")!)
+                    let bno08xZData = Float(value)
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationX(rotationX: bno08xXData)
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationY(rotationY: bno08xYData)
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationZ(rotationZ: bno08xZData)
                 }
                 //pressure
                 if(Int(value[...value.startIndex]) == 4) {
                     value.remove(at: value.startIndex)
                     let bmp390Data = Float(value)!
-                    ESP_32!.getBMP390(index: deviceNumber).addPressure(pressure: bmp390Data)
+                    ESP_32!.getBNO08X(index: deviceNumber).addGyroX(gyroX: bmp390Data)
                 }
                 //altitude
                 if(Int(value[...value.startIndex]) == 5) {
                     value.remove(at: value.startIndex)
                     let bmp390Data = Float(value)!
-                    ESP_32!.getBMP390(index: deviceNumber).addAltitude(altitude: bmp390Data)
+                    ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerX(accelerometerX: <#T##Float#>)
                 }
                 print(value)
             }
