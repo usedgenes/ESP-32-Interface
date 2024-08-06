@@ -68,15 +68,43 @@ struct BMP390ChartView : View {
     @ObservedObject var bmp390 : BMP390
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     @EnvironmentObject var ESP_32 : ESP32
+    @State var timerOn = false
+    @State var timer : Timer?
     var body : some View {
         VStack {
-            Button(action: {
-                                bluetoothDevice.setBMP390(input: "2" + String(format: "%02d", ESP_32.getBMP390s().getDeviceNumberInArray(inputDevice: bmp390))
-                                )}) {
-                                    Text("Get Data")
-                                }
-                                
+            HStack {
+                Button(action: {
+                    if(timer == nil) {
+                        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
+                            bluetoothDevice.setBMP390(input: "2" + String(format: "%02d", ESP_32.getBMP390s().getDeviceNumberInArray(inputDevice: bmp390)))
+                        })
+                    }
+                    timerOn.toggle()
+                }) {
+                        Text("Get Data")
+                    }.disabled(timerOn)
+                    .padding()
+                
+                Button(action: {
+                    timer?.invalidate()
+                    timer = nil
+                    timerOn.toggle()
+                    }) {
+                        Text("Stop")
+                    }.disabled(!timerOn)
+                    .padding()
+                
+                Text("Delay:")
+                    .padding()
+                
+                Button(action: {
+                    bmp390.resetData()
+                }) {
+                    Text("Reset Altimeter Data")
+                }.padding()
+            }
             let temperatureData = LineChartData(dataSets: bmp390.getTemperatureDataSet(), chartStyle: ChartStyle().getChartStyle())
+            
             //temperature
             LineChart(chartData: temperatureData)
                 .filledTopLine(chartData: temperatureData,
@@ -92,6 +120,44 @@ struct BMP390ChartView : View {
                 .id(temperatureData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
             Text("Temperature")
+                .padding()
+            
+            let pressureData = LineChartData(dataSets: bmp390.getPressureDataSet(), chartStyle: ChartStyle().getChartStyle())
+            
+            //pressure
+            LineChart(chartData: pressureData)
+                .filledTopLine(chartData: pressureData,
+                               lineColour: ColourStyle(colour: .red),
+                               strokeStyle: StrokeStyle(lineWidth: 3))
+                .touchOverlay(chartData: pressureData, specifier: "%.0f")
+                .xAxisGrid(chartData: pressureData)
+                .yAxisGrid(chartData: pressureData)
+                .xAxisLabels(chartData: pressureData)
+                .yAxisLabels(chartData: pressureData)
+                .floatingInfoBox(chartData: pressureData)
+                .headerBox(chartData: pressureData)
+                .id(pressureData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            Text("Pressure")
+                .padding()
+            
+            let altitudeData = LineChartData(dataSets: bmp390.getAltitudeDataSet(), chartStyle: ChartStyle().getChartStyle())
+            
+            //altitude
+            LineChart(chartData: altitudeData)
+                .filledTopLine(chartData: altitudeData,
+                               lineColour: ColourStyle(colour: .red),
+                               strokeStyle: StrokeStyle(lineWidth: 3))
+                .touchOverlay(chartData: altitudeData, specifier: "%.0f")
+                .xAxisGrid(chartData: altitudeData)
+                .yAxisGrid(chartData: altitudeData)
+                .xAxisLabels(chartData: altitudeData)
+                .yAxisLabels(chartData: altitudeData)
+                .floatingInfoBox(chartData: altitudeData)
+                .headerBox(chartData: altitudeData)
+                .id(altitudeData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            Text("Altitude")
                 .padding()
         }
     }
