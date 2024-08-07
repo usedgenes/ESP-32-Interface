@@ -15,8 +15,8 @@
 #define SERVO_UUID "f74fb3de-61d1-4f49-bd77-419b61d188da"
 #define BMP390_UUID "94cbc7dc-ff62-4958-9665-0ed477877581"
 #define BNO08X_UUID "c91b34b8-90f3-4fee-89f7-58c108ab198f"
+#define PIN_UUID "21072f3b-b950-4b29-bf97-9a7be82d93e7"
 
-#define UUID_3 "21072f3b-b950-4b29-bf97-9a7be82d93e7"
 #define UUID_4 "78c611e3-0d36-491f-afe4-60ecc0c26a85"
 #define UUID_5 "6492bdaa-60e3-4e8a-a978-c923dec9fc37"
 #define UUID_6 "56e48048-19da-4136-a323-d2f3e9cb2a5d"
@@ -52,10 +52,14 @@ int bno08xArraySize;
 SPIClass vspi = SPIClass(VSPI);
 TwoWire I2C1 = TwoWire(1);
 
+int *pinArray;
+int pinArraySize;
+
 BLECharacteristic *pCharBlink;
 BLECharacteristic *pServo;
 BLECharacteristic *pBMP390;
 BLECharacteristic *pBNO08X;
+BLECharacteristic *pPin;
 
 void (*resetFunc)(void) = 0;  // create a standard reset function
 
@@ -244,17 +248,47 @@ class BNO08XCallbacks : public BLECharacteristicCallbacks {
       pCharacteristic->setValue(bno08xNumber + "3" + String(quatI, 2) + "," + String(quatJ, 2) + "," + String(quatK, 2) + "," + String(quatReal, 2) + "," + String(quatAccuracy, 2));
       pCharacteristic->notify();
       Serial.println(bno08xNumber + "3" + String(quatI, 2) + "," + String(quatJ, 2) + "," + String(quatK, 2) + "," + String(quatReal, 2) + "," + String(quatAccuracy, 2));
+
       pCharacteristic->setValue(bno08xNumber + "4" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
       pCharacteristic->notify();
       Serial.println(bno08xNumber + "4" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
+
       pCharacteristic->setValue(bno08xNumber + "5" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
       pCharacteristic->notify();
       Serial.println(bno08xNumber + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
+      
       Serial.println("notifying bno08x");
     }
     Serial.println(value);
   }
 };
+
+class PinCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue();
+    if (value.substring(0, 1) == "0") {
+      pinArraySize = value.substring(1, value.length()).toInt();
+      pinArray = new int[pinArraySize];
+      Serial.println("Allocating bno08x");
+    }
+    if (value.substring(0, 1) == "1") {
+      pinMode(value.substring(1, 3).toInt(), OUTPUT);
+    }
+    if (value.substring(0, 1) == "2") {
+      if(value.substring(3,4) == "0") {
+        digitalWrite(value.substring(1, 3).toInt(), LOW);
+      }
+      else {
+        digitalWrite(value.substring(1, 3).toInt(), HIGH);
+      }
+    }
+    if (value.substring(0, 1) == "3") {
+      analogWrite(value.substring(1, 3).toInt(), value.substring(3, 6).toInt());
+    }
+    Serial.println(value);
+  }
+};
+
 
 void setReports(int bno08xNumberInt) {
   if (bno08xArray[bno08xNumberInt].enableRotationVector() == true) {
