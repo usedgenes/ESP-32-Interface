@@ -63,7 +63,6 @@ struct individualBNO08XView : View {
                 NavigationLink("View Data", destination: BNO08XChartView(bno08x: bno08x))
                     .padding()
             }
-            
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
@@ -77,7 +76,9 @@ struct BNO08XChartView : View {
     @State var timer : Timer?
     @State var delayTime = 1000
     var body : some View {
-        Section() {
+        List {
+            Text("\(bno08x.name) Data Graphs")
+                .frame(maxWidth: .infinity, alignment: .center)
             HStack {
                 Button(action: {
                     if(timer == nil) {
@@ -90,7 +91,7 @@ struct BNO08XChartView : View {
                     Text("Get Data")
                 }.disabled(timerOn)
                     .buttonStyle(BorderlessButtonStyle())
-                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
                 
                 Button(action: {
                     if timer != nil {
@@ -102,7 +103,8 @@ struct BNO08XChartView : View {
                     Text("Stop")
                 }.disabled(!timerOn)
                     .buttonStyle(BorderlessButtonStyle())
-                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
+
             }
             HStack {
                 Text("Reset Data For:")
@@ -111,32 +113,44 @@ struct BNO08XChartView : View {
                 }) {
                     Text("Rotation")
                 }.buttonStyle(BorderlessButtonStyle())
+                
                 Button(action: {
                     bno08x.resetGyro()
                 }) {
                     Text("Gyro")
-                }
+                }.buttonStyle(BorderlessButtonStyle())
+                
                 Button(action: {
                     bno08x.resetAccelerometer()
                 }) {
                     Text("Gyro")
-                }
+                }.buttonStyle(BorderlessButtonStyle())
+                
                 Button(action: {
                     bno08x.resetAll()
                 }) {
                     Text("All")
-                }
-            }
+                }.buttonStyle(BorderlessButtonStyle())
+
+            }.frame(maxWidth: .infinity, alignment: .center)
+
             Text("Delay: 1 second")
-                .padding()
+                .frame(maxWidth: .infinity, alignment: .center)
+
             GroupBox {
                 NavigationLink("Rotation Data", destination: RotationView(bno08x: bno08x))
+                    .frame(maxWidth: .infinity, alignment: .center)
+
             }
             GroupBox {
                 NavigationLink("Gyro Data", destination: GyroView(bno08x: bno08x))
+                    .frame(maxWidth: .infinity, alignment: .center)
+
             }
             GroupBox {
                 NavigationLink("Accelerometer Data", destination: AccelerationView(bno08x: bno08x))
+                    .frame(maxWidth: .infinity, alignment: .center)
+
             }
         }.navigationViewStyle(StackNavigationViewStyle())
     }

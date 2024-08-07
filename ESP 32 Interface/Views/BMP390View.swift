@@ -45,11 +45,12 @@ struct BMP390View: View {
 struct individualBMP390View : View {
     @EnvironmentObject var ESP_32 : ESP32
     @ObservedObject var bmp390 : BMP390
+    let items = [GridItem(), GridItem(), GridItem(), GridItem()]
     var body : some View {
         Section() {
-            HStack {
-                Text("\(bmp390.name)")
-                Spacer()
+            Text("\(bmp390.name)")
+                .frame(maxWidth: .infinity, alignment: .center)
+            LazyVGrid(columns: items) {
                 ForEach(bmp390.attachedPins) { pin in
                     Text("\(pin.pinName): \(pin.pinNumber)")
                 }
@@ -57,8 +58,7 @@ struct individualBMP390View : View {
             .contentShape(Rectangle())
             HStack {
                 NavigationLink("View Data", destination: BMP390ChartView(bmp390: bmp390))
-            }
-            
+            }.padding()
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

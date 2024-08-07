@@ -40,11 +40,13 @@ struct individualServoView : View {
     @EnvironmentObject var ESP_32 : ESP32
     @ObservedObject var servo : Servo
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
+    let items = [GridItem()]
     @State var servoPosition = 0
     var body : some View {
         Section() {
-            HStack {
-                Text("\(servo.name)")
+            Text("\(servo.name)")
+                .frame(maxWidth: .infinity, alignment: .center)
+            LazyVGrid(columns: items) {
                 Spacer()
                 Text("\(servo.attachedPins[0].pinName): \(servo.attachedPins[0].pinNumber)")
             }
@@ -68,7 +70,7 @@ struct individualServoView : View {
                     }) {
                         Text("Send")
                     }.buttonStyle(BorderlessButtonStyle())
-            }
+            }.padding()
         }
     }
 }
