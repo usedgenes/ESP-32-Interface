@@ -27,10 +27,10 @@ struct BNO08XView: View {
                             bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"SCL"))
                         }
                         else {
-                            bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"CS"))
                             bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"SCK"))
                             bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"MISO"))
                             bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"MOSI"))
+                            bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"CS"))
                             bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"INT"))
                             bno08xPinString += String(format: "%02d", bno08x.getPinNumber(name:"RST"))
                         }
@@ -72,7 +72,7 @@ struct BNO08XChartView : View {
     @EnvironmentObject var ESP_32 : ESP32
     @State var timerOn = false
     @State var timer : Timer?
-    @State var delayTime = 500
+    @State var delayTime = 2500
     var body : some View {
         VStack {
             
@@ -82,6 +82,7 @@ struct BNO08XChartView : View {
                         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(delayTime/1000), repeats: true, block: { _ in
                             bluetoothDevice.setBNO08X(input: "2" + String(format: "%02d", ESP_32.getBNO08Xs().getDeviceNumberInArray(inputDevice: bno08x)))
                         })
+                        let _ = print("2" + String(format: "%02d", ESP_32.getBNO08Xs().getDeviceNumberInArray(inputDevice: bno08x)))
                     }
                     timerOn.toggle()
                 }) {
@@ -94,7 +95,6 @@ struct BNO08XChartView : View {
                         timer?.invalidate()
                         timer = nil
                         timerOn.toggle()
-                        print("invalidating")
                     }
                 }) {
                     Text("Stop")
@@ -113,7 +113,7 @@ struct BNO08XChartView : View {
                 }.buttonStyle(BorderlessButtonStyle())
             }
             let rotationData = MultiLineChartData(dataSets: bno08x.getRotation(), chartStyle: ChartStyle().getChartStyle())
-            
+
             //rotation
             MultiLineChart(chartData: rotationData)
                 .touchOverlay(chartData: rotationData, specifier: "%.2f")
@@ -126,36 +126,36 @@ struct BNO08XChartView : View {
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
             Text("Rotation")
                 .padding()
-            
-            let gyroData = MultiLineChartData(dataSets: bno08x.getGyro(), chartStyle: ChartStyle().getChartStyle())
-            
-            //pressure
-            MultiLineChart(chartData: gyroData)
-                .touchOverlay(chartData: gyroData, specifier: "%.2f")
-                .xAxisGrid(chartData: gyroData)
-                .yAxisGrid(chartData: gyroData)
-                .xAxisLabels(chartData: gyroData)
-                .yAxisLabels(chartData: gyroData, specifier: "%.2f")
-                .floatingInfoBox(chartData: gyroData)
-                .id(gyroData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Gyro")
-                .padding()
-            
-            let accelerometerData = MultiLineChartData(dataSets: bno08x.getAccelerometer(), chartStyle: ChartStyle().getChartStyle())
-            
-            //altitude
-            MultiLineChart(chartData: accelerometerData)
-                .touchOverlay(chartData: accelerometerData, specifier: "%.2f")
-                .xAxisGrid(chartData: accelerometerData)
-                .yAxisGrid(chartData: accelerometerData)
-                .xAxisLabels(chartData: accelerometerData)
-                .yAxisLabels(chartData: accelerometerData, specifier: "%.2f")
-                .floatingInfoBox(chartData: accelerometerData)
-                .id(accelerometerData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Accelerometer")
-                .padding()
+
+//            let gyroData = MultiLineChartData(dataSets: bno08x.getGyro(), chartStyle: ChartStyle().getChartStyle())
+//
+//            //pressure
+//            MultiLineChart(chartData: gyroData)
+//                .touchOverlay(chartData: gyroData, specifier: "%.2f")
+//                .xAxisGrid(chartData: gyroData)
+//                .yAxisGrid(chartData: gyroData)
+//                .xAxisLabels(chartData: gyroData)
+//                .yAxisLabels(chartData: gyroData, specifier: "%.2f")
+//                .floatingInfoBox(chartData: gyroData)
+//                .id(gyroData.id)
+//                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+//            Text("Gyro")
+//                .padding()
+//
+//            let accelerometerData = MultiLineChartData(dataSets: bno08x.getAccelerometer(), chartStyle: ChartStyle().getChartStyle())
+//
+//            //altitude
+//            MultiLineChart(chartData: accelerometerData)
+//                .touchOverlay(chartData: accelerometerData, specifier: "%.2f")
+//                .xAxisGrid(chartData: accelerometerData)
+//                .yAxisGrid(chartData: accelerometerData)
+//                .xAxisLabels(chartData: accelerometerData)
+//                .yAxisLabels(chartData: accelerometerData, specifier: "%.2f")
+//                .floatingInfoBox(chartData: accelerometerData)
+//                .id(accelerometerData.id)
+//                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+//            Text("Accelerometer")
+//                .padding()
         }.onDisappear(perform: {
             timer?.invalidate()
             timer = nil

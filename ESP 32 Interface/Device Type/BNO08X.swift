@@ -5,6 +5,8 @@ class BNO08X : Device {
     @Published var rotationXData : [LineChartDataPoint] = []
     @Published var rotationYData : [LineChartDataPoint] = []
     @Published var rotationZData : [LineChartDataPoint] = []
+    @Published var rotationRealData : [LineChartDataPoint] = []
+    @Published var rotationAccuracyData : [LineChartDataPoint] = []
 
     @Published var gyroXData : [LineChartDataPoint] = []
     @Published var gyroYData : [LineChartDataPoint] = []
@@ -25,6 +27,14 @@ class BNO08X : Device {
     
     func addRotationZ(rotationZ: Float) {
         rotationZData.append(LineChartDataPoint(value: Double(rotationZ), xAxisLabel: " ", description: "Z"))
+    }
+    
+    func addRotationReal(rotationReal: Float) {
+        rotationRealData.append(LineChartDataPoint(value: Double(rotationReal), xAxisLabel: " ", description: "Real"))
+    }
+    
+    func addRotationAccuracy(rotationAccuracy: Float) {
+        rotationAccuracyData.append(LineChartDataPoint(value: Double(rotationAccuracy), xAxisLabel: " ", description: "Accuracy"))
     }
     
     func addGyroX(gyroX: Float) {
@@ -72,6 +82,21 @@ class BNO08X : Device {
                            style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
     }
     
+    func getRotationReal() -> LineDataSet {
+        return LineDataSet(dataPoints: rotationRealData,
+                           legendTitle: "Quaternions",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .purple), lineType: .line))
+    }
+    
+    func getRotationAccuracy() -> LineDataSet {
+        return LineDataSet(dataPoints: rotationAccuracyData,
+                           legendTitle: "Quaternions",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .yellow), lineType: .line))
+    }
+
+    
     func getGyroX() -> LineDataSet {
         return LineDataSet(dataPoints: gyroXData,
                            legendTitle: "degrees/s",
@@ -115,7 +140,7 @@ class BNO08X : Device {
     }
     
     func getRotation() -> MultiLineDataSet {
-        return MultiLineDataSet(dataSets: [getRotationX(), getRotationY(), getRotationZ()])
+        return MultiLineDataSet(dataSets: [getRotationX(), getRotationY(), getRotationZ(), getRotationReal(), getRotationAccuracy()])
     }
     
     func getGyro() -> MultiLineDataSet {
@@ -130,6 +155,8 @@ class BNO08X : Device {
         rotationXData.removeAll()
         rotationYData.removeAll()
         rotationZData.removeAll()
+        rotationRealData.removeAll()
+        rotationAccuracyData.removeAll()
         gyroXData.removeAll()
         gyroYData.removeAll()
         gyroZData.removeAll()
