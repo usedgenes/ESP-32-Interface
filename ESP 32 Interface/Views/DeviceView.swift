@@ -65,12 +65,12 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.bmp390I2C_Type)
                     }) {
                         Text("Add I2C")
-                    }.buttonStyle(BorderlessButtonStyle())
+                    }
                     Button(action:{
                         self.addDeviceAlert(deviceType: ESP_32.bmp390SPI_Type)
                     }) {
                         Text("Add SPI")
-                    }.buttonStyle(BorderlessButtonStyle())
+                    }
                 }
                 DeviceArrayView(deviceArray : ESP_32.bmp390s)
             }
@@ -82,12 +82,12 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.bno08xI2C_Type)
                     }) {
                         Text("Add I2C")
-                    }.buttonStyle(BorderlessButtonStyle())
+                    }
                     Button(action:{
                         self.addDeviceAlert(deviceType: ESP_32.bno08xSPI_Type)
                     }) {
                         Text("Add SPI")
-                    }.buttonStyle(BorderlessButtonStyle())
+                    }
                 }
                 DeviceArrayView(deviceArray : ESP_32.bno08xs)
             }

@@ -107,7 +107,7 @@ struct BNO08XChartView : View {
 
             }
             HStack {
-                Text("Reset Data For:")
+                Text("Reset:")
                 Button(action: {
                     bno08x.resetRotation()
                 }) {

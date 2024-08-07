@@ -40,9 +40,21 @@ class BMP390 : Device {
                            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
     }
     
-    func resetData() {
+    func resetAll() {
+        resetTemperature()
+        resetPressure()
+        resetAltitude()
+    }
+    
+    func resetTemperature() {
         temperatureData.removeAll()
+    }
+    
+    func resetPressure() {
         pressureData.removeAll()
+    }
+    
+    func resetAltitude() {
         altitudeData.removeAll()
     }
 }
