@@ -218,54 +218,59 @@ extension BTDevice: CBPeripheralDelegate {
                 //rotation
                 if(Int(value[...value.startIndex]) == 3) {
                     value.remove(at: value.startIndex)
-                    let bno08xXData = Float(value[..<value.firstIndex(of: ",")!])!
+                    
+                    let rotationX = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    print(bno08xXData)
-                    let bno08xYData = Float(value[..<value.firstIndex(of: ",")!])!
+                    
+                    let rotationY = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    print(bno08xYData)
-                    let bno08xZData = Float(value[..<value.firstIndex(of: ",")!])!
-                    print(bno08xZData)
-                    let bno08xRealData = Float(value[..<value.firstIndex(of: ",")!])!
+                    
+                    let rotationZ = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    print(bno08xRealData)
+
+                    let rotationReal = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    let bno08xAccuracyData = Float(value)!
-                    print(bno08xAccuracyData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addRotationX(rotationX: bno08xXData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addRotationY(rotationY: bno08xYData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addRotationZ(rotationZ: bno08xZData)
+                    
+                    let rotationAccuracy = Float(value)!
+
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationX(rotationX: rotationX)
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationY(rotationY: rotationY)
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationZ(rotationZ: rotationZ)
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationReal(rotationReal: rotationReal)
+                    ESP_32!.getBNO08X(index: deviceNumber).addRotationAccuracy(rotationAccuracy: rotationAccuracy)
                     print("rotation")
                 }
                 //gyro
                 if(Int(value[...value.startIndex]) == 4) {
                     value.remove(at: value.startIndex)
-                    let bno08xXData = Float(value[..<value.firstIndex(of: ",")!])!
+                    let gyroX = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    print(bno08xXData)
-                    let bno08xYData = Float(value[..<value.firstIndex(of: ",")!])!
+
+                    let gyroY = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    print(bno08xYData)
-                    let bno08xZData = Float(value)!
-                    print(bno08xZData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addGyroX(gyroX: bno08xXData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addGyroY(gyroY: bno08xYData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addGyroZ(gyroZ: bno08xZData)
+   
+                    let gyroZ = Float(value)!
+
+                    ESP_32!.getBNO08X(index: deviceNumber).addGyroX(gyroX: gyroX)
+                    ESP_32!.getBNO08X(index: deviceNumber).addGyroY(gyroY: gyroY)
+                    ESP_32!.getBNO08X(index: deviceNumber).addGyroZ(gyroZ: gyroZ)
                     print("gyro")
                 }
                 //accelerometer
                 if(Int(value[...value.startIndex]) == 5) {
                     value.remove(at: value.startIndex)
-                    let bno08xXData = Float(value[..<value.firstIndex(of: ",")!])!
+                    
+                    let accelX = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    print(bno08xXData)
-                    let bno08xYData = Float(value[..<value.firstIndex(of: ",")!])!
+                    
+                    let accelY = Float(value[..<value.firstIndex(of: ",")!])!
                     value.removeSubrange(...value.firstIndex(of: ",")!)
-                    let bno08xZData = Float(value)!
-                    print(bno08xZData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerX(accelerometerX: bno08xXData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerY(accelerometerY: bno08xYData)
-                    ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerZ(accelerometerZ: bno08xZData)
+                    
+                    let accelZ = Float(value)!
+                    
+                    ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerX(accelerometerX: accelX)
+                    ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerY(accelerometerY: accelY)
+                    ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerZ(accelerometerZ: accelZ)
                     print("accelerometer")
                 }
             }

@@ -139,18 +139,6 @@ class BNO08X : Device {
                            style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
     }
     
-    func getRotation() -> MultiLineDataSet {
-        return MultiLineDataSet(dataSets: [getRotationX(), getRotationY(), getRotationZ(), getRotationReal(), getRotationAccuracy()])
-    }
-    
-    func getGyro() -> MultiLineDataSet {
-        return MultiLineDataSet(dataSets: [getGyroX(), getGyroY(), getGyroZ()])
-    }
-    
-    func getAccelerometer() -> MultiLineDataSet {
-        return MultiLineDataSet(dataSets: [getAccelerometerX(), getAccelerometerY(), getAccelerometerZ()])
-    }
-    
     func resetData() {
         rotationXData.removeAll()
         rotationYData.removeAll()

@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftUICharts
 
-struct TestView: View {
+struct MultiLineChartDemoView: View {
     
     let data : MultiLineChartData = weekOfData()
         
@@ -33,6 +33,23 @@ struct TestView: View {
 
     static func weekOfData() -> MultiLineChartData {
         let data = MultiLineDataSet(dataSets: [
+            LineDataSet(dataPoints: [
+                LineChartDataPoint(value: 4.3,  xAxisLabel: "J", description: "January"),
+                LineChartDataPoint(value: 4.5,  xAxisLabel: "F", description: "February"),
+                LineChartDataPoint(value: 6.9,  xAxisLabel: "M", description: "March"),
+                LineChartDataPoint(value: 8.7,  xAxisLabel: "A", description: "April"),
+                LineChartDataPoint(value: 12.1, xAxisLabel: "M", description: "May"),
+                LineChartDataPoint(value: 15.1, xAxisLabel: "J", description: "June"),
+                LineChartDataPoint(value: 17.3, xAxisLabel: "J", description: "July"),
+                LineChartDataPoint(value: 17.0, xAxisLabel: "A", description: "August"),
+                LineChartDataPoint(value: 14.3, xAxisLabel: "S", description: "September"),
+                LineChartDataPoint(value: 10.9, xAxisLabel: "O", description: "October"),
+                LineChartDataPoint(value: 7.2,  xAxisLabel: "N", description: "November"),
+                LineChartDataPoint(value: 4.7,  xAxisLabel: "D", description: "December")
+            ],
+            legendTitle: "London",
+            pointStyle: PointStyle(pointType: .outline, pointShape: .circle),
+            style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line)),
             
             LineDataSet(dataPoints: [
                 LineChartDataPoint(value: 16.9, xAxisLabel: "J", description: "January"),
@@ -90,23 +107,23 @@ struct TestView: View {
         ])
         
         return MultiLineChartData(dataSets: data,
-                                          metadata: ChartMetadata(title: "Average Temperature", subtitle: "Monthly"),
-                                          xAxisLabels: ["January", "December"],
-                                          chartStyle: LineChartStyle(infoBoxPlacement: .floating,
-                                                                     markerType: .full(attachment: .line(dot: .style(DotStyle()))),
-                                                                     xAxisGridStyle: GridStyle(numberOfLines: 12),
-                                                                     xAxisTitle: "Month",
-                                                                     yAxisGridStyle: GridStyle(numberOfLines: 5),
-                                                                     yAxisNumberOfLabels: 5,
-                                                                     yAxisTitle: "Temperature (ºc)",
-                                                                     baseline: .minimumValue,
-                                                                     topLine: .maximumValue, globalAnimation: .easeOut(duration: 0)))
+                                  metadata: ChartMetadata(title: "Average Temperature", subtitle: "Monthly"),
+                                  xAxisLabels: ["January", "December"],
+                                  chartStyle: LineChartStyle(infoBoxPlacement: .floating,
+                                                             markerType: .full(attachment: .line(dot: .style(DotStyle()))),
+                                                             xAxisGridStyle: GridStyle(numberOfLines: 12),
+                                                             xAxisTitle: "Month",
+                                                             yAxisGridStyle: GridStyle(numberOfLines: 5),
+                                                             yAxisNumberOfLabels: 5,
+                                                             yAxisTitle: "Temperature (ºc)",
+                                                             baseline: .minimumValue,
+                                                             topLine: .maximumValue))
     }
 }
 
-struct TestView_Previews: PreviewProvider {
+struct MultiLineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        TestView()
+        MultiLineChartDemoView()
             .preferredColorScheme(.dark)
     }
 }
