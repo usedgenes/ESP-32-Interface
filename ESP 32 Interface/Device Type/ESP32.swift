@@ -19,6 +19,9 @@ class ESP32 : ObservableObject {
     var bno08xI2C_Type : DeviceType
     var bno08xSPI_Type : DeviceType
     
+    var pins : DeviceArray = DeviceArray(name: "Pin")
+    var pin_Type : DeviceType
+    
     func getServos() -> DeviceArray {
         return servos
     }
@@ -39,6 +42,10 @@ class ESP32 : ObservableObject {
         return bno08xs.getDevice(index: index) as! BNO08X
     }
     
+    func getPins() -> DeviceArray {
+        return pins
+    }
+    
     init() {
         servo_Type = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self, devices: servos)
         
@@ -47,6 +54,8 @@ class ESP32 : ObservableObject {
         
         bno08xI2C_Type = DeviceType(type: "BNO08X I2C", pinTypes: ["SDA", "SCL"], deviceType: BNO08X.self, devices: bno08xs)
         bno08xSPI_Type = DeviceType(type: "BNO08X SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI", "INT", "RST"], deviceType: BNO08X.self, devices: bno08xs)
+        
+        pin_Type = DeviceType(type: "Pin", pinTypes: ["Pin"], deviceType: Device.self, devices: pins)
     }
     
     enum CodingKeys: CodingKey {
@@ -69,6 +78,11 @@ class ESP32 : ObservableObject {
         if let encoded = try? encoder.encode(self.getBNO08Xs().getDevices()) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: self.getBNO08Xs().name)
+        }
+        //pins
+        if let encoded = try? encoder.encode(self.getPins().getDevices()) {
+            let defaults = UserDefaults.standard
+            defaults.set(encoded, forKey: self.getPins().name)
         }
     }
     
@@ -95,11 +109,19 @@ class ESP32 : ObservableObject {
                     self.bno08xs.setDevices(devices: loadedDevices)
             }
         }
+        //pins
+        if let savedDevices = defaults.object(forKey: self.getPins().name) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDevices = try? decoder.decode([Device].self, from: savedDevices) {
+                    self.pins.setDevices(devices: loadedDevices)
+            }
+        }
     }
     
     func cleanState() {
         servos.resetDevices()
         bmp390s.resetDevices()
         bno08xs.resetDevices()
+        pins.resetDevices()
     }
 }

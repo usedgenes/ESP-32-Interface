@@ -12,12 +12,12 @@
 		443A04ED2C5EE749008F4F21 /* BMP390View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04EC2C5EE749008F4F21 /* BMP390View.swift */; };
 		443A04EF2C5F45B5008F4F21 /* BMP390.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04EE2C5F45B5008F4F21 /* BMP390.swift */; };
 		443A04F12C5F46B4008F4F21 /* Servo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04F02C5F46B4008F4F21 /* Servo.swift */; };
-		443A04F32C5F48AE008F4F21 /* Motor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04F22C5F48AE008F4F21 /* Motor.swift */; };
 		443A04F72C5F48E3008F4F21 /* BNO08X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A04F62C5F48E3008F4F21 /* BNO08X.swift */; };
 		443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */; };
 		443A4D7B2C549284004E1D26 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7A2C549284004E1D26 /* Device.swift */; };
 		443A4D802C549B90004E1D26 /* ESP32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A4D7F2C549B90004E1D26 /* ESP32.swift */; };
-		445885722C63F93100E7F10C /* test.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 445885712C63F93100E7F10C /* test.pdf */; };
+		445885742C641CA800E7F10C /* DigitalAnalogPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445885732C641CA800E7F10C /* DigitalAnalogPinView.swift */; };
+		445885762C6423AF00E7F10C /* ArduinoCode.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 445885752C6423AF00E7F10C /* ArduinoCode.pdf */; };
 		4474225A2C599917004D217F /* BNO08XView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447422592C599917004D217F /* BNO08XView.swift */; };
 		448DA9C32C6173CA0088F60E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 448DA9C22C6173CA0088F60E /* SwiftUICharts */; };
 		448DA9C52C617E330088F60E /* ChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9C42C617E330088F60E /* ChartStyle.swift */; };
@@ -61,12 +61,12 @@
 		443A04EC2C5EE749008F4F21 /* BMP390View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMP390View.swift; sourceTree = "<group>"; };
 		443A04EE2C5F45B5008F4F21 /* BMP390.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMP390.swift; sourceTree = "<group>"; };
 		443A04F02C5F46B4008F4F21 /* Servo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servo.swift; sourceTree = "<group>"; };
-		443A04F22C5F48AE008F4F21 /* Motor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Motor.swift; sourceTree = "<group>"; };
 		443A04F62C5F48E3008F4F21 /* BNO08X.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08X.swift; sourceTree = "<group>"; };
 		443A4D772C5481B1004E1D26 /* BluetoothDeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceHelper.swift; sourceTree = "<group>"; };
 		443A4D7A2C549284004E1D26 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		443A4D7F2C549B90004E1D26 /* ESP32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP32.swift; sourceTree = "<group>"; };
-		445885712C63F93100E7F10C /* test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = test.pdf; sourceTree = "<group>"; };
+		445885732C641CA800E7F10C /* DigitalAnalogPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalAnalogPinView.swift; sourceTree = "<group>"; };
+		445885752C6423AF00E7F10C /* ArduinoCode.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ArduinoCode.pdf; sourceTree = "<group>"; };
 		447422592C599917004D217F /* BNO08XView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08XView.swift; sourceTree = "<group>"; };
 		448DA9C42C617E330088F60E /* ChartStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyle.swift; sourceTree = "<group>"; };
 		448DA9CC2C61A4010088F60E /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
@@ -122,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				44B3C00D2C50BE6800CAADBC /* HomeScreenView.swift */,
+				445885732C641CA800E7F10C /* DigitalAnalogPinView.swift */,
 				443A04EA2C5ECE94008F4F21 /* AppHelpView.swift */,
 				448DA9CC2C61A4010088F60E /* TestView.swift */,
 				44B3C0382C50C97200CAADBC /* ServoView.swift */,
@@ -138,7 +139,6 @@
 			children = (
 				443A4D7A2C549284004E1D26 /* Device.swift */,
 				443A4D7F2C549B90004E1D26 /* ESP32.swift */,
-				443A04F22C5F48AE008F4F21 /* Motor.swift */,
 				443A04EE2C5F45B5008F4F21 /* BMP390.swift */,
 				443A04F02C5F46B4008F4F21 /* Servo.swift */,
 				443A04F62C5F48E3008F4F21 /* BNO08X.swift */,
@@ -182,7 +182,7 @@
 		44B3C00A2C50BE6800CAADBC /* ESP 32 Interface */ = {
 			isa = PBXGroup;
 			children = (
-				445885712C63F93100E7F10C /* test.pdf */,
+				445885752C6423AF00E7F10C /* ArduinoCode.pdf */,
 				443A4D7C2C549293004E1D26 /* Device Type */,
 				443A4D792C548F70004E1D26 /* Views */,
 				449096462C520ED100EF97A3 /* Bluetooth */,
@@ -333,8 +333,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				44B3C0142C50BE6A00CAADBC /* Preview Assets.xcassets in Resources */,
+				445885762C6423AF00E7F10C /* ArduinoCode.pdf in Resources */,
 				44B3C0102C50BE6A00CAADBC /* Assets.xcassets in Resources */,
-				445885722C63F93100E7F10C /* test.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +359,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				445885742C641CA800E7F10C /* DigitalAnalogPinView.swift in Sources */,
 				449096482C52210F00EF97A3 /* BluetoothConnectView.swift in Sources */,
 				449096422C520ECD00EF97A3 /* BTManager.swift in Sources */,
 				448DA9CD2C61A4010088F60E /* TestView.swift in Sources */,
@@ -366,7 +367,6 @@
 				4474225A2C599917004D217F /* BNO08XView.swift in Sources */,
 				449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */,
 				449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */,
-				443A04F32C5F48AE008F4F21 /* Motor.swift in Sources */,
 				443A04F72C5F48E3008F4F21 /* BNO08X.swift in Sources */,
 				443A4D782C5481B1004E1D26 /* BluetoothDeviceHelper.swift in Sources */,
 				449840492C53532400A7AF05 /* BluetoothManagerHelper.swift in Sources */,

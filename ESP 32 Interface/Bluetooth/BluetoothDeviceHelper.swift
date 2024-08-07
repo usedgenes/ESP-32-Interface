@@ -70,6 +70,10 @@ class BluetoothDeviceHelper: ObservableObject {
     func setBNO08X(input: String) {
         device!.bno08xString = input
     }
+    
+    func setPin(input: String) {
+        device!.pinString = input
+    }
 }
 
 extension BluetoothDeviceHelper: BTDeviceDelegate {

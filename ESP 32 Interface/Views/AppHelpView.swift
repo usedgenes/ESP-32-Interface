@@ -21,8 +21,8 @@ struct AppHelpView: View {
             .sheet(isPresented: $isSharePresented, onDismiss: {
                 print("Dismiss")
             }, content: {
-                let url = Bundle.main.url(forResource: "test", withExtension: "pdf")!
-                var document = PDFDocument(url: url)
+                let url = Bundle.main.url(forResource: "ArduinoCode", withExtension: "pdf")!
+                let document = PDFDocument(url: url)
                 let documentData = document!.dataRepresentation()
                 ActivityViewController(activityItems: ["Name To Present to User", documentData!], applicationActivities: nil)
             })
@@ -69,6 +69,19 @@ struct AppHelpView: View {
                     content: {
                         HStack {
                             Text("Simply enter the servo position and press \"Send\" to set the desired servo position")
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
+                        .padding(.bottom, 15)
+                    }
+                )
+                
+                CollapsibleView(
+                    label: { Text("BNO08Xs") },
+                    content: {
+                        HStack {
+                            Text("Press the \"View Data\" button to open the bno08x data screen. Press \"Get Data\" to have the bno08x start logging data, and press \"Stop\" to stop logging data. Press any of the \"Reset\" buttons to clear the corresponding graph data. Press any of the three data buttons to open up a graph view of what you want.")
                             Spacer()
                         }
                         .frame(maxWidth: .infinity)

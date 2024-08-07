@@ -40,7 +40,10 @@ struct HomeScreenView: View {
                         .disabled(!bluetoothDevice.isConnected)
                     NavigationLink("BNO08X", destination: BNO08XView())
                         .disabled(!bluetoothDevice.isConnected)
-                    NavigationLink("Test", destination: MultiLineChartDemoView())
+                }
+                Section(header: Text("Miscellaneous")) {
+                    NavigationLink("Digital/Analog Pin", destination: DigitalAnalogPinView())
+                        .disabled(!bluetoothDevice.isConnected)
                 }
             }
             .navigationBarTitle("ESP32 Assistant")

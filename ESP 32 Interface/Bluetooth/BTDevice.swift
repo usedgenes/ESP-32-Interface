@@ -28,9 +28,22 @@ class BTDevice: NSObject {
     
     private var bno08xChar: CBCharacteristic?
     
+    private var pinChar: CBCharacteristic?
+    
     var ESP_32 : ESP32?
     
     weak var delegate: BTDeviceDelegate?
+    
+    var pinString: String {
+        get {
+            return self.pinString
+        }
+        set {
+            if let char = pinChar {
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
+            }
+        }
+    }
     
     var bno08xString: String {
         get {
@@ -132,7 +145,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -158,6 +171,10 @@ extension BTDevice: CBPeripheralDelegate {
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
             } else if $0.uuid == BTUUIDs.bno08xUUID {
+                self.bno08xChar = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
+            } else if $0.uuid == BTUUIDs.pinUUID{
                 self.bno08xChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)

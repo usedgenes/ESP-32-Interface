@@ -80,6 +80,9 @@ struct BNO08XChartView : View {
             Text("\(bno08x.name) Data Graphs")
                 .frame(maxWidth: .infinity, alignment: .center)
             HStack {
+                Text("Delay: 1 second")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
                 Button(action: {
                     if(timer == nil) {
                         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(delayTime/1000), repeats: true, block: { _ in
@@ -134,9 +137,6 @@ struct BNO08XChartView : View {
 
             }.frame(maxWidth: .infinity, alignment: .center)
 
-            Text("Delay: 1 second")
-                .frame(maxWidth: .infinity, alignment: .center)
-
             GroupBox {
                 NavigationLink("Rotation Data", destination: RotationView(bno08x: bno08x))
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -150,7 +150,6 @@ struct BNO08XChartView : View {
             GroupBox {
                 NavigationLink("Accelerometer Data", destination: AccelerationView(bno08x: bno08x))
                     .frame(maxWidth: .infinity, alignment: .center)
-
             }
         }.navigationViewStyle(StackNavigationViewStyle())
     }

@@ -91,6 +91,18 @@ struct DeviceView: View {
                 }
                 DeviceArrayView(deviceArray : ESP_32.bno08xs)
             }
+            Section(header: Text("Miscellaneous")) {
+                HStack{
+                    Text("Pins")
+                    Spacer()
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.pin_Type)
+                    }) {
+                        Text("Add Pin")
+                    }
+                }
+                DeviceArrayView(deviceArray : ESP_32.pins)
+            }
         }
         .onDisappear(perform: {
             ESP_32.saveState()
