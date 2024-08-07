@@ -227,32 +227,33 @@ class BNO08XCallbacks : public BLECharacteristicCallbacks {
         setReports(bno08xNumberInt);
       }
       if (bno08xArray[bno08xNumberInt].getSensorEvent() == true) {}
-      // float quatI = bno08xArray[bno08xNumberInt].getQuatI();
-      // float quatJ = bno08xArray[bno08xNumberInt].getQuatJ();
-      // float quatK = bno08xArray[bno08xNumberInt].getQuatK();
-      // float quatReal = bno08xArray[bno08xNumberInt].getQuatReal();
+      float quatI = bno08xArray[bno08xNumberInt].getQuatI();
+      float quatJ = bno08xArray[bno08xNumberInt].getQuatJ();
+      float quatK = bno08xArray[bno08xNumberInt].getQuatK();
+      float quatReal = bno08xArray[bno08xNumberInt].getQuatReal();
+      float quatAccuracy = bno08xArray[bno08xNumberInt].getQuatRadianAccuracy();
 
-      float x1 = bno08xArray[bno08xNumberInt].getGyroX();
-      float y1 = bno08xArray[bno08xNumberInt].getGyroY();
-      float z1 = bno08xArray[bno08xNumberInt].getGyroZ();
+      float xGyro = bno08xArray[bno08xNumberInt].getGyroX();
+      float yGyro = bno08xArray[bno08xNumberInt].getGyroY();
+      float zGyro = bno08xArray[bno08xNumberInt].getGyroZ();
 
-      float x2 = bno08xArray[bno08xNumberInt].getAccelX();
-      float y2 = bno08xArray[bno08xNumberInt].getAccelY();
-      float z2 = bno08xArray[bno08xNumberInt].getAccelZ();
+      float xAccelerometer = bno08xArray[bno08xNumberInt].getAccelX();
+      float yAccelerometer = bno08xArray[bno08xNumberInt].getAccelY();
+      float zAccelerometer = bno08xArray[bno08xNumberInt].getAccelZ();
 
-      // pCharacteristic->setValue(bno08xNumber + "3" + String(quatI, 2) + ",");
-      // pCharacteristic->notify();
-      // Serial.println("done");
-      pCharacteristic->setValue(bno08xNumber + "4" + String(x1, 2) + "," + String(y1, 2) + "," + String(z1, 2));
+      pCharacteristic->setValue(bno08xNumber + "3" + String(quatI, 2) + "," + String(quatJ, 2) + "," + String(quatK, 2) + "," + String(quatReal, 2) + "," + String(quatAccuracy, 2));
       pCharacteristic->notify();
-      Serial.println(bno08xNumber + "4" + String(x1, 2) + "," + String(y1, 2) + "," + String(z1, 2));
-      pCharacteristic->setValue(bno08xNumber + "5" + String(x2, 2) + "," + String(y2, 2) + "," + String(z2, 2));
+      Serial.println(bno08xNumber + "3" + String(quatI, 2) + "," + String(quatJ, 2) + "," + String(quatK, 2) + "," + String(quatReal, 2) + "," + String(quatAccuracy, 2));
+      pCharacteristic->setValue(bno08xNumber + "4" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
       pCharacteristic->notify();
-      Serial.println(bno08xNumber + "4" + String(x1, 2) + "," + String(y1, 2) + "," + String(z1, 2));
+      Serial.println(bno08xNumber + "4" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
+      pCharacteristic->setValue(bno08xNumber + "5" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
+      pCharacteristic->notify();
+      Serial.println(bno08xNumber + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
       Serial.println("notifying bno08x");
     }
+    Serial.println(value);
   }
-  Serial.println(value);
 };
 
 void setReports(int bno08xNumberInt) {
