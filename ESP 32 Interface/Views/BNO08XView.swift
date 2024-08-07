@@ -75,6 +75,7 @@ struct BNO08XChartView : View {
     @State var delayTime = 500
     var body : some View {
         VStack {
+            
             HStack {
                 Button(action: {
                     if(timer == nil) {
@@ -86,41 +87,80 @@ struct BNO08XChartView : View {
                 }) {
                     Text("Get Data")
                 }.disabled(timerOn)
-                    .padding()
+                    .buttonStyle(BorderlessButtonStyle())
                 
                 Button(action: {
-                    timer?.invalidate()
-                    timer = nil
-                    timerOn.toggle()
+                    if timer != nil {
+                        timer?.invalidate()
+                        timer = nil
+                        timerOn.toggle()
+                        print("invalidating")
+                    }
                 }) {
                     Text("Stop")
                 }.disabled(!timerOn)
-                    .padding()
+                    .buttonStyle(BorderlessButtonStyle())
+                
             }
             HStack {
-                Text("Delay (ms):")
+                Text("Delay: 1 second")
                     .padding()
-                //                TextField("\(delayTime)", text: Binding<String>(
-                //                    get: { String(delayTime) },
-                //                    set: {
-                //                        if let value = NumberFormatter().number(from: $0) {
-                //                            self.delayTime = value.intValue
-                //
-                //                        }
-                //                    }))
-                //                    .keyboardType(UIKeyboardType.numberPad)
-                //                    .disabled(timerOn)
                 Spacer()
                 Button(action: {
-                    timer?.invalidate()
-                    timer = nil
-                    timerOn.toggle()
                     bno08x.resetData()
                 }) {
                     Text("Reset Altimeter Data")
-                }.padding()
+                }.buttonStyle(BorderlessButtonStyle())
             }
-        }
+            let rotationData = MultiLineChartData(dataSets: bno08x.getRotation(), chartStyle: ChartStyle().getChartStyle())
+            
+            //rotation
+            MultiLineChart(chartData: rotationData)
+                .touchOverlay(chartData: rotationData, specifier: "%.2f")
+                .xAxisGrid(chartData: rotationData)
+                .yAxisGrid(chartData: rotationData)
+                .xAxisLabels(chartData: rotationData)
+                .yAxisLabels(chartData: rotationData, specifier: "%.2f")
+                .floatingInfoBox(chartData: rotationData)
+                .id(rotationData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
+            Text("Rotation")
+                .padding()
+            
+            let gyroData = MultiLineChartData(dataSets: bno08x.getGyro(), chartStyle: ChartStyle().getChartStyle())
+            
+            //pressure
+            MultiLineChart(chartData: gyroData)
+                .touchOverlay(chartData: gyroData, specifier: "%.2f")
+                .xAxisGrid(chartData: gyroData)
+                .yAxisGrid(chartData: gyroData)
+                .xAxisLabels(chartData: gyroData)
+                .yAxisLabels(chartData: gyroData, specifier: "%.2f")
+                .floatingInfoBox(chartData: gyroData)
+                .id(gyroData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            Text("Gyro")
+                .padding()
+            
+            let accelerometerData = MultiLineChartData(dataSets: bno08x.getAccelerometer(), chartStyle: ChartStyle().getChartStyle())
+            
+            //altitude
+            MultiLineChart(chartData: accelerometerData)
+                .touchOverlay(chartData: accelerometerData, specifier: "%.2f")
+                .xAxisGrid(chartData: accelerometerData)
+                .yAxisGrid(chartData: accelerometerData)
+                .xAxisLabels(chartData: accelerometerData)
+                .yAxisLabels(chartData: accelerometerData, specifier: "%.2f")
+                .floatingInfoBox(chartData: accelerometerData)
+                .id(accelerometerData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            Text("Accelerometer")
+                .padding()
+        }.onDisappear(perform: {
+            timer?.invalidate()
+            timer = nil
+            timerOn.toggle()})
+        
     }
 }
 
