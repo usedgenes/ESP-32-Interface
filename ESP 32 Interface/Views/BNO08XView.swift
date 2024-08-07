@@ -47,18 +47,21 @@ struct BNO08XView: View {
 struct individualBNO08XView : View {
     @EnvironmentObject var ESP_32 : ESP32
     @ObservedObject var bno08x : BNO08X
+    let items = [GridItem(), GridItem(), GridItem(), GridItem()]
     var body : some View {
         Section() {
-            HStack {
-                Text("\(bno08x.name)")
-                Spacer()
+            Text("\(bno08x.name)")
+                .frame(maxWidth: .infinity, alignment: .center)
+            LazyVGrid(columns: items) {
                 ForEach(bno08x.attachedPins) { pin in
                     Text("\(pin.pinName): \(pin.pinNumber)")
+                    
                 }
             }
             .contentShape(Rectangle())
             HStack {
                 NavigationLink("View Data", destination: BNO08XChartView(bno08x: bno08x))
+                    .padding()
             }
             
         }
@@ -72,23 +75,22 @@ struct BNO08XChartView : View {
     @EnvironmentObject var ESP_32 : ESP32
     @State var timerOn = false
     @State var timer : Timer?
-    @State var delayTime = 2500
+    @State var delayTime = 1000
     var body : some View {
-        VStack {
-            
+        Section() {
             HStack {
                 Button(action: {
                     if(timer == nil) {
                         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(delayTime/1000), repeats: true, block: { _ in
                             bluetoothDevice.setBNO08X(input: "2" + String(format: "%02d", ESP_32.getBNO08Xs().getDeviceNumberInArray(inputDevice: bno08x)))
                         })
-                        let _ = print("2" + String(format: "%02d", ESP_32.getBNO08Xs().getDeviceNumberInArray(inputDevice: bno08x)))
                     }
                     timerOn.toggle()
                 }) {
                     Text("Get Data")
                 }.disabled(timerOn)
                     .buttonStyle(BorderlessButtonStyle())
+                    .padding()
                 
                 Button(action: {
                     if timer != nil {
@@ -100,23 +102,43 @@ struct BNO08XChartView : View {
                     Text("Stop")
                 }.disabled(!timerOn)
                     .buttonStyle(BorderlessButtonStyle())
-                
+                    .padding()
             }
             HStack {
-                Text("Delay: 1 second")
-                    .padding()
-                Spacer()
+                Text("Reset Data For:")
                 Button(action: {
-                    bno08x.resetData()
+                    bno08x.resetRotation()
                 }) {
-                    Text("Reset Altimeter Data")
+                    Text("Rotation")
                 }.buttonStyle(BorderlessButtonStyle())
+                Button(action: {
+                    bno08x.resetGyro()
+                }) {
+                    Text("Gyro")
+                }
+                Button(action: {
+                    bno08x.resetAccelerometer()
+                }) {
+                    Text("Gyro")
+                }
+                Button(action: {
+                    bno08x.resetAll()
+                }) {
+                    Text("All")
+                }
             }
-            NavigationLink("Rotation Data", destination: RotationView(bno08x: bno08x))
-            NavigationLink("Gyro Data", destination: GyroView(bno08x: bno08x))
-            NavigationLink("Accelerometer Data", destination: AccelerationView(bno08x: bno08x))
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
+            Text("Delay: 1 second")
+                .padding()
+            GroupBox {
+                NavigationLink("Rotation Data", destination: RotationView(bno08x: bno08x))
+            }
+            GroupBox {
+                NavigationLink("Gyro Data", destination: GyroView(bno08x: bno08x))
+            }
+            GroupBox {
+                NavigationLink("Accelerometer Data", destination: AccelerationView(bno08x: bno08x))
+            }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
@@ -146,7 +168,7 @@ struct AccelerationView: View {
             //accelerometer y
             LineChart(chartData: accelerationYData)
                 .filledTopLine(chartData: accelerationYData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .green),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: accelerationYData, specifier: "%.2f")
                 .xAxisGrid(chartData: accelerationYData)
@@ -163,7 +185,7 @@ struct AccelerationView: View {
             //accelerometer z
             LineChart(chartData: accelerationZData)
                 .filledTopLine(chartData: accelerationZData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .blue),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: accelerationZData, specifier: "%.2f")
                 .xAxisGrid(chartData: accelerationZData)
@@ -206,7 +228,7 @@ struct GyroView: View {
             //gyro y
             LineChart(chartData: gyroYData)
                 .filledTopLine(chartData: gyroYData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .green),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: gyroYData, specifier: "%.2f")
                 .xAxisGrid(chartData: gyroYData)
@@ -224,7 +246,7 @@ struct GyroView: View {
             //gyro z
             LineChart(chartData: gyroZData)
                 .filledTopLine(chartData: gyroZData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .blue),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: gyroZData, specifier: "%.2f")
                 .xAxisGrid(chartData: gyroZData)
@@ -266,7 +288,7 @@ struct RotationView: View {
             //rotation y
             LineChart(chartData: rotationYData)
                 .filledTopLine(chartData: rotationYData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .green),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: rotationYData, specifier: "%.2f")
                 .xAxisGrid(chartData: rotationYData)
@@ -284,7 +306,7 @@ struct RotationView: View {
             //rotation z
             LineChart(chartData: rotationZData)
                 .filledTopLine(chartData: rotationZData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .blue),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: rotationZData, specifier: "%.2f")
                 .xAxisGrid(chartData: rotationZData)
@@ -302,7 +324,7 @@ struct RotationView: View {
             //rotation real
             LineChart(chartData: rotationRealData)
                 .filledTopLine(chartData: rotationRealData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .purple),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: rotationRealData, specifier: "%.2f")
                 .xAxisGrid(chartData: rotationRealData)
@@ -320,7 +342,7 @@ struct RotationView: View {
             //rotation accuracy
             LineChart(chartData: rotationAccuracyData)
                 .filledTopLine(chartData: rotationAccuracyData,
-                               lineColour: ColourStyle(colour: .red),
+                               lineColour: ColourStyle(colour: .yellow),
                                strokeStyle: StrokeStyle(lineWidth: 3))
                 .touchOverlay(chartData: rotationAccuracyData, specifier: "%.2f")
                 .xAxisGrid(chartData: rotationAccuracyData)

@@ -67,7 +67,7 @@ struct individualServoView : View {
                     print(servoPosition)
                     }) {
                         Text("Send")
-                    }
+                    }.buttonStyle(BorderlessButtonStyle())
             }
         }
     }

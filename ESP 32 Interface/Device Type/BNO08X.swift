@@ -42,7 +42,7 @@ class BNO08X : Device {
     }
     
     func addGyroY(gyroY: Float) {
-        gyroZData.append(LineChartDataPoint(value: Double(gyroY), xAxisLabel: " ", description: "Y"))
+        gyroYData.append(LineChartDataPoint(value: Double(gyroY), xAxisLabel: " ", description: "Y"))
     }
     
     func addGyroZ(gyroZ: Float) {
@@ -139,15 +139,27 @@ class BNO08X : Device {
                            style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
     }
     
-    func resetData() {
+    func resetAll() {
+        resetRotation()
+        resetGyro()
+        resetAccelerometer()
+    }
+    
+    func resetRotation() {
         rotationXData.removeAll()
         rotationYData.removeAll()
         rotationZData.removeAll()
         rotationRealData.removeAll()
         rotationAccuracyData.removeAll()
+    }
+    
+    func resetGyro() {
         gyroXData.removeAll()
         gyroYData.removeAll()
         gyroZData.removeAll()
+    }
+    
+    func resetAccelerometer() {
         accelerometerXData.removeAll()
         accelerometerYData.removeAll()
         accelerometerZData.removeAll()
