@@ -1,10 +1,3 @@
-//
-//  DigitalAnalogPinView.swift
-//  ESP 32 Interface
-//
-//  Created by Eugene on 8/7/24.
-//
-
 import SwiftUI
 
 struct DigitalAnalogPinView: View {
@@ -21,12 +14,11 @@ struct DigitalAnalogPinView: View {
                         individualPinView(pin: pin)
                     }
                 }.onAppear(perform: {
-                    bluetoothDevice.setServos(input: "0" + String(ESP_32.getServos().devices.count))
-                    var servoDigitalPins = ""
-                    for servo in ESP_32.getServos().devices {
-                        servoDigitalPins += String(servo.getPinNumber(name: "Digital"))
+                    bluetoothDevice.setPin(input: "0" + String(ESP_32.getPins().devices.count))
+                    print("setting")
+                    for pin in ESP_32.getPins().devices {
+                        bluetoothDevice.setPin(input: "1" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + String(pin.getPinNumber(name:"Pin")))
                     }
-                    bluetoothDevice.setServos(input: "1" + String(servoDigitalPins))
                 })
             }
         }
@@ -38,36 +30,50 @@ struct individualPinView : View {
     @ObservedObject var pin : Device
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     let items = [GridItem()]
-    @State var servoPosition = 0
+    @State var analog = 0
     var body : some View {
         Section() {
-            Text("\(servo.name)")
+            Text("\(pin.name)")
                 .frame(maxWidth: .infinity, alignment: .center)
             LazyVGrid(columns: items) {
                 Spacer()
-                Text("\(servo.attachedPins[0].pinName): \(servo.attachedPins[0].pinNumber)")
+                Text("\(pin.attachedPins[0].pinName): \(pin.attachedPins[0].pinNumber)")
             }
             .contentShape(Rectangle())
             HStack {
-                Text("Servo Position: ")
-                TextField("\(servo.servoPosition)", text: Binding<String>(
-                    get: { String(servo.servoPosition) },
+                Text("Digital: ")
+                
+                Button(action: {
+                    bluetoothDevice.setPin(input: "2" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + "1")
+                    print("high")
+                    }) {
+                        Text("HIGH")
+                    }.buttonStyle(BorderlessButtonStyle())
+                
+                Button(action: {
+                    bluetoothDevice.setPin(input: "2" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + "0")
+                    print("low")
+                    }) {
+                        Text("LOW")
+                    }.buttonStyle(BorderlessButtonStyle())
+            }
+            HStack {
+                Text("Analog: ")
+                TextField("\(analog)", text: Binding<String>(
+                    get: { String(analog) },
                     set: {
                         if let value = NumberFormatter().number(from: $0) {
-                            self.servoPosition = value.intValue
+                            analog = value.intValue
 
                         }
                     }))
                     .keyboardType(UIKeyboardType.numberPad)
                 Button(action: {
-                    servo.servoPosition = servoPosition
-                    bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servoPosition))
-                    print(ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo))
-                    print(servoPosition)
+                    bluetoothDevice.setPin(input: "3" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + String(analog))
                     }) {
                         Text("Send")
                     }.buttonStyle(BorderlessButtonStyle())
-            }.padding()
+            }
         }
     }
 }

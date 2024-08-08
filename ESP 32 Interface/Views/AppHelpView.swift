@@ -102,6 +102,19 @@ struct AppHelpView: View {
                         .padding(.bottom, 15)
                     }
                 )
+                
+                CollapsibleView(
+                    label: { Text("Digital/Analog Pins") },
+                    content: {
+                        HStack {
+                            Text("You can control an individual's pin output to be either digital or analog, though make sure that the pin you're writing to is capable of sending the signal type you're using")
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
+                        .padding(.bottom, 15)
+                    }
+                )
             }
         } .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
     }

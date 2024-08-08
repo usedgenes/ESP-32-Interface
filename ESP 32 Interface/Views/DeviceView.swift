@@ -119,8 +119,13 @@ struct DeviceView: View {
             for number in 0..<deviceType.pinTypes.count {
                 attachedPins.append(AttachedPin(pinName: deviceType.pinTypes[number], pinNumber: pinNumbers[number]))
             }
-            let currentDevice = deviceType.deviceType.init(name: alert.textFields![0].text ?? deviceType.type , attachedPins: attachedPins)
-            deviceType.devices.addDevice(device: currentDevice)
+            if(alert.textFields![0].text == "") {
+                let currentDevice = deviceType.deviceType.init(name: deviceType.type , attachedPins: attachedPins)
+                deviceType.devices.addDevice(device: currentDevice)
+            } else {
+                let currentDevice = deviceType.deviceType.init(name: alert.textFields![0].text ?? deviceType.type , attachedPins: attachedPins)
+                deviceType.devices.addDevice(device: currentDevice)
+            }
             ESP_32.saveState()
         })
         alertDone.isEnabled = false

@@ -40,6 +40,7 @@ class BTDevice: NSObject {
         }
         set {
             if let char = pinChar {
+                print(newValue)
                 peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
             }
         }
@@ -175,7 +176,7 @@ extension BTDevice: CBPeripheralDelegate {
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
             } else if $0.uuid == BTUUIDs.pinUUID{
-                self.bno08xChar = $0
+                self.pinChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
             }
