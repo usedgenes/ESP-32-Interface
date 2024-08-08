@@ -269,21 +269,31 @@ class PinCallbacks : public BLECharacteristicCallbacks {
     if (value.substring(0, 1) == "0") {
       pinArraySize = value.substring(1, value.length()).toInt();
       pinArray = new int[pinArraySize];
-      Serial.println("Allocating bno08x");
+      Serial.println("Allocating pins");
     }
     if (value.substring(0, 1) == "1") {
-      pinMode(value.substring(1, 3).toInt(), OUTPUT);
+      pinArray[value.substring(1, 3).toInt()] = value.substring(3, 4).toInt();
+      pinMode(pinArray[value.substring(1, 3).toInt()], OUTPUT);
+      Serial.print(value.substring(1, 3));
+      Serial.println(" attached pin");
     }
     if (value.substring(0, 1) == "2") {
       if(value.substring(3,4) == "0") {
-        digitalWrite(value.substring(1, 3).toInt(), LOW);
+        digitalWrite(pinArray[value.substring(1, 3).toInt()], LOW);
+        Serial.print(value.substring(1, 3));
+        Serial.println(" digital low");
       }
       else {
-        digitalWrite(value.substring(1, 3).toInt(), HIGH);
+        digitalWrite(pinArray[value.substring(1, 3).toInt()], HIGH);
+        Serial.print(value.substring(1, 3));
+        Serial.println(" digital high");
       }
     }
     if (value.substring(0, 1) == "3") {
       analogWrite(value.substring(1, 3).toInt(), value.substring(3, 6).toInt());
+      Serial.print(value.substring(1, 3));
+      Serial.print(" analog ");
+      Serial.println(value.substring(3,6).toInt());
     }
     Serial.println(value);
   }
@@ -343,6 +353,9 @@ void setup() {
 
   pBNO08X = pService->createCharacteristic(BNO08X_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pBNO08X->setCallbacks(new BNO08XCallbacks());
+
+  pPin = pService->createCharacteristic(PIN_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
+  pPin->setCallbacks(new PinCallbacks());
 
   pService->start();
 
