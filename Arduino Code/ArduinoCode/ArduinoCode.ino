@@ -358,7 +358,68 @@ class BuzzerCallbacks : public BLECharacteristicCallbacks {
 //BMI088
 #include "BMI088.h"
 
-#define UUID_6 "56e48048-19da-4136-a323-d2f3e9cb2a5d"
+#define BMI088_UUID "56e48048-19da-4136-a323-d2f3e9cb2a5d"
+
+BLECharacteristic *pBMI088;
+
+Bmi088Accel **bmi088AccelArray;
+Bmi088Gyro **bmi088GyroArray;
+int bmi088ArraySize;
+
+class BMI088Callbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue();
+    if (value.substring(0, 1) == "0") {
+      bmi088ArraySize = value.substring(1, value.length()).toInt();
+      bmi088AccelArray = new Bmi088Accel *[bmi088ArraySize];
+      bmi088GyroArray = new Bmi088Gyro *[bmi088ArraySize];
+      Serial.println("Allocating bmi088s");
+    }
+    if (value.substring(0, 1) == "1") {
+      if (value.length() == 7) {
+
+      }
+      //spi.begin: SCK, MISO, MOSI, CS
+      else {
+        vspi.begin(value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt(), value.substring(9, 11).toInt());
+        bmi088AccelArray[value.substring(1, 3).toInt()] = new Bmi088Accel(vspi, value.substring(9, 11).toInt());
+        bmi088GyroArray[value.substring(1, 3).toInt()] = new Bmi088Gyro(vspi, value.substring(9, 11).toInt());
+        bmi088AccelArray[value.substring(1, 3).toInt()]->begin();
+        bmi088GyroArray[value.substring(1, 3).toInt()]->begin();
+        Serial.println("Attaching bmi088");
+      }
+    }
+    if (value.substring(0, 1) == "2") {
+      Serial.println("Received");
+      String bmi088Number = value.substring(1, 3);
+      int bmi088NumberInt = bmi088Number.toInt();
+
+      bmi088AccelArray[bmi088NumberInt]->readSensor();
+      bmi088GyroArray[bmi088NumberInt]->readSensor();
+
+      float xGyro = bmi088GyroArray[bmi088NumberInt]->getGyroX_rads();
+      float yGyro = bmi088GyroArray[bmi088NumberInt]->getGyroY_rads();
+      float zGyro = bmi088GyroArray[bmi088NumberInt]->getGyroZ_rads();
+
+      float xAccelerometer = bmi088AccelArray[bmi088NumberInt]->getAccelX_mss();
+      float yAccelerometer = bmi088AccelArray[bmi088NumberInt]->getAccelY_mss();
+      float zAccelerometer = bmi088AccelArray[bmi088NumberInt]->getAccelZ_mss();
+
+      pCharacteristic->setValue(String(bmi088NumberInt) + "3" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
+      pCharacteristic->notify();
+      Serial.println(String(bmi088NumberInt) + "3" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
+
+      pCharacteristic->setValue(String(bmi088NumberInt) + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
+      pCharacteristic->notify();
+      Serial.println(String(bmi088NumberInt) + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
+      
+      Serial.println("notifying bmi088");
+    }
+    Serial.println(value);
+  }
+};
+
+
 #define UUID_7 "83e6a4bd-8347-409c-87f3-d8c896f15d3d"
 #define UUID_8 "680f38b9-6898-40ea-9098-47e30e97dbb5"
 #define UUID_9 "fb02a2fa-2a86-4e95-8110-9ded202af76b"
@@ -398,6 +459,9 @@ void setup() {
 
   pBuzzer = pService->createCharacteristic(BUZZER_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pBuzzer->setCallbacks(new BuzzerCallbacks());
+
+  pBMI088 = pService->createCharacteristic(BMI088_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
+  pBMI088->setCallbacks(new BMI088Callbacks());
 
   pService->start();
 
