@@ -76,10 +76,10 @@ class ESP32 : ObservableObject {
         
         pin_Type = DeviceType(type: "Pin", pinTypes: ["Pin"], deviceType: Device.self, devices: pins)
         
-        buzzer_Type = DeviceType(type: "Buzzer", pinTypes: ["Buzzer pin"], deviceType: Device.self, devices: buzzers)
+        buzzer_Type = DeviceType(type: "Buzzer", pinTypes: ["Buzzer Pin"], deviceType: Device.self, devices: buzzers)
         
         bmi088I2C_Type = DeviceType(type: "BMI088 I2C", pinTypes: ["SDA, SCL"], deviceType: BMI088.self, devices: bmi088s)
-        bmi088SPI_Type = DeviceType(type: "BMI088 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMI088.self, devices: bmi088s)
+        bmi088SPI_Type = DeviceType(type: "BMI088 SPI", pinTypes: ["SCK", "MISO", "MOSI", "Accel CS", "Gyro CS"], deviceType: BMI088.self, devices: bmi088s)
     }
     
     enum CodingKeys: CodingKey {

@@ -138,24 +138,24 @@ struct BNO08XChartView : View {
             }.frame(maxWidth: .infinity, alignment: .center)
 
             GroupBox {
-                NavigationLink("Rotation Data", destination: RotationView(bno08x: bno08x))
+                NavigationLink("Rotation Data", destination: BNO08XRotationView(bno08x: bno08x))
                     .frame(maxWidth: .infinity, alignment: .center)
 
             }
             GroupBox {
-                NavigationLink("Gyro Data", destination: GyroView(bno08x: bno08x))
+                NavigationLink("Gyro Data", destination: BNO08XGyroView(bno08x: bno08x))
                     .frame(maxWidth: .infinity, alignment: .center)
 
             }
             GroupBox {
-                NavigationLink("Accelerometer Data", destination: AccelerationView(bno08x: bno08x))
+                NavigationLink("Accelerometer Data", destination: BNO08XAccelerationView(bno08x: bno08x))
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
-struct AccelerationView: View {
+struct BNO08XAccelerationView: View {
     @ObservedObject var bno08x: BNO08X
     var body: some View {
         VStack {
@@ -214,7 +214,7 @@ struct AccelerationView: View {
     }
 }
 
-struct GyroView: View {
+struct BNO08XGyroView: View {
     @ObservedObject var bno08x: BNO08X
     var body: some View {
         VStack {
@@ -274,7 +274,7 @@ struct GyroView: View {
         }
     }
 }
-struct RotationView: View {
+struct BNO08XRotationView: View {
     @ObservedObject var bno08x: BNO08X
     var body: some View {
         ScrollView {

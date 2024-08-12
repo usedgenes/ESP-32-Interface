@@ -21,6 +21,7 @@
 		4474225A2C599917004D217F /* BNO08XView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447422592C599917004D217F /* BNO08XView.swift */; };
 		448C4A182C6A931300E0E637 /* BuzzerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C4A172C6A931300E0E637 /* BuzzerView.swift */; };
 		448C4A1A2C6ABB9C00E0E637 /* BMI088.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C4A192C6ABB9C00E0E637 /* BMI088.swift */; };
+		448C4A1C2C6ABFB300E0E637 /* BMI088View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C4A1B2C6ABFB300E0E637 /* BMI088View.swift */; };
 		448DA9C32C6173CA0088F60E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 448DA9C22C6173CA0088F60E /* SwiftUICharts */; };
 		448DA9C52C617E330088F60E /* ChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9C42C617E330088F60E /* ChartStyle.swift */; };
 		448DA9CD2C61A4010088F60E /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9CC2C61A4010088F60E /* TestView.swift */; };
@@ -72,6 +73,7 @@
 		447422592C599917004D217F /* BNO08XView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08XView.swift; sourceTree = "<group>"; };
 		448C4A172C6A931300E0E637 /* BuzzerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuzzerView.swift; sourceTree = "<group>"; };
 		448C4A192C6ABB9C00E0E637 /* BMI088.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMI088.swift; sourceTree = "<group>"; };
+		448C4A1B2C6ABFB300E0E637 /* BMI088View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMI088View.swift; sourceTree = "<group>"; };
 		448DA9C42C617E330088F60E /* ChartStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyle.swift; sourceTree = "<group>"; };
 		448DA9CC2C61A4010088F60E /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		4490963E2C520ECD00EF97A3 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				443A04EC2C5EE749008F4F21 /* BMP390View.swift */,
 				447422592C599917004D217F /* BNO08XView.swift */,
 				448C4A172C6A931300E0E637 /* BuzzerView.swift */,
+				448C4A1B2C6ABFB300E0E637 /* BMI088View.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				443A04EF2C5F45B5008F4F21 /* BMP390.swift in Sources */,
 				443A04ED2C5EE749008F4F21 /* BMP390View.swift in Sources */,
 				44B3C03B2C50CCE500CAADBC /* DeviceView.swift in Sources */,
+				448C4A1C2C6ABFB300E0E637 /* BMI088View.swift in Sources */,
 				44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */,
 				449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */,
 				443A4D802C549B90004E1D26 /* ESP32.swift in Sources */,

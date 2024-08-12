@@ -78,6 +78,10 @@ class BluetoothDeviceHelper: ObservableObject {
     func setBuzzer(input: String) {
         device!.buzzerString = input
     }
+    
+    func setBMI088(input: String) {
+        device!.bmi088String = input
+    }
 }
 
 extension BluetoothDeviceHelper: BTDeviceDelegate {

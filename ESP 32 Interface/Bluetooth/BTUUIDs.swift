@@ -25,7 +25,9 @@ struct BTUUIDs {
     static let buzzerUUID = CBUUID(string: "78c611e3-0d36-491f-afe4-60ecc0c26a85")
     
     static let sdUUID = CBUUID(string: "6492bdaa-60e3-4e8a-a978-c923dec9fc37")
-//    #define UUID_6 "56e48048-19da-4136-a323-d2f3e9cb2a5d"
+    
+    static let bmi088UUID = CBUUID(string: "56e48048-19da-4136-a323-d2f3e9cb2a5d")
+    
 //    #define UUID_7 "83e6a4bd-8347-409c-87f3-d8c896f15d3d"
 //    #define UUID_8 "680f38b9-6898-40ea-9098-47e30e97dbb5"
 //    #define UUID_9 "fb02a2fa-2a86-4e95-8110-9ded202af76b"

@@ -40,6 +40,8 @@ struct HomeScreenView: View {
                         .disabled(!bluetoothDevice.isConnected)
                     NavigationLink("BNO08X", destination: BNO08XView())
                         .disabled(!bluetoothDevice.isConnected)
+                    NavigationLink("BMI088", destination: BMI088View())
+                        .disabled(!bluetoothDevice.isConnected)
                 }
                 Section(header: Text("Miscellaneous")) {
                     NavigationLink("Digital/Analog Pin", destination: DigitalAnalogPinView())

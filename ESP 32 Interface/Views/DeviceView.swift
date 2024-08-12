@@ -90,6 +90,21 @@ struct DeviceView: View {
                     }.buttonStyle(.plain)
                 }
                 DeviceArrayView(deviceArray : ESP_32.bno08xs)
+                HStack{
+                    Text("BMI088")
+                    Spacer()
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.bmi088I2C_Type)
+                    }) {
+                        Text("Add I2C")
+                    }.buttonStyle(.plain)
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.bmi088SPI_Type)
+                    }) {
+                        Text("Add SPI")
+                    }.buttonStyle(.plain)
+                }
+                DeviceArrayView(deviceArray : ESP_32.bmi088s)
             }
             Section(header: Text("Miscellaneous")) {
                 HStack{

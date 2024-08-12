@@ -62,7 +62,7 @@ struct individualBuzzerView : View {
             HStack {
                 Button(action: {
                     bluetoothDevice.setBuzzer(input: "2" + String(frequency))
-                    bluetoothDevice.setBuzzer(input: "3" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer pin")) + String((Float(duration) ?? 0)*1000))
+                    bluetoothDevice.setBuzzer(input: "3" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer Pin")) + String((Float(duration) ?? 0)*1000))
                 }) {
                     Text("Send")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -71,10 +71,10 @@ struct individualBuzzerView : View {
                     .hideKeyboardWhenTappedAround()
                 Button(action: {
                     if(playBuzzer) {
-                        bluetoothDevice.setBuzzer(input: "1" + String(format: "%02d", buzzer.getPinNumber(name: "Buzzer pin")));
+                        bluetoothDevice.setBuzzer(input: "1" + String(format: "%02d", buzzer.getPinNumber(name: "Buzzer Pin")));
                     }
                     else {
-                        bluetoothDevice.setBuzzer(input: "0" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer pin")) + String(frequency))
+                        bluetoothDevice.setBuzzer(input: "0" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer Pin")) + String(frequency))
                     }
                     playBuzzer.toggle()
                 }) {

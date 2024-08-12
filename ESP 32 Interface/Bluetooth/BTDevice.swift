@@ -32,9 +32,22 @@ class BTDevice: NSObject {
     
     private var buzzerChar: CBCharacteristic?
     
+    private var bmi088Char: CBCharacteristic?
+    
     var ESP_32 : ESP32?
     
     weak var delegate: BTDeviceDelegate?
+    
+    var bmi088String: String {
+        get {
+            return self.bmi088String
+        }
+        set {
+            if let char = bmi088Char {
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
+            }
+        }
+    }
     
     var buzzerString: String {
         get {
@@ -46,6 +59,7 @@ class BTDevice: NSObject {
             }
         }
     }
+    
     var pinString: String {
         get {
             return self.pinString
@@ -157,7 +171,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID, BTUUIDs.buzzerUUID], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID, BTUUIDs.buzzerUUID, BTUUIDs.bmi088UUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -192,6 +206,10 @@ extension BTDevice: CBPeripheralDelegate {
                 peripheral.setNotifyValue(true, for: $0)
             } else if $0.uuid == BTUUIDs.buzzerUUID {
                 self.buzzerChar = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
+            } else if $0.uuid == BTUUIDs.bmi088UUID {
+                self.bmi088Char = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
             }
@@ -304,6 +322,47 @@ extension BTDevice: CBPeripheralDelegate {
                     ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerX(accelerometerX: accelX)
                     ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerY(accelerometerY: accelY)
                     ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerZ(accelerometerZ: accelZ)
+                    print("accelerometer")
+                }
+            }
+        }
+        if characteristic.uuid == bmi088Char?.uuid, let b = characteristic.value {
+            var value = String(decoding: b, as: UTF8.self)
+            if(value != "") {
+                let deviceNumber = Int(value[...value.index(value.startIndex, offsetBy: 1)])!
+                value.removeSubrange(...value.index(value.startIndex, offsetBy: 1))
+                print(value);
+                //gyro
+                if(Int(value[...value.startIndex]) == 3) {
+                    value.remove(at: value.startIndex)
+                    let gyroX = Float(value[..<value.firstIndex(of: ",")!])!
+                    value.removeSubrange(...value.firstIndex(of: ",")!)
+
+                    let gyroY = Float(value[..<value.firstIndex(of: ",")!])!
+                    value.removeSubrange(...value.firstIndex(of: ",")!)
+   
+                    let gyroZ = Float(value)!
+
+                    ESP_32!.getBMI088(index: deviceNumber).addGyroX(gyroX: gyroX)
+                    ESP_32!.getBMI088(index: deviceNumber).addGyroY(gyroY: gyroY)
+                    ESP_32!.getBMI088(index: deviceNumber).addGyroZ(gyroZ: gyroZ)
+                    print("gyro")
+                }
+                //accelerometer
+                if(Int(value[...value.startIndex]) == 4) {
+                    value.remove(at: value.startIndex)
+                    
+                    let accelX = Float(value[..<value.firstIndex(of: ",")!])!
+                    value.removeSubrange(...value.firstIndex(of: ",")!)
+                    
+                    let accelY = Float(value[..<value.firstIndex(of: ",")!])!
+                    value.removeSubrange(...value.firstIndex(of: ",")!)
+                    
+                    let accelZ = Float(value)!
+                    
+                    ESP_32!.getBMI088(index: deviceNumber).addAccelerometerX(accelerometerX: accelX)
+                    ESP_32!.getBMI088(index: deviceNumber).addAccelerometerY(accelerometerY: accelY)
+                    ESP_32!.getBMI088(index: deviceNumber).addAccelerometerZ(accelerometerZ: accelZ)
                     print("accelerometer")
                 }
             }
