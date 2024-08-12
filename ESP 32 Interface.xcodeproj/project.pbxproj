@@ -20,6 +20,7 @@
 		445885762C6423AF00E7F10C /* ArduinoCode.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 445885752C6423AF00E7F10C /* ArduinoCode.pdf */; };
 		4474225A2C599917004D217F /* BNO08XView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447422592C599917004D217F /* BNO08XView.swift */; };
 		448C4A182C6A931300E0E637 /* BuzzerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C4A172C6A931300E0E637 /* BuzzerView.swift */; };
+		448C4A1A2C6ABB9C00E0E637 /* BMI088.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C4A192C6ABB9C00E0E637 /* BMI088.swift */; };
 		448DA9C32C6173CA0088F60E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 448DA9C22C6173CA0088F60E /* SwiftUICharts */; };
 		448DA9C52C617E330088F60E /* ChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9C42C617E330088F60E /* ChartStyle.swift */; };
 		448DA9CD2C61A4010088F60E /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DA9CC2C61A4010088F60E /* TestView.swift */; };
@@ -70,6 +71,7 @@
 		445885752C6423AF00E7F10C /* ArduinoCode.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ArduinoCode.pdf; sourceTree = "<group>"; };
 		447422592C599917004D217F /* BNO08XView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNO08XView.swift; sourceTree = "<group>"; };
 		448C4A172C6A931300E0E637 /* BuzzerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuzzerView.swift; sourceTree = "<group>"; };
+		448C4A192C6ABB9C00E0E637 /* BMI088.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMI088.swift; sourceTree = "<group>"; };
 		448DA9C42C617E330088F60E /* ChartStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyle.swift; sourceTree = "<group>"; };
 		448DA9CC2C61A4010088F60E /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		4490963E2C520ECD00EF97A3 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				443A04EE2C5F45B5008F4F21 /* BMP390.swift */,
 				443A04F02C5F46B4008F4F21 /* Servo.swift */,
 				443A04F62C5F48E3008F4F21 /* BNO08X.swift */,
+				448C4A192C6ABB9C00E0E637 /* BMI088.swift */,
 			);
 			path = "Device Type";
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				443A4D7B2C549284004E1D26 /* Device.swift in Sources */,
 				4474225A2C599917004D217F /* BNO08XView.swift in Sources */,
 				448C4A182C6A931300E0E637 /* BuzzerView.swift in Sources */,
+				448C4A1A2C6ABB9C00E0E637 /* BMI088.swift in Sources */,
 				449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */,
 				449096442C520ECD00EF97A3 /* BTUUIDs.swift in Sources */,
 				443A04F72C5F48E3008F4F21 /* BNO08X.swift in Sources */,

@@ -25,6 +25,10 @@ class ESP32 : ObservableObject {
     var buzzers : DeviceArray = DeviceArray(name: "Buzzer")
     var buzzer_Type: DeviceType
     
+    var bmi088s : DeviceArray = DeviceArray(name: "BMI088")
+    var bmi088I2C_Type: DeviceType
+    var bmi088SPI_Type: DeviceType
+    
     func getServos() -> DeviceArray {
         return servos
     }
@@ -53,6 +57,14 @@ class ESP32 : ObservableObject {
         return buzzers
     }
     
+    func getBMI088(index: Int) -> BMI088 {
+        return bmi088s.getDevice(index: index) as! BMI088
+    }
+    
+    func getBMI088s() -> DeviceArray {
+        return bmi088s
+    }
+    
     init() {
         servo_Type = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self, devices: servos)
         
@@ -63,8 +75,11 @@ class ESP32 : ObservableObject {
         bno08xSPI_Type = DeviceType(type: "BNO08X SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI", "INT", "RST"], deviceType: BNO08X.self, devices: bno08xs)
         
         pin_Type = DeviceType(type: "Pin", pinTypes: ["Pin"], deviceType: Device.self, devices: pins)
+        
         buzzer_Type = DeviceType(type: "Buzzer", pinTypes: ["Buzzer pin"], deviceType: Device.self, devices: buzzers)
-
+        
+        bmi088I2C_Type = DeviceType(type: "BMI088 I2C", pinTypes: ["SDA, SCL"], deviceType: BMI088.self, devices: bmi088s)
+        bmi088SPI_Type = DeviceType(type: "BMI088 SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI"], deviceType: BMI088.self, devices: bmi088s)
     }
     
     enum CodingKeys: CodingKey {
@@ -93,11 +108,15 @@ class ESP32 : ObservableObject {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: self.getPins().name)
         }
-        
         //buzzers
         if let encoded = try? encoder.encode(self.getBuzzers().getDevices()) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: self.getBuzzers().name)
+        }
+        //bmi088s
+        if let encoded = try? encoder.encode(self.getBMI088s().getDevices()) {
+            let defaults = UserDefaults.standard
+            defaults.set(encoded, forKey: self.getBMI088s().name)
         }
     }
     
@@ -138,7 +157,13 @@ class ESP32 : ObservableObject {
                     self.buzzers.setDevices(devices: loadedDevices)
             }
         }
-
+        //bmi088s
+        if let savedDevices = defaults.object(forKey: self.getBMI088s().name) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDevices = try? decoder.decode([BMI088].self, from: savedDevices) {
+                    self.bmi088s.setDevices(devices: loadedDevices)
+            }
+        }
     }
     
     func cleanState() {
@@ -147,5 +172,6 @@ class ESP32 : ObservableObject {
         bno08xs.resetDevices()
         pins.resetDevices()
         buzzers.resetDevices()
+        bmi088s.resetDevices()
     }
 }
