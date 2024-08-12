@@ -22,7 +22,7 @@ class ESP32 : ObservableObject {
     var pins : DeviceArray = DeviceArray(name: "Pin")
     var pin_Type : DeviceType
     
-    var buzzers : DeviceArray = DeviceArray(name: "Buzzer pin")
+    var buzzers : DeviceArray = DeviceArray(name: "Buzzer")
     var buzzer_Type: DeviceType
     
     func getServos() -> DeviceArray {
@@ -63,7 +63,7 @@ class ESP32 : ObservableObject {
         bno08xSPI_Type = DeviceType(type: "BNO08X SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI", "INT", "RST"], deviceType: BNO08X.self, devices: bno08xs)
         
         pin_Type = DeviceType(type: "Pin", pinTypes: ["Pin"], deviceType: Device.self, devices: pins)
-        buzzer_Type = DeviceType(type: "Buzzer", pinTypes: ["Pin"], deviceType: Device.self, devices: buzzers)
+        buzzer_Type = DeviceType(type: "Buzzer", pinTypes: ["Buzzer pin"], deviceType: Device.self, devices: buzzers)
 
     }
     
@@ -146,5 +146,6 @@ class ESP32 : ObservableObject {
         bmp390s.resetDevices()
         bno08xs.resetDevices()
         pins.resetDevices()
+        buzzers.resetDevices()
     }
 }

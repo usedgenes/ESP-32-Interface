@@ -71,7 +71,7 @@ struct individualPinView : View {
                         Text("Send")
                     }.buttonStyle(BorderlessButtonStyle())
             }
-        }
+        }.hideKeyboardWhenTappedAround()
     }
 }
 

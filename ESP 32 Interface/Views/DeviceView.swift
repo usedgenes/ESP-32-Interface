@@ -53,7 +53,7 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.servo_Type)
                     }) {
                         Text("Add")
-                    }
+                    }.buttonStyle(.plain)
                 }
                 DeviceArrayView(deviceArray : ESP_32.servos)
             }
@@ -65,12 +65,12 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.bmp390I2C_Type)
                     }) {
                         Text("Add I2C")
-                    }
+                    }.buttonStyle(.plain)
                     Button(action:{
                         self.addDeviceAlert(deviceType: ESP_32.bmp390SPI_Type)
                     }) {
                         Text("Add SPI")
-                    }
+                    }.buttonStyle(.plain)
                 }
                 DeviceArrayView(deviceArray : ESP_32.bmp390s)
             }
@@ -82,12 +82,12 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.bno08xI2C_Type)
                     }) {
                         Text("Add I2C")
-                    }
+                    }.buttonStyle(.plain)
                     Button(action:{
                         self.addDeviceAlert(deviceType: ESP_32.bno08xSPI_Type)
                     }) {
                         Text("Add SPI")
-                    }
+                    }.buttonStyle(.plain)
                 }
                 DeviceArrayView(deviceArray : ESP_32.bno08xs)
             }
@@ -99,7 +99,7 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.pin_Type)
                     }) {
                         Text("Add Pin")
-                    }
+                    }.buttonStyle(.plain)
                 }
                 DeviceArrayView(deviceArray : ESP_32.pins)
                 HStack{
@@ -109,7 +109,7 @@ struct DeviceView: View {
                         self.addDeviceAlert(deviceType: ESP_32.buzzer_Type)
                     }) {
                         Text("Add Buzzer")
-                    }
+                    }.buttonStyle(.plain)    
                 }
                 DeviceArrayView(deviceArray : ESP_32.buzzers)
             }
@@ -246,3 +246,13 @@ struct DeviceView_Previews: PreviewProvider {
         DeviceView()
     }
 }
+
+extension View {
+    func hideKeyboardWhenTappedAround() -> some View  {
+        return self.onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                  to: nil, from: nil, for: nil)
+        }
+    }
+}
+

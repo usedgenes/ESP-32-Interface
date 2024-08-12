@@ -67,11 +67,12 @@ struct individualServoView : View {
                     bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servoPosition))
                     print(ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo))
                     print(servoPosition)
+                    
                     }) {
                         Text("Send")
                     }.buttonStyle(BorderlessButtonStyle())
             }.padding()
-        }
+        }.hideKeyboardWhenTappedAround()
     }
 }
 struct ServoView_Previews: PreviewProvider {

@@ -24,8 +24,8 @@ struct individualBuzzerView : View {
     @ObservedObject var buzzer : Device
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     let items = [GridItem()]
-    @State var frequency = 0
-    @State var duration = 0
+    @State var frequency = 440
+    @State var duration: String = "0.5"
     @State var playBuzzer = false
     var body : some View {
         Section() {
@@ -46,32 +46,35 @@ struct individualBuzzerView : View {
 
                         }
                     }))
-                    .keyboardType(UIKeyboardType.numberPad)
+                .keyboardType(UIKeyboardType.numberPad)
+                .hideKeyboardWhenTappedAround()
             }
             HStack {
                 Text("Duration (s): ")
                 TextField("\(duration)", text: Binding<String>(
                     get: { String(duration) },
                     set: {
-                        if let value = NumberFormatter().number(from: $0) {
-                            frequency = value.intValue
-
-                        }
+                        duration = $0
                     }))
-                    .keyboardType(UIKeyboardType.numberPad)
+                .keyboardType(UIKeyboardType.decimalPad)
+                .hideKeyboardWhenTappedAround()
             }
             HStack {
                 Button(action: {
                     bluetoothDevice.setBuzzer(input: "2" + String(frequency))
-                    bluetoothDevice.setBuzzer(input: "3" + String(format: "%02d", ESP_32.getBuzzers().getDeviceNumberInArray(inputDevice: buzzer)) + String(duration*1000))
+                    bluetoothDevice.setBuzzer(input: "3" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer pin")) + String((Float(duration) ?? 0)*1000))
                 }) {
                     Text("Send")
                 }.buttonStyle(BorderlessButtonStyle())
                     .padding()
                 Spacer()
+                    .hideKeyboardWhenTappedAround()
                 Button(action: {
                     if(playBuzzer) {
-                        bluetoothDevice.setBuzzer(input: )
+                        bluetoothDevice.setBuzzer(input: "1" + String(format: "%02d", buzzer.getPinNumber(name: "Buzzer pin")));
+                    }
+                    else {
+                        bluetoothDevice.setBuzzer(input: "0" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer pin")) + String(frequency))
                     }
                     playBuzzer.toggle()
                 }) {
