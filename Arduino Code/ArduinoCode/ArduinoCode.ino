@@ -303,31 +303,21 @@ class PinCallbacks : public BLECharacteristicCallbacks {
     if (value.substring(0, 1) == "0") {
       pinArraySize = value.substring(1, value.length()).toInt();
       pinArray = new int[pinArraySize];
-      Serial.println("Allocating pins");
     }
     if (value.substring(0, 1) == "1") {
-      pinArray[value.substring(1, 3).toInt()] = value.substring(3, 4).toInt();
+      pinArray[value.substring(1, 3).toInt()] = value.substring(3, 5).toInt();
       pinMode(pinArray[value.substring(1, 3).toInt()], OUTPUT);
-      Serial.print(value.substring(1, 3));
-      Serial.println(" attached pin");
     }
     if (value.substring(0, 1) == "2") {
       if(value.substring(3,4) == "0") {
         digitalWrite(pinArray[value.substring(1, 3).toInt()], LOW);
-        Serial.print(value.substring(1, 3));
-        Serial.println(" digital low");
       }
       else {
         digitalWrite(pinArray[value.substring(1, 3).toInt()], HIGH);
-        Serial.print(value.substring(1, 3));
-        Serial.println(" digital high");
       }
     }
     if (value.substring(0, 1) == "3") {
-      analogWrite(value.substring(1, 3).toInt(), value.substring(3, 6).toInt());
-      Serial.print(value.substring(1, 3));
-      Serial.print(" analog ");
-      Serial.println(value.substring(3,6).toInt());
+      analogWrite(pinArray[value.substring(1, 3).toInt()], value.substring(3, 6).toInt());
     }
     Serial.println(value);
   }
@@ -338,81 +328,35 @@ class PinCallbacks : public BLECharacteristicCallbacks {
 
 BLECharacteristic *pBuzzer;
 
+int frequency = 0;
+
 class BuzzerCallbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
     if (value.substring(0, 1) == "0") {
       tone(value.substring(1, 3).toInt(), value.substring(3, value.length()).toInt());
+      Serial.println("playing buzzer");
     }
     if (value.substring(0, 1) == "1") {
       noTone(value.substring(1,3).toInt());
+      Serial.println("stopping buzzer");
     }
-    int pitch = 0;
     if (value.substring(0, 1) == "2") {
-      pitch = value.substring(1, value.length()).toInt();
+      frequency = value.substring(1, value.length()).toInt();
     }
     if (value.substring(0, 1) == "3") {
-      tone(value.substring(1, 3).toInt(), pitch, value.substring(3, value.length()).toInt());
+      tone(value.substring(1, 3).toInt(), frequency, value.substring(3, value.length()).toInt());
+      Serial.println("playing buzzer");
+      Serial.println(frequency);
+      Serial.println(value.substring(3, value.length()).toInt());
     }
     Serial.println(value);
   }
 };
 
-//SD
-#include "SD.h"
-
-#define SD_UUID "6492bdaa-60e3-4e8a-a978-c923dec9fc37"
-
-BLECharacteristic *pSD;
-
-class SDCallbacks : public BLECharacteristicCallbacks {
-  void onWrite(BLECharacteristic *pCharacteristic) {
-    String value = pCharacteristic->getValue();
-    if (value.substring(0, 1) == "0") {
-      SPI.begin(value.substring(1, 3).toInt(), value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt());
-      if (!SD.begin(value.substring(7, 9))) {
-        pCharacteristic->setValue("01");
-        pCharacteristic->notify();
-      }
-      if (SD.cardType() == CARD_NONE) {
-        pCharacteristic->setValue("01");
-        pCharacteristic->notify();
-      }
-    }
-    if (value.substring(0, 1) == "1") {
-      uint64_t cardSize = SD.cardSize() / (1024 * 1024);
-      pCharacteristic->setValue("10" + cardSize.toString());
-      pCharacteristic->notify();
-      uint64_t availableSpace = SD.totalBytes() / (1024 * 1024);
-      pCharacteristic->setValue("11" + availableSpace.toString());
-      pCharacteristic->notify();
-      uint64_t usedSpace = SD.usedBytes() / (1024 * 1024);
-      pCharacteristic->setValue("11" + usedSpace.toString());
-      pCharacteristic->notify();
-    }
-    if (value.substring(0, 1) == "2") {
-      String directory = value.substring(1, value.length());
-    }
-    if (value.substring(0, 1) == "3") {
-      //append file
-    }
-    if (value.substring(0, 1) == "4") {
-      //read file
-    }
-    if (value.substring(0, 1) == "5") {
-      //delete file
-    }
-    if (value.substring(0, 1) == "6") {
-      //rename file
-    }
-    Serial.println(value);
-  }
-};
 
 //BMI088
 #include "BMI088.h"
-SPIClass vspi = SPIClass(VSPI);
-
 
 #define UUID_6 "56e48048-19da-4136-a323-d2f3e9cb2a5d"
 #define UUID_7 "83e6a4bd-8347-409c-87f3-d8c896f15d3d"
@@ -454,9 +398,6 @@ void setup() {
 
   pBuzzer = pService->createCharacteristic(BUZZER_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pBuzzer->setCallbacks(new BuzzerCallbacks());
-
-  pSD = pService->createCharacteristic(SD_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
-  pSD->setCallbacks(new SDCallbacks());
 
   pService->start();
 
