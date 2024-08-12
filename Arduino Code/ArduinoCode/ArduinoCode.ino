@@ -1,35 +1,21 @@
+//ESP32 Bluetooth:
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include <TaskScheduler.h>
-#include <ESP32Servo.h>
 #include <Wire.h>
 #include <SPI.h>
-#include <Adafruit_Sensor.h>
-#include "Adafruit_BMP3XX.h"
-#include "SparkFun_BNO08x_Arduino_Library.h"
+
+#define DEVICE_NAME "ESP_32"
+#define PIN_LED LED_BUILTIN
 
 #define SERVICE_UUID "9a8ca9ef-e43f-4157-9fee-c37a3d7dc12d"
 #define BLINK_UUID "e94f85c8-7f57-4dbd-b8d3-2b56e107ed60"
-#define SERVO_UUID "f74fb3de-61d1-4f49-bd77-419b61d188da"
-#define BMP390_UUID "94cbc7dc-ff62-4958-9665-0ed477877581"
-#define BNO08X_UUID "c91b34b8-90f3-4fee-89f7-58c108ab198f"
-#define PIN_UUID "21072f3b-b950-4b29-bf97-9a7be82d93e7"
 
-#define UUID_4 "78c611e3-0d36-491f-afe4-60ecc0c26a85"
-#define UUID_5 "6492bdaa-60e3-4e8a-a978-c923dec9fc37"
-#define UUID_6 "56e48048-19da-4136-a323-d2f3e9cb2a5d"
-#define UUID_7 "83e6a4bd-8347-409c-87f3-d8c896f15d3d"
-#define UUID_8 "680f38b9-6898-40ea-9098-47e30e97dbb5"
-#define UUID_9 "fb02a2fa-2a86-4e95-8110-9ded202af76b"
-#define UUID_10 "a979c0ba-a2be-45e5-9d7b-079b06e06096"
-
-#define DEVICE_NAME "ESP_32"
-
-#define PIN_LED LED_BUILTIN
-
-#define SEALEVELPRESSURE_HPA (1013.25)
+SPIClass vspi = SPIClass(VSPI);
+TwoWire I2C = TwoWire(0);
+TwoWire I2C1 = TwoWire(1);
 
 Scheduler scheduler;
 
@@ -40,26 +26,7 @@ Task taskBlink(500, TASK_FOREVER, &blinkCb, &scheduler, false, NULL, &blinkOffCb
 
 uint8_t blinkOn;
 
-Servo *servoArray;
-int servoArraySize;
-
-Adafruit_BMP3XX *bmp390Array;
-int bmp390ArraySize;
-TwoWire I2C = TwoWire(0);
-
-BNO08x *bno08xArray;
-int bno08xArraySize;
-SPIClass vspi = SPIClass(VSPI);
-TwoWire I2C1 = TwoWire(1);
-
-int *pinArray;
-int pinArraySize;
-
 BLECharacteristic *pCharBlink;
-BLECharacteristic *pServo;
-BLECharacteristic *pBMP390;
-BLECharacteristic *pBNO08X;
-BLECharacteristic *pPin;
 
 void (*resetFunc)(void) = 0;  // create a standard reset function
 
@@ -122,6 +89,17 @@ class BlinkCallbacks : public BLECharacteristicCallbacks {
   }
 };
 
+//Servo
+#include <ESP32Servo.h>
+
+#define SERVO_UUID "f74fb3de-61d1-4f49-bd77-419b61d188da"
+
+Servo *servoArray;
+
+int servoArraySize;
+
+BLECharacteristic *pServo;
+
 class ServoCallbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
@@ -147,6 +125,19 @@ class ServoCallbacks : public BLECharacteristicCallbacks {
     Serial.println(value);
   }
 };
+
+//BMP390
+#include <Adafruit_Sensor.h>
+#include "Adafruit_BMP3XX.h"
+
+#define BMP390_UUID "94cbc7dc-ff62-4958-9665-0ed477877581"
+
+#define SEALEVELPRESSURE_HPA (1013.25)
+
+Adafruit_BMP3XX *bmp390Array;
+int bmp390ArraySize;
+
+BLECharacteristic *pBMP390;
 
 class BMP390Callbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
@@ -189,9 +180,19 @@ class BMP390Callbacks : public BLECharacteristicCallbacks {
       pCharacteristic->setValue(bmp390Number + "5" + String(bmp390Array[value.substring(1, 3).toInt()].readAltitude(SEALEVELPRESSURE_HPA)));
       pCharacteristic->notify();
     }
-    // Serial.println(value);
+    Serial.println(value);
   }
 };
+
+//BNO08X
+#include "SparkFun_BNO08x_Arduino_Library.h"
+
+#define BNO08X_UUID "c91b34b8-90f3-4fee-89f7-58c108ab198f"
+
+BNO08x *bno08xArray;
+int bno08xArraySize;
+
+BLECharacteristic *pBNO08X;
 
 class BNO08XCallbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
@@ -263,6 +264,39 @@ class BNO08XCallbacks : public BLECharacteristicCallbacks {
   }
 };
 
+void setReports(int bno08xNumberInt) {
+  if (bno08xArray[bno08xNumberInt].enableRotationVector() == true) {
+    Serial.println(F("Rotation vector enabled"));
+    Serial.println(F("Output in form i, j, k, real, accuracy"));
+  } else {
+    Serial.println("Could not enable rotation vector");
+  }
+  delay(100);
+
+  if (bno08xArray[bno08xNumberInt].enableGyro() == true) {
+    Serial.println(F("Gyro enabled"));
+    Serial.println(F("Output in form x, y, z, in radians per second"));
+  } else {
+    Serial.println("Could not enable gyro");
+  }
+  delay(100);
+
+  if (bno08xArray[bno08xNumberInt].enableAccelerometer() == true) {
+    Serial.println(F("Accelerometer enabled"));
+  } else {
+    Serial.println("Could not enable accelerometer");
+  }
+  delay(100);
+}
+
+//Pin
+#define PIN_UUID "21072f3b-b950-4b29-bf97-9a7be82d93e7"
+
+int *pinArray;
+int pinArraySize;
+
+BLECharacteristic *pPin;
+
 class PinCallbacks : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     String value = pCharacteristic->getValue();
@@ -299,31 +333,92 @@ class PinCallbacks : public BLECharacteristicCallbacks {
   }
 };
 
+//Buzzer
+#define BUZZER_UUID "78c611e3-0d36-491f-afe4-60ecc0c26a85"
 
-void setReports(int bno08xNumberInt) {
-  if (bno08xArray[bno08xNumberInt].enableRotationVector() == true) {
-    Serial.println(F("Rotation vector enabled"));
-    Serial.println(F("Output in form i, j, k, real, accuracy"));
-  } else {
-    Serial.println("Could not enable rotation vector");
-  }
-  delay(100);
+BLECharacteristic *pBuzzer;
 
-  if (bno08xArray[bno08xNumberInt].enableGyro() == true) {
-    Serial.println(F("Gyro enabled"));
-    Serial.println(F("Output in form x, y, z, in radians per second"));
-  } else {
-    Serial.println("Could not enable gyro");
+class BuzzerCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue();
+    if (value.substring(0, 1) == "0") {
+      tone(value.substring(1, 3).toInt(), value.substring(3, value.length()).toInt());
+    }
+    if (value.substring(0, 1) == "1") {
+      noTone(value.substring(1,3).toInt());
+    }
+    int pitch = 0;
+    if (value.substring(0, 1) == "2") {
+      pitch = value.substring(1, value.length()).toInt();
+    }
+    if (value.substring(0, 1) == "3") {
+      tone(value.substring(1, 3).toInt(), pitch, value.substring(3, value.length()).toInt());
+    }
+    Serial.println(value);
   }
-  delay(100);
+};
 
-  if (bno08xArray[bno08xNumberInt].enableAccelerometer() == true) {
-    Serial.println(F("Accelerometer enabled"));
-  } else {
-    Serial.println("Could not enable accelerometer");
+//SD
+#include "SD.h"
+
+#define SD_UUID "6492bdaa-60e3-4e8a-a978-c923dec9fc37"
+
+BLECharacteristic *pSD;
+
+class SDCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue();
+    if (value.substring(0, 1) == "0") {
+      SPI.begin(value.substring(1, 3).toInt(), value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt());
+      if (!SD.begin(value.substring(7, 9))) {
+        pCharacteristic->setValue("01");
+        pCharacteristic->notify();
+      }
+      if (SD.cardType() == CARD_NONE) {
+        pCharacteristic->setValue("01");
+        pCharacteristic->notify();
+      }
+    }
+    if (value.substring(0, 1) == "1") {
+      uint64_t cardSize = SD.cardSize() / (1024 * 1024);
+      pCharacteristic->setValue("10" + cardSize.toString());
+      pCharacteristic->notify();
+      uint64_t availableSpace = SD.totalBytes() / (1024 * 1024);
+      pCharacteristic->setValue("11" + availableSpace.toString());
+      pCharacteristic->notify();
+      uint64_t usedSpace = SD.usedBytes() / (1024 * 1024);
+      pCharacteristic->setValue("11" + usedSpace.toString());
+      pCharacteristic->notify();
+    }
+    if (value.substring(0, 1) == "2") {
+      String directory = value.substring(1, value.length());
+    }
+    if (value.substring(0, 1) == "3") {
+      //append file
+    }
+    if (value.substring(0, 1) == "4") {
+      //read file
+    }
+    if (value.substring(0, 1) == "5") {
+      //delete file
+    }
+    if (value.substring(0, 1) == "6") {
+      //rename file
+    }
+    Serial.println(value);
   }
-  delay(100);
-}
+};
+
+//BMI088
+#include "BMI088.h"
+SPIClass vspi = SPIClass(VSPI);
+
+
+#define UUID_6 "56e48048-19da-4136-a323-d2f3e9cb2a5d"
+#define UUID_7 "83e6a4bd-8347-409c-87f3-d8c896f15d3d"
+#define UUID_8 "680f38b9-6898-40ea-9098-47e30e97dbb5"
+#define UUID_9 "fb02a2fa-2a86-4e95-8110-9ded202af76b"
+#define UUID_10 "a979c0ba-a2be-45e5-9d7b-079b06e06096"
 
 void setup() {
   Serial.begin(115200);
@@ -356,6 +451,12 @@ void setup() {
 
   pPin = pService->createCharacteristic(PIN_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
   pPin->setCallbacks(new PinCallbacks());
+
+  pBuzzer = pService->createCharacteristic(BUZZER_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
+  pBuzzer->setCallbacks(new BuzzerCallbacks());
+
+  pSD = pService->createCharacteristic(SD_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE);
+  pSD->setCallbacks(new SDCallbacks());
 
   pService->start();
 
