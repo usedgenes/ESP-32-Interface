@@ -102,6 +102,16 @@ struct DeviceView: View {
                     }
                 }
                 DeviceArrayView(deviceArray : ESP_32.pins)
+                HStack{
+                    Text("Buzzers")
+                    Spacer()
+                    Button(action:{
+                        self.addDeviceAlert(deviceType: ESP_32.buzzer_Type)
+                    }) {
+                        Text("Add Buzzer")
+                    }
+                }
+                DeviceArrayView(deviceArray : ESP_32.buzzers)
             }
         }
         .onDisappear(perform: {

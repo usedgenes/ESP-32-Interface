@@ -15,9 +15,8 @@ struct DigitalAnalogPinView: View {
                     }
                 }.onAppear(perform: {
                     bluetoothDevice.setPin(input: "0" + String(ESP_32.getPins().devices.count))
-                    print("setting")
                     for pin in ESP_32.getPins().devices {
-                        bluetoothDevice.setPin(input: "1" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + String(pin.getPinNumber(name:"Pin")))
+                        bluetoothDevice.setPin(input: "1" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + String(format: "%02d", pin.getPinNumber(name:"Pin")))
                     }
                 })
             }
@@ -45,14 +44,12 @@ struct individualPinView : View {
                 
                 Button(action: {
                     bluetoothDevice.setPin(input: "2" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + "1")
-                    print("high")
                     }) {
                         Text("HIGH")
                     }.buttonStyle(BorderlessButtonStyle())
                 
                 Button(action: {
                     bluetoothDevice.setPin(input: "2" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + "0")
-                    print("low")
                     }) {
                         Text("LOW")
                     }.buttonStyle(BorderlessButtonStyle())
@@ -69,7 +66,7 @@ struct individualPinView : View {
                     }))
                     .keyboardType(UIKeyboardType.numberPad)
                 Button(action: {
-                    bluetoothDevice.setPin(input: "3" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + String(analog))
+                    bluetoothDevice.setPin(input: "3" + String(format: "%02d", ESP_32.getPins().getDeviceNumberInArray(inputDevice: pin)) + String(format: "%03d", analog))
                     }) {
                         Text("Send")
                     }.buttonStyle(BorderlessButtonStyle())

@@ -22,6 +22,9 @@ class ESP32 : ObservableObject {
     var pins : DeviceArray = DeviceArray(name: "Pin")
     var pin_Type : DeviceType
     
+    var buzzers : DeviceArray = DeviceArray(name: "Buzzer pin")
+    var buzzer_Type: DeviceType
+    
     func getServos() -> DeviceArray {
         return servos
     }
@@ -46,6 +49,10 @@ class ESP32 : ObservableObject {
         return pins
     }
     
+    func getBuzzers() -> DeviceArray {
+        return buzzers
+    }
+    
     init() {
         servo_Type = DeviceType(type: "Servo", pinTypes: ["Digital"], deviceType: Servo.self, devices: servos)
         
@@ -56,6 +63,8 @@ class ESP32 : ObservableObject {
         bno08xSPI_Type = DeviceType(type: "BNO08X SPI", pinTypes: ["CS", "SCK", "MISO", "MOSI", "INT", "RST"], deviceType: BNO08X.self, devices: bno08xs)
         
         pin_Type = DeviceType(type: "Pin", pinTypes: ["Pin"], deviceType: Device.self, devices: pins)
+        buzzer_Type = DeviceType(type: "Buzzer", pinTypes: ["Pin"], deviceType: Device.self, devices: buzzers)
+
     }
     
     enum CodingKeys: CodingKey {
@@ -83,6 +92,12 @@ class ESP32 : ObservableObject {
         if let encoded = try? encoder.encode(self.getPins().getDevices()) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: self.getPins().name)
+        }
+        
+        //buzzers
+        if let encoded = try? encoder.encode(self.getBuzzers().getDevices()) {
+            let defaults = UserDefaults.standard
+            defaults.set(encoded, forKey: self.getBuzzers().name)
         }
     }
     
@@ -116,6 +131,14 @@ class ESP32 : ObservableObject {
                     self.pins.setDevices(devices: loadedDevices)
             }
         }
+        //buzzers
+        if let savedDevices = defaults.object(forKey: self.getBuzzers().name) as? Data {
+                let decoder = JSONDecoder()
+                if let loadedDevices = try? decoder.decode([Device].self, from: savedDevices) {
+                    self.buzzers.setDevices(devices: loadedDevices)
+            }
+        }
+
     }
     
     func cleanState() {

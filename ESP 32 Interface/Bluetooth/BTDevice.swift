@@ -30,17 +30,28 @@ class BTDevice: NSObject {
     
     private var pinChar: CBCharacteristic?
     
+    private var buzzerChar: CBCharacteristic?
+    
     var ESP_32 : ESP32?
     
     weak var delegate: BTDeviceDelegate?
     
+    var buzzerString: String {
+        get {
+            return self.buzzerString
+        }
+        set {
+            if let char = buzzerChar {
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
+            }
+        }
+    }
     var pinString: String {
         get {
             return self.pinString
         }
         set {
             if let char = pinChar {
-                print(newValue)
                 peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
             }
         }
@@ -146,7 +157,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID, BTUUIDs.buzzerUUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -175,8 +186,12 @@ extension BTDevice: CBPeripheralDelegate {
                 self.bno08xChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
-            } else if $0.uuid == BTUUIDs.pinUUID{
+            } else if $0.uuid == BTUUIDs.pinUUID {
                 self.pinChar = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
+            } else if $0.uuid == BTUUIDs.buzzerUUID {
+                self.buzzerChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
             }

@@ -74,6 +74,10 @@ class BluetoothDeviceHelper: ObservableObject {
     func setPin(input: String) {
         device!.pinString = input
     }
+    
+    func setBuzzer(input: String) {
+        device!.buzzerString = input
+    }
 }
 
 extension BluetoothDeviceHelper: BTDeviceDelegate {

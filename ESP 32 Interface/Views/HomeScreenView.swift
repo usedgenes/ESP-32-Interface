@@ -44,6 +44,8 @@ struct HomeScreenView: View {
                 Section(header: Text("Miscellaneous")) {
                     NavigationLink("Digital/Analog Pin", destination: DigitalAnalogPinView())
                         .disabled(!bluetoothDevice.isConnected)
+                    NavigationLink("Buzzers", destination: BuzzerView())
+                        .disabled(!bluetoothDevice.isConnected)
                 }
             }
             .navigationBarTitle("ESP32 Assistant")
