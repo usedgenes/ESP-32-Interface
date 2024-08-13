@@ -147,6 +147,7 @@ struct BMI088AccelerationView: View {
             let accelerationXData = LineChartData(dataSets: bmi088.getAccelerometerX(), chartStyle: ChartStyle().getChartStyle())
             
             //accelerometer x
+            Text("Accelerometer X")
             LineChart(chartData: accelerationXData)
                 .filledTopLine(chartData: accelerationXData,
                                lineColour: ColourStyle(colour: .red),
@@ -159,11 +160,11 @@ struct BMI088AccelerationView: View {
                 .floatingInfoBox(chartData: accelerationXData)
                 .id(accelerationXData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Accelerometer X")
             
             let accelerationYData = LineChartData(dataSets: bmi088.getAccelerometerY(), chartStyle: ChartStyle().getChartStyle())
             
             //accelerometer y
+            Text("Accelerometer Y")
             LineChart(chartData: accelerationYData)
                 .filledTopLine(chartData: accelerationYData,
                                lineColour: ColourStyle(colour: .green),
@@ -176,11 +177,11 @@ struct BMI088AccelerationView: View {
                 .floatingInfoBox(chartData: accelerationYData)
                 .id(accelerationYData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Accelerometer Y")
             
             let accelerationZData = LineChartData(dataSets: bmi088.getAccelerometerZ(), chartStyle: ChartStyle().getChartStyle())
             
             //accelerometer z
+            Text("Accelerometer Z")
             LineChart(chartData: accelerationZData)
                 .filledTopLine(chartData: accelerationZData,
                                lineColour: ColourStyle(colour: .blue),
@@ -193,8 +194,6 @@ struct BMI088AccelerationView: View {
                 .floatingInfoBox(chartData: accelerationZData)
                 .id(accelerationZData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Accelerometer Z")
-                .padding()
         }
     }
 }
@@ -206,6 +205,7 @@ struct BMI088GyroView: View {
             let gyroXData = LineChartData(dataSets: bmi088.getGyroX(), chartStyle: ChartStyle().getChartStyle())
             
             //gyro x
+            Text("Gyro X")
             LineChart(chartData: gyroXData)
                 .filledTopLine(chartData: gyroXData,
                                lineColour: ColourStyle(colour: .red),
@@ -218,12 +218,11 @@ struct BMI088GyroView: View {
                 .floatingInfoBox(chartData: gyroXData)
                 .id(gyroXData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Gyro X")
-                .padding()
             
             let gyroYData = LineChartData(dataSets: bmi088.getGyroY(), chartStyle: ChartStyle().getChartStyle())
             
             //gyro y
+            Text("Gyro Y")
             LineChart(chartData: gyroYData)
                 .filledTopLine(chartData: gyroYData,
                                lineColour: ColourStyle(colour: .green),
@@ -236,12 +235,11 @@ struct BMI088GyroView: View {
                 .floatingInfoBox(chartData: gyroYData)
                 .id(gyroYData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Gyro Y")
-                .padding()
             
             let gyroZData = LineChartData(dataSets: bmi088.getGyroZ(), chartStyle: ChartStyle().getChartStyle())
             
             //gyro z
+            Text("Gyro Z")
             LineChart(chartData: gyroZData)
                 .filledTopLine(chartData: gyroZData,
                                lineColour: ColourStyle(colour: .blue),
@@ -254,8 +252,6 @@ struct BMI088GyroView: View {
                 .floatingInfoBox(chartData: gyroZData)
                 .id(gyroZData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Gyro Z")
-                .padding()
         }
     }
 }

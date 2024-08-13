@@ -162,6 +162,7 @@ struct BNO08XAccelerationView: View {
             let accelerationXData = LineChartData(dataSets: bno08x.getAccelerometerX(), chartStyle: ChartStyle().getChartStyle())
             
             //accelerometer x
+            Text("Accelerometer X")
             LineChart(chartData: accelerationXData)
                 .filledTopLine(chartData: accelerationXData,
                                lineColour: ColourStyle(colour: .red),
@@ -174,11 +175,11 @@ struct BNO08XAccelerationView: View {
                 .floatingInfoBox(chartData: accelerationXData)
                 .id(accelerationXData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Accelerometer X")
             
             let accelerationYData = LineChartData(dataSets: bno08x.getAccelerometerY(), chartStyle: ChartStyle().getChartStyle())
             
             //accelerometer y
+            Text("Accelerometer Y")
             LineChart(chartData: accelerationYData)
                 .filledTopLine(chartData: accelerationYData,
                                lineColour: ColourStyle(colour: .green),
@@ -191,11 +192,11 @@ struct BNO08XAccelerationView: View {
                 .floatingInfoBox(chartData: accelerationYData)
                 .id(accelerationYData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Accelerometer Y")
             
             let accelerationZData = LineChartData(dataSets: bno08x.getAccelerometerZ(), chartStyle: ChartStyle().getChartStyle())
             
             //accelerometer z
+            Text("Accelerometer Z")
             LineChart(chartData: accelerationZData)
                 .filledTopLine(chartData: accelerationZData,
                                lineColour: ColourStyle(colour: .blue),
@@ -208,8 +209,6 @@ struct BNO08XAccelerationView: View {
                 .floatingInfoBox(chartData: accelerationZData)
                 .id(accelerationZData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Accelerometer Z")
-                .padding()
         }
     }
 }
@@ -221,6 +220,7 @@ struct BNO08XGyroView: View {
             let gyroXData = LineChartData(dataSets: bno08x.getGyroX(), chartStyle: ChartStyle().getChartStyle())
             
             //gyro x
+            Text("Gyro X")
             LineChart(chartData: gyroXData)
                 .filledTopLine(chartData: gyroXData,
                                lineColour: ColourStyle(colour: .red),
@@ -233,12 +233,11 @@ struct BNO08XGyroView: View {
                 .floatingInfoBox(chartData: gyroXData)
                 .id(gyroXData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Gyro X")
-                .padding()
             
             let gyroYData = LineChartData(dataSets: bno08x.getGyroY(), chartStyle: ChartStyle().getChartStyle())
             
             //gyro y
+            Text("Gyro Y")
             LineChart(chartData: gyroYData)
                 .filledTopLine(chartData: gyroYData,
                                lineColour: ColourStyle(colour: .green),
@@ -251,12 +250,11 @@ struct BNO08XGyroView: View {
                 .floatingInfoBox(chartData: gyroYData)
                 .id(gyroYData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Gyro Y")
-                .padding()
             
             let gyroZData = LineChartData(dataSets: bno08x.getGyroZ(), chartStyle: ChartStyle().getChartStyle())
             
             //gyro z
+            Text("Gyro Z")
             LineChart(chartData: gyroZData)
                 .filledTopLine(chartData: gyroZData,
                                lineColour: ColourStyle(colour: .blue),
@@ -269,8 +267,6 @@ struct BNO08XGyroView: View {
                 .floatingInfoBox(chartData: gyroZData)
                 .id(gyroZData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            Text("Gyro Z")
-                .padding()
         }
     }
 }
@@ -281,6 +277,7 @@ struct BNO08XRotationView: View {
             let rotationXData = LineChartData(dataSets: bno08x.getRotationX(), chartStyle: ChartStyle().getChartStyle())
             
             //rotation x
+            Text("Rotation X")
             LineChart(chartData: rotationXData)
                 .filledTopLine(chartData: rotationXData,
                                lineColour: ColourStyle(colour: .red),
@@ -293,12 +290,11 @@ struct BNO08XRotationView: View {
                 .floatingInfoBox(chartData: rotationXData)
                 .id(rotationXData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
-            Text("Rotation X")
-                .padding()
             
             let rotationYData = LineChartData(dataSets: bno08x.getRotationY(), chartStyle: ChartStyle().getChartStyle())
             
             //rotation y
+            Text("Rotation Y")
             LineChart(chartData: rotationYData)
                 .filledTopLine(chartData: rotationYData,
                                lineColour: ColourStyle(colour: .green),
@@ -311,12 +307,11 @@ struct BNO08XRotationView: View {
                 .floatingInfoBox(chartData: rotationYData)
                 .id(rotationYData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
-            Text("Rotation Y")
-                .padding()
             
             let rotationZData = LineChartData(dataSets: bno08x.getRotationZ(), chartStyle: ChartStyle().getChartStyle())
             
             //rotation z
+            Text("Rotation Z")
             LineChart(chartData: rotationZData)
                 .filledTopLine(chartData: rotationZData,
                                lineColour: ColourStyle(colour: .blue),
@@ -329,12 +324,11 @@ struct BNO08XRotationView: View {
                 .floatingInfoBox(chartData: rotationZData)
                 .id(rotationZData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
-            Text("Rotation Z")
-                .padding()
             
             let rotationRealData = LineChartData(dataSets: bno08x.getRotationReal(), chartStyle: ChartStyle().getChartStyle())
             
             //rotation real
+            Text("Rotation Real")
             LineChart(chartData: rotationRealData)
                 .filledTopLine(chartData: rotationRealData,
                                lineColour: ColourStyle(colour: .purple),
@@ -347,12 +341,11 @@ struct BNO08XRotationView: View {
                 .floatingInfoBox(chartData: rotationRealData)
                 .id(rotationRealData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
-            Text("Rotation Real")
-                .padding()
             
             let rotationAccuracyData = LineChartData(dataSets: bno08x.getRotationAccuracy(), chartStyle: ChartStyle().getChartStyle())
             
             //rotation accuracy
+            Text("Rotation Accuracy")
             LineChart(chartData: rotationAccuracyData)
                 .filledTopLine(chartData: rotationAccuracyData,
                                lineColour: ColourStyle(colour: .yellow),
@@ -365,8 +358,6 @@ struct BNO08XRotationView: View {
                 .floatingInfoBox(chartData: rotationAccuracyData)
                 .id(rotationAccuracyData.id)
                 .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
-            Text("Rotation Accuracy")
-                .padding()
         }
     }
 }
