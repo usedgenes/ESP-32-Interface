@@ -24,7 +24,7 @@ struct AppHelpView: View {
                 let url = Bundle.main.url(forResource: "ArduinoCode", withExtension: "pdf")!
                 let document = PDFDocument(url: url)
                 let documentData = document!.dataRepresentation()
-                ActivityViewController(activityItems: ["Name To Present to User", documentData!], applicationActivities: nil)
+                ActivityViewController(activityItems: ["Save Code", documentData!], applicationActivities: nil)
             })
             
             Group {
@@ -32,7 +32,7 @@ struct AppHelpView: View {
                     label: { Text("Getting Started") },
                     content: {
                         HStack {
-                            Text("To use this app, first press the blue \"Save Arduino Code\" button above. Copy the code into the Arduino IDE and upload it to your ESP32. If you aren't using some of the devices this app supports, you can just remove those parts of the code - it should be self-explanatory what each class and variable does.")
+                            Text("To use this app, first press the blue \"Save Arduino Code\" button above. Copy the code into the Arduino IDE and upload it to your ESP32. If you aren't using some of the devices this app supports and need more memory on your ESP32, you can just remove those parts of the code - it should be self-explanatory what each class and variable does. Feel free to also add your own devices to the iOS app - the github respository is https://github.com/usedgenes/ESP-32-Interface.")
                             Spacer()
                         }
                     }
@@ -55,7 +55,7 @@ struct AppHelpView: View {
                     label: { Text("Adding Devices") },
                     content: {
                         HStack {
-                            Text("Click on the \"View Devices\" tab to add devices to your ESP32. \nTo add a device: Press the \"Add\" button, enter the pins the device is connected to on the ESP32, change the default name if you want, and then press \"OK.\" \nYou can change the name and pins of the device at any time you want. \nTo delete a device, simply press the \"Delete\" button, or press the \"Reset Devices\" button on the home screen. \nYour devices will be saved when you exit the app, including their name and pins.")
+                            Text("Click on the \"View Devices\" tab to add devices to your ESP32. \nTo add a device: Press the \"Add\" button, enter the pins the device is connected to on the ESP32, change the default name if you want, and then press \"OK.\" A name isn't required, but you must enter in all the pins to add a device. \nYou can change the name and pins of the device at any time you want. \nTo delete a device, simply press the \"Delete\" button, or press the \"Reset Devices\" button on the home screen. \nYour devices will be saved when you exit the app, including their name and pins.")
                             Spacer()
                         }
                         .frame(maxWidth: .infinity)
@@ -68,20 +68,7 @@ struct AppHelpView: View {
                     label: { Text("Servos") },
                     content: {
                         HStack {
-                            Text("Simply enter the servo position and press \"Send\" to set the desired servo position")
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal)
-                        .padding(.bottom, 15)
-                    }
-                )
-                
-                CollapsibleView(
-                    label: { Text("BNO08Xs") },
-                    content: {
-                        HStack {
-                            Text("Press the \"View Data\" button to open the bno08x data screen. Press \"Get Data\" to have the bno08x start logging data, and press \"Stop\" to stop logging data. Press any of the \"Reset\" buttons to clear the corresponding graph data. Press any of the three data buttons to open up a graph view of what you want.")
+                            Text("Simply enter the servo position and press \"Send\" to set the desired servo position. You can also use the slider to adjust the servo position, and the app will automaticlly write the position without you needing to press \"Send\". There is a possibility that if you move the slider too fast and too frequently, the servo will start lagging due to too many commands. You can also control the servo through your phone's attitude - select a motion type (roll, pitch, or yaw), and then press the play button. Zero roll/pitch/yaw corresponds to the servo position 90, while max roll/pitch/yaw corresponds to either servo position 0 or 180.")
                             Spacer()
                         }
                         .frame(maxWidth: .infinity)
@@ -94,7 +81,33 @@ struct AppHelpView: View {
                     label: { Text("BMP390s") },
                     content: {
                         HStack {
-                            Text("Press the \"View Data\" button to open the bmp390 data screen. Press \"Get Data\" to have the bmp390 start logging data, and press \"Stop\" to stop logging data. Press any of the \"Reset\" buttons to clear the corresponding graph data.")
+                            Text("Press the \"View Data\" button to open the bmp390 data screen. Press \"Get Data\" to have the bmp390 start logging data, and press \"Stop\" to stop logging data. Press any of the \"Reset\" buttons to clear the corresponding graph data. The app requests data once every second from the bmp390.")
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
+                        .padding(.bottom, 15)
+                    }
+                )
+                
+                CollapsibleView(
+                    label: { Text("BNO08X") },
+                    content: {
+                        HStack {
+                            Text("Press the \"View Data\" button to open the bno08x data screen. Press \"Get Data\" to have the bno08x start logging data, and press \"Stop\" to stop logging data. Press any of the \"Reset\" buttons to clear the corresponding graph data. Press any of the three data buttons to open up a graph view of what you want. The app requests data once every second from the bno08x.")
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
+                        .padding(.bottom, 15)
+                    }
+                )
+                
+                CollapsibleView(
+                    label: { Text("BMI088s") },
+                    content: {
+                        HStack {
+                            Text("Press the \"View Data\" button to open the bno08x data screen. Press \"Get Data\" to have the bno08x start logging data, and press \"Stop\" to stop logging data. Press any of the \"Reset\" buttons to clear the corresponding graph data. Press any of the two data buttons to open up a graph view of what you want. The app requests data once every second from the bmi088.")
                             Spacer()
                         }
                         .frame(maxWidth: .infinity)
@@ -108,6 +121,19 @@ struct AppHelpView: View {
                     content: {
                         HStack {
                             Text("You can control an individual's pin output to be either digital or analog, though make sure that the pin you're writing to is capable of sending the signal type you're using")
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
+                        .padding(.bottom, 15)
+                    }
+                )
+                
+                CollapsibleView(
+                    label: { Text("Buzzers") },
+                    content: {
+                        HStack {
+                            Text("Enter the frequency in hertz and the duration in seconds, then press \"Send\" to play a tone. You can also press the play button to play a tone indefinitely, and use the slider to adjust the pitch. the minimum pitch is 0 hz, and the maximum pitch is 5000 hz.")
                             Spacer()
                         }
                         .frame(maxWidth: .infinity)

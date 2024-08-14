@@ -106,21 +106,21 @@ class ServoCallbacks : public BLECharacteristicCallbacks {
     if (value.substring(0, 1) == "0") {
       servoArraySize = value.substring(1, value.length()).toInt();
       servoArray = new Servo[servoArraySize];
-      Serial.println(servoArraySize);
-      Serial.println("Initializing servos");
+      // Serial.println(servoArraySize);
+      // Serial.println("Initializing servos");
     }
     if (value.substring(0, 1) == "1") {
       for (int i = 0; i < servoArraySize; i++) {
         servoArray[i].attach(value.substring(2 * i + 1, 2 * i + 3).toInt());
-        Serial.println(value.substring(2 * i + 1, 2 * i + 3).toInt());
+        // Serial.println(value.substring(2 * i + 1, 2 * i + 3).toInt());
       }
-      Serial.println("Attaching servos");
+      // Serial.println("Attaching servos");
     }
     if (value.substring(0, 1) == "2") {
       servoArray[value.substring(1, 3).toInt()].write(value.substring(3, value.length()).toInt());
-      Serial.println(value.substring(1, 3).toInt());
-      Serial.println(value.substring(3, value.length()).toInt());
-      Serial.println("Writing servos");
+      // Serial.println(value.substring(1, 3).toInt());
+      // Serial.println(value.substring(3, value.length()).toInt());
+      // Serial.println("Writing servos");
     }
     Serial.println(value);
   }
@@ -248,17 +248,17 @@ class BNO08XCallbacks : public BLECharacteristicCallbacks {
 
       pCharacteristic->setValue(bno08xNumber + "3" + String(quatI, 2) + "," + String(quatJ, 2) + "," + String(quatK, 2) + "," + String(quatReal, 2) + "," + String(quatAccuracy, 2));
       pCharacteristic->notify();
-      Serial.println(bno08xNumber + "3" + String(quatI, 2) + "," + String(quatJ, 2) + "," + String(quatK, 2) + "," + String(quatReal, 2) + "," + String(quatAccuracy, 2));
+      // Serial.println(bno08xNumber + "3" + String(quatI, 2) + "," + String(quatJ, 2) + "," + String(quatK, 2) + "," + String(quatReal, 2) + "," + String(quatAccuracy, 2));
 
       pCharacteristic->setValue(bno08xNumber + "4" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
       pCharacteristic->notify();
-      Serial.println(bno08xNumber + "4" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
+      // Serial.println(bno08xNumber + "4" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
 
       pCharacteristic->setValue(bno08xNumber + "5" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
       pCharacteristic->notify();
-      Serial.println(bno08xNumber + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
+      // Serial.println(bno08xNumber + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
       
-      Serial.println("notifying bno08x");
+      // Serial.println("notifying bno08x");
     }
     Serial.println(value);
   }
@@ -377,13 +377,20 @@ class BMI088Callbacks : public BLECharacteristicCallbacks {
     }
     if (value.substring(0, 1) == "1") {
       if (value.length() == 7) {
-
+        int SDA = value.substring(3, 5).toInt();
+        int SCL = value.substring(5, 7).toInt();
+        I2C1.begin(SDA, SCL, 100000);
+        bmi088AccelArray[value.substring(1, 3).toInt()] = new Bmi088Accel(I2C1, 0x18);
+        bmi088GyroArray[value.substring(1, 3).toInt()] = new Bmi088Gyro(I2C1, 0x68);
+        bmi088AccelArray[value.substring(1, 3).toInt()]->begin();
+        bmi088GyroArray[value.substring(1, 3).toInt()]->begin();
+        Serial.println("Attaching bmi088");  
       }
       //spi.begin: SCK, MISO, MOSI, CS
       else {
         vspi.begin(value.substring(3, 5).toInt(), value.substring(5, 7).toInt(), value.substring(7, 9).toInt(), value.substring(9, 11).toInt());
         bmi088AccelArray[value.substring(1, 3).toInt()] = new Bmi088Accel(vspi, value.substring(9, 11).toInt());
-        bmi088GyroArray[value.substring(1, 3).toInt()] = new Bmi088Gyro(vspi, value.substring(9, 11).toInt());
+        bmi088GyroArray[value.substring(1, 3).toInt()] = new Bmi088Gyro(vspi, value.substring(11, 13).toInt());
         bmi088AccelArray[value.substring(1, 3).toInt()]->begin();
         bmi088GyroArray[value.substring(1, 3).toInt()]->begin();
         Serial.println("Attaching bmi088");
@@ -405,13 +412,13 @@ class BMI088Callbacks : public BLECharacteristicCallbacks {
       float yAccelerometer = bmi088AccelArray[bmi088NumberInt]->getAccelY_mss();
       float zAccelerometer = bmi088AccelArray[bmi088NumberInt]->getAccelZ_mss();
 
-      pCharacteristic->setValue(String(bmi088NumberInt) + "3" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
+      pCharacteristic->setValue(bmi088Number + "3" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
       pCharacteristic->notify();
-      Serial.println(String(bmi088NumberInt) + "3" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
+      Serial.println(bmi088Number + "3" + String(xGyro, 2) + "," + String(yGyro, 2) + "," + String(zGyro, 2));
 
-      pCharacteristic->setValue(String(bmi088NumberInt) + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
+      pCharacteristic->setValue(bmi088Number + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
       pCharacteristic->notify();
-      Serial.println(String(bmi088NumberInt) + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
+      Serial.println(bmi088Number + "4" + String(xAccelerometer, 2) + "," + String(yAccelerometer, 2) + "," + String(zAccelerometer, 2));
       
       Serial.println("notifying bmi088");
     }
