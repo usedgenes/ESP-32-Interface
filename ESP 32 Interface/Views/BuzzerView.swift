@@ -25,6 +25,7 @@ struct individualBuzzerView : View {
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     let items = [GridItem()]
     @State var frequency = 440
+    @State var sliderFrequency : Double = 440
     @State var duration: String = "0.5"
     @State var playBuzzer = false
     var body : some View {
@@ -43,7 +44,7 @@ struct individualBuzzerView : View {
                     set: {
                         if let value = NumberFormatter().number(from: $0) {
                             frequency = value.intValue
-
+                            sliderFrequency = Double(frequency)
                         }
                     }))
                 .keyboardType(UIKeyboardType.numberPad)
@@ -58,28 +59,40 @@ struct individualBuzzerView : View {
                     }))
                 .keyboardType(UIKeyboardType.decimalPad)
                 .hideKeyboardWhenTappedAround()
-            }
-            HStack {
+                Spacer()
+                    .hideKeyboardWhenTappedAround()
                 Button(action: {
                     bluetoothDevice.setBuzzer(input: "2" + String(frequency))
                     bluetoothDevice.setBuzzer(input: "3" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer Pin")) + String((Float(duration) ?? 0)*1000))
                 }) {
                     Text("Send")
                 }.buttonStyle(BorderlessButtonStyle())
-                    .padding()
-                Spacer()
-                    .hideKeyboardWhenTappedAround()
-                Button(action: {
+                    .padding(.horizontal)
+            }
+            
+            HStack {
+                Slider(value: Binding(get: {
+                    sliderFrequency
+                }, set: { (newVal) in
+                    sliderFrequency = newVal
+                    frequency = Int(sliderFrequency)
                     if(playBuzzer) {
-                        bluetoothDevice.setBuzzer(input: "1" + String(format: "%02d", buzzer.getPinNumber(name: "Buzzer Pin")));
-                    }
-                    else {
                         bluetoothDevice.setBuzzer(input: "0" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer Pin")) + String(frequency))
                     }
+                }), in: 0...5000, step: 1)
+                .padding(.horizontal)
+                
+                Button(action: {
                     playBuzzer.toggle()
+                    if(playBuzzer) {
+                        bluetoothDevice.setBuzzer(input: "0" + String(format: "%02d",  buzzer.getPinNumber(name: "Buzzer Pin")) + String(frequency))
+                    }
+                    else {
+                        bluetoothDevice.setBuzzer(input: "1" + String(format: "%02d", buzzer.getPinNumber(name: "Buzzer Pin")))
+                    }
                 }) {
                     Image(systemName: self.playBuzzer == true ? "pause.fill" : "play.fill")
-                }
+                }.padding(.horizontal)
             }
         }
     }

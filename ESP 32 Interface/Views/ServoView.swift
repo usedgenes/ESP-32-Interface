@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import CoreMotion
 
 struct ServoView: View {
     @EnvironmentObject var ESP_32 : ESP32
@@ -40,12 +41,20 @@ struct individualServoView : View {
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     let items = [GridItem()]
     @State var servoPositionSlider : Double = 0
+    @State var tiltViewOn = false
+    @State var motionManager : CMMotionManager?
+    let motionType = ["Roll", "Pitch", "Yaw"]
+    @State var selectedMotion = "Roll"
+    init(servo: Servo) {
+        servoPositionSlider = Double(servo.servoPosition)
+        self.servo = servo
+    }
+    
     var body : some View {
         Section() {
             Text("\(servo.name)")
                 .frame(maxWidth: .infinity, alignment: .center)
             LazyVGrid(columns: items) {
-                Spacer()
                 Text("\(servo.attachedPins[0].pinName): \(servo.attachedPins[0].pinNumber)")
             }
             .contentShape(Rectangle())
@@ -56,6 +65,7 @@ struct individualServoView : View {
                     set: {
                         if let value = NumberFormatter().number(from: $0) {
                             servo.servoPosition = value.intValue
+                            servoPositionSlider = Double(servo.servoPosition)
                         }
                     }))
                 .keyboardType(UIKeyboardType.numberPad)
@@ -70,10 +80,36 @@ struct individualServoView : View {
             }, set: { (newVal) in
                 servoPositionSlider = newVal
                 servo.servoPosition = Int(newVal)
-                bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servoPositionSlider))
+                bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(Int(servoPositionSlider)))
             }), in: 0...180, step: 1)
-            .padding(.bottom)
+            HStack {
+                Text("Phone Tilt Control:")
+                Button(action: {
+                    tiltViewOn.toggle()
+                    if(tiltViewOn) {
+                        motionManager = CMMotionManager()
+                        motionManager!.deviceMotionUpdateInterval = 0.5
+                        motionManager!.startDeviceMotionUpdates(to: .main) {
+                            (motion, error) in
+                            
+                        }
+                    }
+                    else {
+                        
+                    }
+                }) {
+                    Text(tiltViewOn ? "On" : "Off")
+                }.buttonStyle(BorderlessButtonStyle())
+            }
+            .padding(.bottom, 30)
+            Spacer()
+            Picker("Motion Type", selection: $selectedMotion) {
+                ForEach(motionType, id: \.self) {
+                    Text($0)
+                }
+            }
         }.hideKeyboardWhenTappedAround()
+
     }
 }
 
