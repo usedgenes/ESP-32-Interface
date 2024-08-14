@@ -19,15 +19,13 @@ struct ServoView: View {
             else {
                 List {
                     ForEach(ESP_32.getServos().devices, id: \.self) { servo in
-                        let _ = print("hi")
-                        let _ = print(ESP_32.getServos().getDevice(index: 0))
                         individualServoView(servo: servo as! Servo)
                     }
                 }.onAppear(perform: {
                     bluetoothDevice.setServos(input: "0" + String(ESP_32.getServos().devices.count))
                     var servoDigitalPins = ""
                     for servo in ESP_32.getServos().devices {
-                        servoDigitalPins += String(servo.getPinNumber(name: "Digital"))
+                        servoDigitalPins += String(format: "%02d", servo.getPinNumber(name: "Digital"))
                     }
                     bluetoothDevice.setServos(input: "1" + String(servoDigitalPins))
                 })
@@ -41,7 +39,7 @@ struct individualServoView : View {
     @ObservedObject var servo : Servo
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     let items = [GridItem()]
-    @State var servoPosition = 0
+    @State var servoPositionSlider : Double = 0
     var body : some View {
         Section() {
             Text("\(servo.name)")
@@ -57,24 +55,28 @@ struct individualServoView : View {
                     get: { String(servo.servoPosition) },
                     set: {
                         if let value = NumberFormatter().number(from: $0) {
-                            self.servoPosition = value.intValue
-
+                            servo.servoPosition = value.intValue
                         }
                     }))
-                    .keyboardType(UIKeyboardType.numberPad)
+                .keyboardType(UIKeyboardType.numberPad)
                 Button(action: {
-                    servo.servoPosition = servoPosition
-                    bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servoPosition))
-                    print(ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo))
-                    print(servoPosition)
-                    
-                    }) {
-                        Text("Send")
-                    }.buttonStyle(BorderlessButtonStyle())
+                    bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servo.servoPosition))
+                }) {
+                    Text("Send")
+                }.buttonStyle(BorderlessButtonStyle())
             }.padding()
+            Slider(value: Binding(get: {
+                servoPositionSlider
+            }, set: { (newVal) in
+                servoPositionSlider = newVal
+                servo.servoPosition = Int(newVal)
+                bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servoPositionSlider))
+            }), in: 0...180, step: 1)
+            .padding(.bottom)
         }.hideKeyboardWhenTappedAround()
     }
 }
+
 struct ServoView_Previews: PreviewProvider {
     static var previews: some View {
         ServoView()

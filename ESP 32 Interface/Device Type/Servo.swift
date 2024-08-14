@@ -8,5 +8,5 @@
 import Foundation
 
 class Servo : Device {
-    var servoPosition = 0
+    var servoPosition : Int = 0
 }
