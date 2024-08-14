@@ -40,7 +40,7 @@ struct individualServoView : View {
     @ObservedObject var servo : Servo
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     let items = [GridItem()]
-    @State var servoPositionSlider : Double = 0
+    @State var servoPositionSlider : Double = 90
     @State var tiltViewOn = false
     @State var motionManager : CMMotionManager?
     let motionType = ["Roll", "Pitch", "Yaw"]
@@ -88,26 +88,24 @@ struct individualServoView : View {
                     tiltViewOn.toggle()
                     if(tiltViewOn) {
                         motionManager = CMMotionManager()
-                        motionManager!.deviceMotionUpdateInterval = 0.5
+                        motionManager!.deviceMotionUpdateInterval = 0.25
                         motionManager!.startDeviceMotionUpdates(to: .main) {
                             (motion, error) in
+                            var servoPosition = 90
                             if(selectedMotion == "Roll") {
-                                print("Roll")
-                                print(mapRadiantoServo(value: (motion?.attitude.roll)!))
+                                servoPosition = mapRadiantoServo(value: (motion?.attitude.roll)!)
                                 
-                            }
-                            if(selectedMotion == "Pitch") {
-                                print("Pitch")
-                                print(mapRadiantoServo(value: (motion?.attitude.pitch)!))
+                            } else if(selectedMotion == "Pitch") {
+                                servoPosition = mapRadiantoServo(value: (motion?.attitude.pitch)!)
                                 
                             }
                             if(selectedMotion == "Yaw") {
-                                print("Yaw")
-                                print(mapRadiantoServo(value: (motion?.attitude.yaw)!))
+                                servoPosition = mapRadiantoServo(value: (motion?.attitude.yaw)!)
                                 
                             }
-                            servo.servoPosition = Int(newVal)
-                            bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(Int(servoPositionSlider)))
+                            servo.servoPosition = servoPosition
+                            servoPositionSlider = Double(servoPosition)
+                            bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(servo.servoPosition))
                         }
                     }
                     else {
@@ -124,7 +122,8 @@ struct individualServoView : View {
                 }.pickerStyle(.menu)
             }.padding(.bottom, 30)
         }.hideKeyboardWhenTappedAround()
-        
+            .onDisappear(perform: { motionManager?.stopDeviceMotionUpdates()
+            })
     }
 }
 
