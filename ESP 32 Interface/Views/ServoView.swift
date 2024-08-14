@@ -91,26 +91,45 @@ struct individualServoView : View {
                         motionManager!.deviceMotionUpdateInterval = 0.5
                         motionManager!.startDeviceMotionUpdates(to: .main) {
                             (motion, error) in
-                            
+                            if(selectedMotion == "Roll") {
+                                print("Roll")
+                                print(mapRadiantoServo(value: (motion?.attitude.roll)!))
+                                
+                            }
+                            if(selectedMotion == "Pitch") {
+                                print("Pitch")
+                                print(mapRadiantoServo(value: (motion?.attitude.pitch)!))
+                                
+                            }
+                            if(selectedMotion == "Yaw") {
+                                print("Yaw")
+                                print(mapRadiantoServo(value: (motion?.attitude.yaw)!))
+                                
+                            }
+                            servo.servoPosition = Int(newVal)
+                            bluetoothDevice.setServos(input: "2" + String(format: "%02d", ESP_32.getServos().getDeviceNumberInArray(inputDevice: servo)) + String(Int(servoPositionSlider)))
                         }
                     }
                     else {
-                        
+                        motionManager!.stopDeviceMotionUpdates()
                     }
                 }) {
-                    Text(tiltViewOn ? "On" : "Off")
-                }.buttonStyle(BorderlessButtonStyle())
-            }
-            .padding(.bottom, 30)
-            Spacer()
-            Picker("Motion Type", selection: $selectedMotion) {
-                ForEach(motionType, id: \.self) {
-                    Text($0)
-                }
-            }
+                    Image(systemName: tiltViewOn ? "pause.fill" : "play.fill")
+                }.buttonStyle(.plain)
+                Spacer()
+                Picker("Motion Type", selection: $selectedMotion) {
+                    ForEach(motionType, id: \.self) {
+                        Text($0)
+                    }
+                }.pickerStyle(.menu)
+            }.padding(.bottom, 30)
         }.hideKeyboardWhenTappedAround()
-
+        
     }
+}
+
+func mapRadiantoServo(value: Double) -> Int {
+    return Int(180 * (value + Double.pi) / (2*Double.pi))
 }
 
 struct ServoView_Previews: PreviewProvider {
