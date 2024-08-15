@@ -14,7 +14,7 @@ class BluetoothDeviceHelper: ObservableObject {
     
     @Published var deviceName: String = "null"
     @Published var isConnected: Bool = false
-    
+        
     @Published var device: BTDevice? {
         didSet {
             device?.delegate = self
@@ -24,6 +24,12 @@ class BluetoothDeviceHelper: ObservableObject {
     @Published var ESP_32: ESP32? {
         didSet {
             device?.ESP_32 = ESP_32
+        }
+    }
+    
+    @Published var bmi088EDF: BMI088EDF? {
+        didSet {
+            device?.bmi088EDF = bmi088EDF
         }
     }
     

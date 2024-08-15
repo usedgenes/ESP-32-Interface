@@ -38,6 +38,8 @@ class BTDevice: NSObject {
     
     var ESP_32 : ESP32?
     
+    var bmi088EDF : BMI088EDF?
+    
     weak var delegate: BTDeviceDelegate?
     
     var pidString: String {
@@ -304,7 +306,6 @@ extension BTDevice: CBPeripheralDelegate {
                     ESP_32!.getBNO08X(index: deviceNumber).addRotationZ(rotationZ: rotationZ)
                     ESP_32!.getBNO08X(index: deviceNumber).addRotationReal(rotationReal: rotationReal)
                     ESP_32!.getBNO08X(index: deviceNumber).addRotationAccuracy(rotationAccuracy: rotationAccuracy)
-                    print("rotation")
                 }
                 //gyro
                 if(Int(value[...value.startIndex]) == 4) {
@@ -320,7 +321,6 @@ extension BTDevice: CBPeripheralDelegate {
                     ESP_32!.getBNO08X(index: deviceNumber).addGyroX(gyroX: gyroX)
                     ESP_32!.getBNO08X(index: deviceNumber).addGyroY(gyroY: gyroY)
                     ESP_32!.getBNO08X(index: deviceNumber).addGyroZ(gyroZ: gyroZ)
-                    print("gyro")
                 }
                 //accelerometer
                 if(Int(value[...value.startIndex]) == 5) {
@@ -337,13 +337,40 @@ extension BTDevice: CBPeripheralDelegate {
                     ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerX(accelerometerX: accelX)
                     ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerY(accelerometerY: accelY)
                     ESP_32!.getBNO08X(index: deviceNumber).addAccelerometerZ(accelerometerZ: accelZ)
-                    print("accelerometer")
                 }
             }
         }
         if characteristic.uuid == bmi088Char?.uuid, let b = characteristic.value {
             var value = String(decoding: b, as: UTF8.self)
             if(value != "") {
+                if(Int(value[...value.startIndex]) == 7) {
+                    value.remove(at: value.startIndex)
+                    
+                    let yaw = Float(value)!
+                    
+                    bmi088EDF!.addYaw(yaw: yaw)
+                    
+                    return;
+                }
+                if(Int(value[...value.startIndex]) == 8) {
+                    value.remove(at: value.startIndex)
+                    
+                    let pitch = Float(value)!
+                    
+                    bmi088EDF!.addPitch(pitch: pitch)
+                    
+                    return;
+                    
+                }
+                if(Int(value[...value.startIndex]) == 9) {
+                    value.remove(at: value.startIndex)
+                    
+                    let roll = Float(value)!
+                    
+                    bmi088EDF!.addRoll(roll: roll)
+                    
+                    return;
+                }
                 let deviceNumber = Int(value[...value.index(value.startIndex, offsetBy: 1)])!
                 value.removeSubrange(...value.index(value.startIndex, offsetBy: 1))
                 print(value);
@@ -380,6 +407,7 @@ extension BTDevice: CBPeripheralDelegate {
                     ESP_32!.getBMI088(index: deviceNumber).addAccelerometerZ(accelerometerZ: accelZ)
                     print("accelerometer")
                 }
+                //thrust vectoring edf
             }
         }
     }

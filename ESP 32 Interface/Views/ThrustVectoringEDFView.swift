@@ -27,6 +27,12 @@ struct ThrustVectoringEDFView: View {
     @State var yawKi : Double = 0
     @State var yawKd : Double = 0
     
+    @State var timerOn = false
+    @State var timer : Timer?
+    @State var delayTime = 1000
+    
+    var bmi088EDF : BMI088EDF
+    
     var body: some View {
         ScrollView {
             Section {
@@ -200,12 +206,51 @@ struct ThrustVectoringEDFView: View {
                     }
                 }
             }.padding()
+            
+            Section {
+                Text("BMI088 Data Graphs")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                HStack {
+                    Button(action: {
+                        if(timer == nil) {
+                            timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(delayTime/1000), repeats: true, block: { _ in
+                                bluetoothDevice.setBMI088(input: "0")
+                            })
+                        }
+                        timerOn.toggle()
+                    }) {
+                        Text("Get Data")
+                    }.disabled(timerOn)
+                        .buttonStyle(BorderlessButtonStyle())
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    Button(action: {
+                        if timer != nil {
+                            timer?.invalidate()
+                            timer = nil
+                            timerOn.toggle()
+                        }
+                    }) {
+                        Text("Stop")
+                    }.disabled(!timerOn)
+                        .buttonStyle(BorderlessButtonStyle())
+                        .frame(maxWidth: .infinity, alignment: .center)
+
+                }
+                HStack {
+                    Button(action: {
+                        bmi088EDF.resetAll()
+                    }) {
+                        Text("Reset All")
+                    }.buttonStyle(BorderlessButtonStyle())
+                }.frame(maxWidth: .infinity, alignment: .center)
+            }
         }
     }
 }
 
 struct ThrustVectoringEDFView_Previews: PreviewProvider {
     static var previews: some View {
-        ThrustVectoringEDFView()
+        ThrustVectoringEDFView(bmi088EDF: BMI088EDF())
     }
 }

@@ -11,7 +11,6 @@ import SwiftUI
 struct ESP_32_InterfaceApp: App {
     @StateObject var ESP_32 = ESP32()
     @StateObject var bluetoothDevice = BluetoothDeviceHelper()
-
     var body: some Scene {
         WindowGroup {
             HomeScreenView()
