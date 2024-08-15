@@ -34,13 +34,25 @@ class BTDevice: NSObject {
     
     private var bmi088Char: CBCharacteristic?
     
+    private var pidChar: CBCharacteristic?
+    
     var ESP_32 : ESP32?
     
     weak var delegate: BTDeviceDelegate?
     
+    var pidString: String {
+        get {
+            return "-1"
+        }
+        set {
+            if let char = pidChar {
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
+            }
+        }
+    }
     var bmi088String: String {
         get {
-            return self.bmi088String
+            return "-1"
         }
         set {
             if let char = bmi088Char {
@@ -51,7 +63,7 @@ class BTDevice: NSObject {
     
     var buzzerString: String {
         get {
-            return self.buzzerString
+            return "-1"
         }
         set {
             if let char = buzzerChar {
@@ -62,7 +74,7 @@ class BTDevice: NSObject {
     
     var pinString: String {
         get {
-            return self.pinString
+            return "-1"
         }
         set {
             if let char = pinChar {
@@ -73,7 +85,7 @@ class BTDevice: NSObject {
     
     var bno08xString: String {
         get {
-            return self.bno08xString
+            return "-1"
         }
         set {
             if let char = bno08xChar {
@@ -84,7 +96,7 @@ class BTDevice: NSObject {
     
     var bmp390String: String {
         get {
-            return self.bmp390String
+            return "-1"
         }
         set {
             if let char = bmp390Char {
@@ -95,7 +107,7 @@ class BTDevice: NSObject {
     
     var servoString: String {
         get {
-            return self.servoString
+            return "-1"
         }
         set {
             if let char = servoChar {
@@ -171,7 +183,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID, BTUUIDs.buzzerUUID, BTUUIDs.bmi088UUID], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID, BTUUIDs.buzzerUUID, BTUUIDs.bmi088UUID, BTUUIDs.pidUUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -212,10 +224,13 @@ extension BTDevice: CBPeripheralDelegate {
                 self.bmi088Char = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
+            } else if $0.uuid == BTUUIDs.pidUUID {
+                self.pidChar = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
             }
         }
         print()
-        
         delegate?.deviceReady()
     }
     

@@ -49,6 +49,9 @@ struct HomeScreenView: View {
                     NavigationLink("Buzzers", destination: BuzzerView())
                         .disabled(!bluetoothDevice.isConnected)
                 }
+                Section(header: Text("Thrust Vectoring")) {
+                    NavigationLink("EDF", destination: ThrustVectoringEDFView())
+                }
             }
             .navigationBarTitle("ESP32 Assistant")
         }.onAppear(perform: {

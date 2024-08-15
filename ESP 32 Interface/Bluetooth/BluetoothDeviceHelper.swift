@@ -82,6 +82,10 @@ class BluetoothDeviceHelper: ObservableObject {
     func setBMI088(input: String) {
         device!.bmi088String = input
     }
+    
+    func setPID(input: String) {
+        device!.pidString = input
+    }
 }
 
 extension BluetoothDeviceHelper: BTDeviceDelegate {

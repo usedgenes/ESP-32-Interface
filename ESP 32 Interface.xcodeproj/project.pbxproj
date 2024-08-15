@@ -31,6 +31,7 @@
 		449096452C520ECD00EF97A3 /* BTUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096412C520ECD00EF97A3 /* BTUtils.swift */; };
 		449096482C52210F00EF97A3 /* BluetoothConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449096472C52210F00EF97A3 /* BluetoothConnectView.swift */; };
 		449840492C53532400A7AF05 /* BluetoothManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449840482C53532400A7AF05 /* BluetoothManagerHelper.swift */; };
+		44A8662A2C6D9E4400983D49 /* ThrustVectoringEDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A866292C6D9E4400983D49 /* ThrustVectoringEDFView.swift */; };
 		44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */; };
 		44B3C00E2C50BE6800CAADBC /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B3C00D2C50BE6800CAADBC /* HomeScreenView.swift */; };
 		44B3C0102C50BE6A00CAADBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B3C00F2C50BE6A00CAADBC /* Assets.xcassets */; };
@@ -82,6 +83,7 @@
 		449096412C520ECD00EF97A3 /* BTUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUtils.swift; sourceTree = "<group>"; };
 		449096472C52210F00EF97A3 /* BluetoothConnectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothConnectView.swift; sourceTree = "<group>"; };
 		449840482C53532400A7AF05 /* BluetoothManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManagerHelper.swift; sourceTree = "<group>"; };
+		44A866292C6D9E4400983D49 /* ThrustVectoringEDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrustVectoringEDFView.swift; sourceTree = "<group>"; };
 		44B3C0082C50BE6800CAADBC /* ESP 32 Interface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ESP 32 Interface.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B3C00B2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESP_32_InterfaceApp.swift; sourceTree = "<group>"; };
 		44B3C00D2C50BE6800CAADBC /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				447422592C599917004D217F /* BNO08XView.swift */,
 				448C4A172C6A931300E0E637 /* BuzzerView.swift */,
 				448C4A1B2C6ABFB300E0E637 /* BMI088View.swift */,
+				44A866292C6D9E4400983D49 /* ThrustVectoringEDFView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				448C4A1C2C6ABFB300E0E637 /* BMI088View.swift in Sources */,
 				44B3C00C2C50BE6800CAADBC /* ESP_32_InterfaceApp.swift in Sources */,
 				449096432C520ECD00EF97A3 /* BTDevice.swift in Sources */,
+				44A8662A2C6D9E4400983D49 /* ThrustVectoringEDFView.swift in Sources */,
 				443A4D802C549B90004E1D26 /* ESP32.swift in Sources */,
 				443A04EB2C5ECE94008F4F21 /* AppHelpView.swift in Sources */,
 				448DA9C52C617E330088F60E /* ChartStyle.swift in Sources */,
