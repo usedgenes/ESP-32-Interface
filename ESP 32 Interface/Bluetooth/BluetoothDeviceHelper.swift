@@ -30,6 +30,7 @@ class BluetoothDeviceHelper: ObservableObject {
     @Published var bmi088EDF: BMI088EDF? {
         didSet {
             device?.bmi088EDF = bmi088EDF
+            print(bmi088EDF)
         }
     }
     

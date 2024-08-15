@@ -15,7 +15,7 @@ struct BluetoothConnectView: View {
     @State private var showBluetoothAlert: Bool = false
     @State var bluetoothManagerHelper = BluetoothManagerHelper()
     @State var LED_On = false
-    @State var bmi088EDF : BMI088EDF
+    @EnvironmentObject var bmi088EDF : BMI088EDF
     var body: some View {
         
         VStack {
@@ -102,6 +102,6 @@ struct BluetoothConnectView: View {
 
 struct BluetoothConnectView_Previews: PreviewProvider {
     static var previews: some View {
-        BluetoothConnectView(bmi088EDF: BMI088EDF())
+        BluetoothConnectView()
     }
 }

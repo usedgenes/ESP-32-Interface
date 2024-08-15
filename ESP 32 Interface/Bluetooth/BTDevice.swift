@@ -347,7 +347,6 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let yaw = Float(value)!
-                    
                     bmi088EDF!.addYaw(yaw: yaw)
                     
                     return;
@@ -356,7 +355,6 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let pitch = Float(value)!
-                    
                     bmi088EDF!.addPitch(pitch: pitch)
                     
                     return;
@@ -366,7 +364,6 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let roll = Float(value)!
-                    
                     bmi088EDF!.addRoll(roll: roll)
                     
                     return;

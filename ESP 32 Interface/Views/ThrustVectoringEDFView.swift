@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import SwiftUICharts
 
 struct ThrustVectoringEDFView: View {
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
@@ -31,7 +31,7 @@ struct ThrustVectoringEDFView: View {
     @State var timer : Timer?
     @State var delayTime = 1000
     
-    var bmi088EDF : BMI088EDF
+    @EnvironmentObject var bmi088EDF : BMI088EDF
     
     var body: some View {
         ScrollView {
@@ -40,13 +40,13 @@ struct ThrustVectoringEDFView: View {
                     Text("PID Values")
                         .padding(.trailing)
                     Button(action: {
-                        bluetoothDevice.setPID(input: "0" + String(rollKp) + "," + String(rollKi) + "." + String(rollKd))
-                        bluetoothDevice.setPID(input: "1" + String(pitchKp) + "," + String(pitchKi) + "." + String(pitchKd))
-                        bluetoothDevice.setPID(input: "2" + String(yawKp) + "," + String(yawKi) + "." + String(yawKd))
+                        bluetoothDevice.setPID(input: "0" + String(rollKp) + "," + String(rollKi) + "!" + String(rollKd))
+                        bluetoothDevice.setPID(input: "1" + String(pitchKp) + "," + String(pitchKi) + "!" + String(pitchKd))
+                        bluetoothDevice.setPID(input: "2" + String(yawKp) + "," + String(yawKi) + "!" + String(yawKd))
                     }) {
                         Text("Apply")
                     }.buttonStyle(BorderlessButtonStyle())
-                }.padding(.top)
+                }
                 HStack {
                     Text("Roll:")
                     Text("Kp:")
@@ -137,7 +137,7 @@ struct ThrustVectoringEDFView: View {
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                 }
-            }.padding()
+            }.padding(.leading)
             
             Section {
                 HStack {
@@ -197,12 +197,12 @@ struct ThrustVectoringEDFView: View {
                 Text("EDF Power: " + String(Int(edfPower)))
                     .padding(.trailing)
                 Slider(value: Binding(get: {
-                    servo3Position
+                    edfPower
                 }, set: { (newVal) in
-                    servo3Position = newVal
+                    edfPower = newVal
                 }), in: 60...180, step: 1) { editing in
                     if(!editing) {
-                        bluetoothDevice.setServos(input: "4" + String(Int(servo3Position)))
+                        bluetoothDevice.setServos(input: "4" + String(Int(edfPower)))
                     }
                 }
             }.padding()
@@ -210,6 +210,7 @@ struct ThrustVectoringEDFView: View {
             Section {
                 Text("BMI088 Data Graphs")
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .padding()
                 HStack {
                     Button(action: {
                         if(timer == nil) {
@@ -235,22 +236,70 @@ struct ThrustVectoringEDFView: View {
                     }.disabled(!timerOn)
                         .buttonStyle(BorderlessButtonStyle())
                         .frame(maxWidth: .infinity, alignment: .center)
-
-                }
-                HStack {
                     Button(action: {
                         bmi088EDF.resetAll()
                     }) {
                         Text("Reset All")
                     }.buttonStyle(BorderlessButtonStyle())
-                }.frame(maxWidth: .infinity, alignment: .center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                }.padding(.bottom)
             }
+            let yawData = LineChartData(dataSets: bmi088EDF.getYaw(), chartStyle: ChartStyle().getChartStyle())
+            
+            //gyro x
+            Text("Yaw")
+            LineChart(chartData: yawData)
+                .filledTopLine(chartData: yawData,
+                               lineColour: ColourStyle(colour: .red),
+                               strokeStyle: StrokeStyle(lineWidth: 3))
+                .touchOverlay(chartData: yawData, specifier: "%.2f")
+                .xAxisGrid(chartData: yawData)
+                .yAxisGrid(chartData: yawData)
+                .xAxisLabels(chartData: yawData)
+                .yAxisLabels(chartData: yawData, specifier: "%.2f")
+                .floatingInfoBox(chartData: yawData)
+                .id(yawData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            
+            let pitchData = LineChartData(dataSets: bmi088EDF.getPitch(), chartStyle: ChartStyle().getChartStyle())
+            
+            //gyro y
+            Text("Pitch")
+            LineChart(chartData: pitchData)
+                .filledTopLine(chartData: pitchData,
+                               lineColour: ColourStyle(colour: .green),
+                               strokeStyle: StrokeStyle(lineWidth: 3))
+                .touchOverlay(chartData: pitchData, specifier: "%.2f")
+                .xAxisGrid(chartData: pitchData)
+                .yAxisGrid(chartData: pitchData)
+                .xAxisLabels(chartData: pitchData)
+                .yAxisLabels(chartData: pitchData, specifier: "%.2f")
+                .floatingInfoBox(chartData: pitchData)
+                .id(pitchData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            
+            let rollData = LineChartData(dataSets: bmi088EDF.getRoll(), chartStyle: ChartStyle().getChartStyle())
+            
+            //gyro z
+            Text("Roll")
+            LineChart(chartData: rollData)
+                .filledTopLine(chartData: rollData,
+                               lineColour: ColourStyle(colour: .blue),
+                               strokeStyle: StrokeStyle(lineWidth: 3))
+                .touchOverlay(chartData: rollData, specifier: "%.2f")
+                .xAxisGrid(chartData: rollData)
+                .yAxisGrid(chartData: rollData)
+                .xAxisLabels(chartData: rollData)
+                .yAxisLabels(chartData: rollData, specifier: "%.2f")
+                .floatingInfoBox(chartData: rollData)
+                .id(rollData.id)
+                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
         }
     }
 }
 
 struct ThrustVectoringEDFView_Previews: PreviewProvider {
     static var previews: some View {
-        ThrustVectoringEDFView(bmi088EDF: BMI088EDF())
+        ThrustVectoringEDFView()
     }
 }

@@ -14,13 +14,12 @@ struct HomeScreenView: View {
     @State private var showingAltimeterView = false
     @State var saveTemp = 0
     @State var getTemp = 0
-    @State var bmi088EDF = BMI088EDF()
     var body: some View {
         NavigationView {
             List {
                 Section(header: Text("ESP32 Options")) {
                     NavigationLink("App Help", destination: AppHelpView())
-                    NavigationLink("Connect to Bluetooth", destination: BluetoothConnectView(bmi088EDF: bmi088EDF))
+                    NavigationLink("Connect to Bluetooth", destination: BluetoothConnectView())
                     NavigationLink("View Devices", destination: DeviceView())
                     Button(action: {
                         ESP_32.cleanState()
@@ -51,7 +50,7 @@ struct HomeScreenView: View {
                         .disabled(!bluetoothDevice.isConnected)
                 }
                 Section(header: Text("Thrust Vectoring")) {
-                    NavigationLink("EDF", destination: ThrustVectoringEDFView(bmi088EDF: bmi088EDF))
+                    NavigationLink("EDF", destination: ThrustVectoringEDFView())
                 }
             }
             .navigationBarTitle("ESP32 Assistant")

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUICharts
 
-class BMI088EDF {
+class BMI088EDF : ObservableObject {
     @Published var yawData : [LineChartDataPoint] = []
     @Published var pitchData : [LineChartDataPoint] = []
     @Published var rollData : [LineChartDataPoint] = []
