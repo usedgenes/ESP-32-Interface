@@ -302,6 +302,35 @@ extension BTDevice: CBPeripheralDelegate {
                 }
             }
         }
+        if characteristic.uuid == pidChar?.uuid, let b = characteristic.value {
+            var value = String(decoding: b, as: UTF8.self)
+            if(value != "") {
+                if(Int(value[...value.startIndex]) == 4) {
+                    value.remove(at: value.startIndex)
+                    
+                    let yawCmd = Float(value)!
+                    bmi088EDF!.addYawCommand(cmd: yawCmd)
+                    
+                    return;
+                }
+                if(Int(value[...value.startIndex]) == 5) {
+                    value.remove(at: value.startIndex)
+                    
+                    let pitchCmd = Float(value)!
+                    bmi088EDF!.addPitchCommand(cmd: pitchCmd)
+                    
+                    return;
+                }
+                if(Int(value[...value.startIndex]) == 6) {
+                    value.remove(at: value.startIndex)
+                    
+                    let rollCmd = Float(value)!
+                    bmi088EDF!.addRollCommand(cmd: rollCmd)
+                    
+                    return;
+                }
+            }
+        }
         if characteristic.uuid == bmp390Char?.uuid, let b = characteristic.value {
             var value = String(decoding: b, as: UTF8.self)
             if(value != "") {
