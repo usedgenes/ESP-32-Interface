@@ -52,8 +52,8 @@ struct individualBuzzerView : View {
             }
             HStack {
                 Text("Duration (s): ")
-                TextField("\(duration)", text: Binding<String>(
-                    get: { String(duration) },
+                TextField(duration, text: Binding<String>(
+                    get: { duration },
                     set: {
                         duration = $0
                     }))

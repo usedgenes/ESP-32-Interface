@@ -17,123 +17,111 @@ struct ThrustVectoringEDFView: View {
     @State var servo3Position : Double = 0
     @State var edfPower : Double = 60
     
-    @State var rollKp : Double = 50
-    @State var rollKi : Double = 0.5
-    @State var rollKd : Double = 0
-    @State var pitchKp : Double = 50
-    @State var pitchKi : Double = 0
-    @State var pitchKd : Double = 0
-    @State var yawKp : Double = 50
-    @State var yawKi : Double = 0
-    @State var yawKd : Double = 0
+    @State var rollKp : String = "50.0"
+    @State var rollKi : String = "0.5"
+    @State var rollKd : String = "0.0"
+    @State var pitchKp : String = "50.0"
+    @State var pitchKi : String = "0.0"
+    @State var pitchKd : String = "0.0"
+    @State var yawKp : String = "50.0"
+    @State var yawKi : String = "0.0"
+    @State var yawKd : String = "0.0"
     
-    @State var timerOn = false
-    @State var timer : Timer?
-    @State var delayTime = 1000
     
     @EnvironmentObject var bmi088EDF : BMI088EDF
     
     var body: some View {
         ScrollView {
             Section {
+                Text("PID Values")
+                    .frame(maxWidth: .infinity, alignment: .center)
                 HStack {
-                    Text("PID Values")
-                        .padding(.trailing)
                     Button(action: {
-                        bluetoothDevice.setPID(input: "0" + String(rollKp) + "," + String(rollKi) + "!" + String(rollKd))
-                        bluetoothDevice.setPID(input: "1" + String(pitchKp) + "," + String(pitchKi) + "!" + String(pitchKd))
-                        bluetoothDevice.setPID(input: "2" + String(yawKp) + "," + String(yawKi) + "!" + String(yawKd))
+                        bluetoothDevice.setPID(input: "0" + rollKp + "," + rollKi + "!" + rollKd)
+                        bluetoothDevice.setPID(input: "1" + pitchKp + "," + pitchKi + "!" + pitchKd)
+                        bluetoothDevice.setPID(input: "2" + yawKp + "," + yawKi + "!" + yawKd)
                     }) {
                         Text("Apply")
                     }.buttonStyle(BorderlessButtonStyle())
-                }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    Button(action: {
+                        bluetoothDevice.setReset(input: "0")
+                    }) {
+                        Text("RESET ESP32")
+                    }.buttonStyle(BorderlessButtonStyle())
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }.padding(.bottom)
                 HStack {
                     Text("Roll:")
                     Text("Kp:")
-                    TextField("\(rollKp)", text: Binding<String>(
-                        get: { String(rollKp) },
+                    TextField(rollKp, text: Binding<String>(
+                        get: { rollKp },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                rollKp = value.doubleValue
-                            }
+                            rollKp = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                     Text("Ki:")
-                    TextField("\(rollKi)", text: Binding<String>(
-                        get: { String(rollKi) },
+                    TextField(rollKi, text: Binding<String>(
+                        get: { rollKi },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                rollKi = value.doubleValue
-                            }
+                            rollKi = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                     Text("Kd:")
-                    TextField("\(rollKd)", text: Binding<String>(
-                        get: { String(rollKd) },
+                    TextField(rollKd, text: Binding<String>(
+                        get: { rollKd },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                rollKd = value.doubleValue
-                            }
+                            rollKd = $0
+                            
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                 }
                 HStack {
                     Text("Pitch:")
                     Text("Kp:")
-                    TextField("\(pitchKp)", text: Binding<String>(
-                        get: { String(pitchKp) },
+                    TextField(pitchKp, text: Binding<String>(
+                        get: { pitchKp },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                pitchKp = value.doubleValue
-                            }
+                            pitchKp = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                     Text("Ki:")
-                    TextField("\(pitchKi)", text: Binding<String>(
-                        get: { String(pitchKi) },
+                    TextField(pitchKi, text: Binding<String>(
+                        get: { pitchKi },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                pitchKi = value.doubleValue
-                            }
+                            
+                            pitchKi = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                     Text("Kd:")
-                    TextField("\(pitchKd)", text: Binding<String>(
-                        get: { String(pitchKd) },
+                    TextField(pitchKd, text: Binding<String>(
+                        get: { pitchKd },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                pitchKd = value.doubleValue
-                            }
+                            pitchKd = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                 }
                 HStack {
                     Text("Yaw:")
                     Text("Kp:")
-                    TextField("\(yawKp)", text: Binding<String>(
-                        get: { String(yawKp) },
+                    TextField(yawKp, text: Binding<String>(
+                        get: { yawKp },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                yawKp = value.doubleValue
-                            }
+                            yawKp = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                     Text("Ki:")
-                    TextField("\(yawKi)", text: Binding<String>(
-                        get: { String(yawKi) },
+                    TextField(yawKi, text: Binding<String>(
+                        get: { yawKi },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                yawKi = value.doubleValue
-                            }
+                            yawKi = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                     Text("Kd:")
-                    TextField("\(yawKd)", text: Binding<String>(
-                        get: { String(yawKd) },
+                    TextField(yawKd, text: Binding<String>(
+                        get: { yawKd },
                         set: {
-                            if let value = NumberFormatter().number(from: $0) {
-                                yawKd = value.doubleValue
-                            }
+                            yawKd = $0
                         }))
                     .keyboardType(UIKeyboardType.decimalPad)
                 }
@@ -206,95 +194,236 @@ struct ThrustVectoringEDFView: View {
                     }
                 }
             }.padding()
-            
-            Section {
-                Text("BMI088 Data Graphs")
-                    .frame(maxWidth: .infinity, alignment: .center)
+            GroupBox {
+                NavigationLink("View Orientation:", destination: edfGraphView())
                     .padding()
-                HStack {
-                    Button(action: {
-                        if(timer == nil) {
-                            timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(delayTime/1000), repeats: true, block: { _ in
-                                bluetoothDevice.setBMI088(input: "0")
-                            })
-                        }
-                        timerOn.toggle()
-                    }) {
-                        Text("Get Data")
-                    }.disabled(timerOn)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    
-                    Button(action: {
-                        if timer != nil {
-                            timer?.invalidate()
-                            timer = nil
-                            timerOn.toggle()
-                        }
-                    }) {
-                        Text("Stop")
-                    }.disabled(!timerOn)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    Button(action: {
-                        bmi088EDF.resetAll()
-                    }) {
-                        Text("Reset All")
-                    }.buttonStyle(BorderlessButtonStyle())
-                    .frame(maxWidth: .infinity, alignment: .center)
-                }.padding(.bottom)
             }
-            let yawData = LineChartData(dataSets: bmi088EDF.getYaw(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro x
-            Text("Yaw")
-            LineChart(chartData: yawData)
-                .filledTopLine(chartData: yawData,
-                               lineColour: ColourStyle(colour: .red),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: yawData, specifier: "%.2f")
-                .xAxisGrid(chartData: yawData)
-                .yAxisGrid(chartData: yawData)
-                .xAxisLabels(chartData: yawData)
-                .yAxisLabels(chartData: yawData, specifier: "%.2f")
-                .floatingInfoBox(chartData: yawData)
-                .id(yawData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            
-            let pitchData = LineChartData(dataSets: bmi088EDF.getPitch(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro y
-            Text("Pitch")
-            LineChart(chartData: pitchData)
-                .filledTopLine(chartData: pitchData,
-                               lineColour: ColourStyle(colour: .green),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: pitchData, specifier: "%.2f")
-                .xAxisGrid(chartData: pitchData)
-                .yAxisGrid(chartData: pitchData)
-                .xAxisLabels(chartData: pitchData)
-                .yAxisLabels(chartData: pitchData, specifier: "%.2f")
-                .floatingInfoBox(chartData: pitchData)
-                .id(pitchData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            
-            let rollData = LineChartData(dataSets: bmi088EDF.getRoll(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro z
-            Text("Roll")
-            LineChart(chartData: rollData)
-                .filledTopLine(chartData: rollData,
-                               lineColour: ColourStyle(colour: .blue),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: rollData, specifier: "%.2f")
-                .xAxisGrid(chartData: rollData)
-                .yAxisGrid(chartData: rollData)
-                .xAxisLabels(chartData: rollData)
-                .yAxisLabels(chartData: rollData, specifier: "%.2f")
-                .floatingInfoBox(chartData: rollData)
-                .id(rollData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-        }
+            GroupBox {
+                NavigationLink("View PID Values:", destination: servoPosView())
+                    .padding()
+            }
+        }.hideKeyboardWhenTappedAround()
+            .navigationViewStyle(StackNavigationViewStyle())
+    }
+}
+
+struct edfGraphView : View {
+    @EnvironmentObject var bmi088EDF : BMI088EDF
+    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
+    
+    @State var timerOn = false
+    @State var timer : Timer?
+    @State var delayTime = 1000
+    
+    var body : some View {
+        Section {
+            Text("BMI088 Data Graphs")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding()
+            HStack {
+                Button(action: {
+                    if(timer == nil) {
+                        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(delayTime/1000), repeats: true, block: { _ in
+                            bluetoothDevice.setBMI088(input: "0")
+                        })
+                    }
+                    timerOn.toggle()
+                }) {
+                    Text("Get Data")
+                }.disabled(timerOn)
+                    .buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                Button(action: {
+                    if timer != nil {
+                        timer?.invalidate()
+                        timer = nil
+                        timerOn.toggle()
+                    }
+                }) {
+                    Text("Stop")
+                }.disabled(!timerOn)
+                    .buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity, alignment: .center)
+                Button(action: {
+                    bmi088EDF.resetRotation()
+                }) {
+                    Text("Reset All")
+                }.buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity, alignment: .center)
+                Button(action: {
+                    bluetoothDevice.setBMI088(input: "1")
+                }) {
+                    Text("Calibrate")
+                }.buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }.padding(.bottom)
+        }.onDisappear(perform: {
+            timer?.invalidate()
+            timer = nil
+            timerOn.toggle()})
+        let yawData = LineChartData(dataSets: bmi088EDF.getYaw(), chartStyle: ChartStyle().getChartStyle())
+        
+        Text("Yaw")
+        LineChart(chartData: yawData)
+            .filledTopLine(chartData: yawData,
+                           lineColour: ColourStyle(colour: .red),
+                           strokeStyle: StrokeStyle(lineWidth: 3))
+            .touchOverlay(chartData: yawData, specifier: "%.2f")
+            .xAxisGrid(chartData: yawData)
+            .yAxisGrid(chartData: yawData)
+            .xAxisLabels(chartData: yawData)
+            .yAxisLabels(chartData: yawData, specifier: "%.2f")
+            .floatingInfoBox(chartData: yawData)
+            .id(yawData.id)
+            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+        
+        let pitchData = LineChartData(dataSets: bmi088EDF.getPitch(), chartStyle: ChartStyle().getChartStyle())
+        
+        Text("Pitch")
+        LineChart(chartData: pitchData)
+            .filledTopLine(chartData: pitchData,
+                           lineColour: ColourStyle(colour: .green),
+                           strokeStyle: StrokeStyle(lineWidth: 3))
+            .touchOverlay(chartData: pitchData, specifier: "%.2f")
+            .xAxisGrid(chartData: pitchData)
+            .yAxisGrid(chartData: pitchData)
+            .xAxisLabels(chartData: pitchData)
+            .yAxisLabels(chartData: pitchData, specifier: "%.2f")
+            .floatingInfoBox(chartData: pitchData)
+            .id(pitchData.id)
+            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+        
+        let rollData = LineChartData(dataSets: bmi088EDF.getRoll(), chartStyle: ChartStyle().getChartStyle())
+        
+        Text("Roll")
+        LineChart(chartData: rollData)
+            .filledTopLine(chartData: rollData,
+                           lineColour: ColourStyle(colour: .blue),
+                           strokeStyle: StrokeStyle(lineWidth: 3))
+            .touchOverlay(chartData: rollData, specifier: "%.2f")
+            .xAxisGrid(chartData: rollData)
+            .yAxisGrid(chartData: rollData)
+            .xAxisLabels(chartData: rollData)
+            .yAxisLabels(chartData: rollData, specifier: "%.2f")
+            .floatingInfoBox(chartData: rollData)
+            .id(rollData.id)
+            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+    }
+}
+
+struct servoPosView : View {
+    @EnvironmentObject var bmi088EDF : BMI088EDF
+    @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
+    
+    @State var timerOn = false
+    @State var timer : Timer?
+    @State var delayTime = 500
+    
+    var body: some View {
+        Section {
+            Text("Servo Position Graphs")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding()
+            HStack {
+                Button(action: {
+                    if(timer == nil) {
+                        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(delayTime/1000), repeats: true, block: { _ in
+                            bluetoothDevice.setServos(input: "2")
+                        })
+                    }
+                    timerOn.toggle()
+                }) {
+                    Text("Get Data")
+                }.disabled(timerOn)
+                    .buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                Button(action: {
+                    if timer != nil {
+                        timer?.invalidate()
+                        timer = nil
+                        timerOn.toggle()
+                    }
+                }) {
+                    Text("Stop")
+                }.disabled(!timerOn)
+                    .buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity, alignment: .center)
+                Button(action: {
+                    bmi088EDF.resetRotation()
+                }) {
+                    Text("Reset All")
+                }.buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }.padding(.bottom)
+        }.onDisappear(perform: {
+            timer?.invalidate()
+            timer = nil
+            timerOn.toggle()})
+        let servo0data = LineChartData(dataSets: bmi088EDF.getServo0Pos(), chartStyle: ChartStyle().getChartStyle())
+        
+        Text("Servo 0 Position")
+        LineChart(chartData: servo0data)
+            .filledTopLine(chartData: servo0data,
+                           lineColour: ColourStyle(colour: .red),
+                           strokeStyle: StrokeStyle(lineWidth: 3))
+            .touchOverlay(chartData: servo0data, specifier: "%.2f")
+            .xAxisGrid(chartData: servo0data)
+            .yAxisGrid(chartData: servo0data)
+            .xAxisLabels(chartData: servo0data)
+            .yAxisLabels(chartData: servo0data, specifier: "%.2f")
+            .floatingInfoBox(chartData: servo0data)
+            .id(servo0data.id)
+            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+        
+        let servo1data = LineChartData(dataSets: bmi088EDF.getServo1Pos(), chartStyle: ChartStyle().getChartStyle())
+        
+        Text("Servo 1 Position")
+        LineChart(chartData: servo1data)
+            .filledTopLine(chartData: servo1data,
+                           lineColour: ColourStyle(colour: .green),
+                           strokeStyle: StrokeStyle(lineWidth: 3))
+            .touchOverlay(chartData: servo1data, specifier: "%.2f")
+            .xAxisGrid(chartData: servo1data)
+            .yAxisGrid(chartData: servo1data)
+            .xAxisLabels(chartData: servo1data)
+            .yAxisLabels(chartData: servo1data, specifier: "%.2f")
+            .floatingInfoBox(chartData: servo1data)
+            .id(servo1data.id)
+            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+        
+        let servo2data = LineChartData(dataSets: bmi088EDF.getServo2Pos(), chartStyle: ChartStyle().getChartStyle())
+        
+        Text("Servo 2 Position")
+        LineChart(chartData: servo2data)
+            .filledTopLine(chartData: servo2data,
+                           lineColour: ColourStyle(colour: .blue),
+                           strokeStyle: StrokeStyle(lineWidth: 3))
+            .touchOverlay(chartData: servo2data, specifier: "%.2f")
+            .xAxisGrid(chartData: servo2data)
+            .yAxisGrid(chartData: servo2data)
+            .xAxisLabels(chartData: servo2data)
+            .yAxisLabels(chartData: servo2data, specifier: "%.2f")
+            .floatingInfoBox(chartData: servo2data)
+            .id(servo2data.id)
+            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+        
+        let servo3data = LineChartData(dataSets: bmi088EDF.getServo3Pos(), chartStyle: ChartStyle().getChartStyle())
+        
+        Text("Servo 3 Position")
+        LineChart(chartData: servo3data)
+            .filledTopLine(chartData: servo3data,
+                           lineColour: ColourStyle(colour: .purple),
+                           strokeStyle: StrokeStyle(lineWidth: 3))
+            .touchOverlay(chartData: servo3data, specifier: "%.2f")
+            .xAxisGrid(chartData: servo3data)
+            .yAxisGrid(chartData: servo3data)
+            .xAxisLabels(chartData: servo3data)
+            .yAxisLabels(chartData: servo3data, specifier: "%.2f")
+            .floatingInfoBox(chartData: servo3data)
+            .id(servo3data.id)
+            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
     }
 }
 

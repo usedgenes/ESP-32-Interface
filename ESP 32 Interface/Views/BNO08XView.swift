@@ -152,6 +152,10 @@ struct BNO08XChartView : View {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }.navigationViewStyle(StackNavigationViewStyle())
+            .onDisappear(perform: {
+                timer?.invalidate()
+                timer = nil
+                timerOn.toggle()})
     }
 }
 

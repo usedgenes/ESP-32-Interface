@@ -36,12 +36,24 @@ class BTDevice: NSObject {
     
     private var pidChar: CBCharacteristic?
     
+    private var resetChar: CBCharacteristic?
+    
     var ESP_32 : ESP32?
     
     var bmi088EDF : BMI088EDF?
     
     weak var delegate: BTDeviceDelegate?
     
+    var resetString: String {
+        get {
+            return "-1"
+        }
+        set {
+            if let char = resetChar {
+                peripheral.writeValue(Data(newValue.utf8), for: char, type: .withResponse)
+            }
+        }
+    }
     var pidString: String {
         get {
             return "-1"
@@ -185,7 +197,7 @@ extension BTDevice: CBPeripheralDelegate {
         peripheral.services?.forEach {
             print("  \($0)")
             if $0.uuid == BTUUIDs.esp32Service {
-                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID, BTUUIDs.buzzerUUID, BTUUIDs.bmi088UUID, BTUUIDs.pidUUID], for: $0)
+                peripheral.discoverCharacteristics([BTUUIDs.blinkUUID, BTUUIDs.servoUUID, BTUUIDs.esp32Service, BTUUIDs.bmp390UUID, BTUUIDs.bno08xUUID, BTUUIDs.pinUUID, BTUUIDs.buzzerUUID, BTUUIDs.bmi088UUID, BTUUIDs.pidUUID, BTUUIDs.resetUUID], for: $0)
             } else {
                 peripheral.discoverCharacteristics(nil, for: $0)
             }
@@ -230,6 +242,10 @@ extension BTDevice: CBPeripheralDelegate {
                 self.pidChar = $0
                 peripheral.readValue(for: $0)
                 peripheral.setNotifyValue(true, for: $0)
+            } else if $0.uuid == BTUUIDs.resetUUID {
+                self.resetChar = $0
+                peripheral.readValue(for: $0)
+                peripheral.setNotifyValue(true, for: $0)
             }
         }
         print()
@@ -249,7 +265,43 @@ extension BTDevice: CBPeripheralDelegate {
             }
             delegate?.deviceBlinkChanged(value: _blink)
         }
-
+        if characteristic.uuid == servoChar?.uuid, let b = characteristic.value {
+            var value = String(decoding: b, as: UTF8.self)
+            if(value != "") {
+                if(Int(value[...value.startIndex]) == 3) {
+                    value.remove(at: value.startIndex)
+                    
+                    let servo0pos = Float(value)!
+                    bmi088EDF!.addServo0Pos(pos: servo0pos)
+                    
+                    return;
+                }
+                if(Int(value[...value.startIndex]) == 4) {
+                    value.remove(at: value.startIndex)
+                    
+                    let servo1pos = Float(value)!
+                    bmi088EDF!.addServo1Pos(pos: servo1pos)
+                    
+                    return;
+                }
+                if(Int(value[...value.startIndex]) == 5) {
+                    value.remove(at: value.startIndex)
+                    
+                    let servo2pos = Float(value)!
+                    bmi088EDF!.addServo2Pos(pos: servo2pos)
+                    
+                    return;
+                }
+                if(Int(value[...value.startIndex]) == 6) {
+                    value.remove(at: value.startIndex)
+                    
+                    let servo3pos = Float(value)!
+                    bmi088EDF!.addServo3Pos(pos: servo3pos)
+                    
+                    return;
+                }
+            }
+        }
         if characteristic.uuid == bmp390Char?.uuid, let b = characteristic.value {
             var value = String(decoding: b, as: UTF8.self)
             if(value != "") {
