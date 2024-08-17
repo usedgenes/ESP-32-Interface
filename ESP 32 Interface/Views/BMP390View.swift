@@ -143,55 +143,17 @@ struct BMP390ChartView : View {
         Spacer()
         
         let temperatureData = LineChartData(dataSets: bmp390.getTemperatureDataSet(), chartStyle: ChartStyle().getChartStyle())
-        
-        //temperature
-        LineChart(chartData: temperatureData)
-            .filledTopLine(chartData: temperatureData,
-                           lineColour: ColourStyle(colour: .red),
-                           strokeStyle: StrokeStyle(lineWidth: 3))
-            .touchOverlay(chartData: temperatureData, specifier: "%.2f")
-            .xAxisGrid(chartData: temperatureData)
-            .yAxisGrid(chartData: temperatureData)
-            .xAxisLabels(chartData: temperatureData)
-            .yAxisLabels(chartData: temperatureData, specifier: "%.2f")
-            .floatingInfoBox(chartData: temperatureData)
-            .id(temperatureData.id)
-            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
         Text("Temperature")
+        ChartStyle().getGraph(chartData: temperatureData, colour: .red)
+
         
         let pressureData = LineChartData(dataSets: bmp390.getPressureDataSet(), chartStyle: ChartStyle().getChartStyle())
-        
-        //pressure
-        LineChart(chartData: pressureData)
-            .filledTopLine(chartData: pressureData,
-                           lineColour: ColourStyle(colour: .red),
-                           strokeStyle: StrokeStyle(lineWidth: 3))
-            .touchOverlay(chartData: pressureData, specifier: "%.2f")
-            .xAxisGrid(chartData: pressureData)
-            .yAxisGrid(chartData: pressureData)
-            .xAxisLabels(chartData: pressureData)
-            .yAxisLabels(chartData: pressureData, specifier: "%.2f")
-            .floatingInfoBox(chartData: pressureData)
-            .id(pressureData.id)
-            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
         Text("Pressure")
+        ChartStyle().getGraph(chartData: pressureData, colour: .green)
         
         let altitudeData = LineChartData(dataSets: bmp390.getAltitudeDataSet(), chartStyle: ChartStyle().getChartStyle())
-        
-        //altitude
-        LineChart(chartData: altitudeData)
-            .filledTopLine(chartData: altitudeData,
-                           lineColour: ColourStyle(colour: .red),
-                           strokeStyle: StrokeStyle(lineWidth: 3))
-            .touchOverlay(chartData: altitudeData, specifier: "%.2f")
-            .xAxisGrid(chartData: altitudeData)
-            .yAxisGrid(chartData: altitudeData)
-            .xAxisLabels(chartData: altitudeData)
-            .yAxisLabels(chartData: altitudeData, specifier: "%.2f")
-            .floatingInfoBox(chartData: altitudeData)
-            .id(altitudeData.id)
-            .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
         Text("Altitude")
+        ChartStyle().getGraph(chartData: altitudeData, colour: .green)
     }
 }
 

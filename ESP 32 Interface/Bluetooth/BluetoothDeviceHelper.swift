@@ -27,10 +27,15 @@ class BluetoothDeviceHelper: ObservableObject {
         }
     }
     
-    @Published var bmi088EDF: BMI088EDF? {
+    @Published var bno08xEDF: BNO08XEDF? {
         didSet {
-            device?.bmi088EDF = bmi088EDF
-            print(bmi088EDF)
+            device?.bno08xEDF = bno08xEDF
+        }
+    }
+    
+    @Published var bmi088Rocket: BMI088Rocket? {
+        didSet {
+            device?.bmi088Rocket = bmi088Rocket
         }
     }
     

@@ -1,14 +1,7 @@
-//
-//  ThrustVectoringEDFView.swift
-//  ESP 32 Interface
-//
-//  Created by Eugene on 8/14/24.
-//
-
 import SwiftUI
 import SwiftUICharts
 
-struct ThrustVectoringEDFView: View {
+struct ThrustVectoringRocketView: View {
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var servo0Position : Double = 0
@@ -26,6 +19,9 @@ struct ThrustVectoringEDFView: View {
     @State var yawKp : String = "50.0"
     @State var yawKi : String = "0.0"
     @State var yawKd : String = "0.0"
+    
+    
+    @EnvironmentObject var bmi088EDF : BNO08XEDF
     
     var body: some View {
         ScrollView {
@@ -192,7 +188,7 @@ struct ThrustVectoringEDFView: View {
                 }
             }.padding()
             GroupBox {
-                NavigationLink("View Orientation:", destination: edfGraphView())
+                NavigationLink("View Orientation:", destination: rocketGraphView())
                     .padding()
             }
             GroupBox {
@@ -208,7 +204,7 @@ struct ThrustVectoringEDFView: View {
     }
 }
 
-struct edfGraphView : View {
+struct rocketGraphView : View {
     @EnvironmentObject var bmi088EDF : BNO08XEDF
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
@@ -278,8 +274,8 @@ struct edfGraphView : View {
     }
 }
 
-struct edfServoPosView : View {
-    @EnvironmentObject var bno08xEDF : BNO08XEDF
+struct rocketServoPosView : View {
+    @EnvironmentObject var bmi088EDF : BNO08XEDF
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -317,7 +313,7 @@ struct edfServoPosView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bno08xEDF.resetServoPos()
+                    bmi088EDF.resetServoPos()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -328,26 +324,18 @@ struct edfServoPosView : View {
             timer = nil
             timerOn.toggle()})
         
-        let servo0data = LineChartData(dataSets: bno08xEDF.getServo0Pos(), chartStyle: ChartStyle().getChartStyle())
+        let servo0data = LineChartData(dataSets: bmi088EDF.getServo0Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 0 Position")
         ChartStyle().getGraph(chartData: servo0data, colour: .red)
         
-        let servo1data = LineChartData(dataSets: bno08xEDF.getServo1Pos(), chartStyle: ChartStyle().getChartStyle())
+        let servo1data = LineChartData(dataSets: bmi088EDF.getServo1Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 1 Position")
         ChartStyle().getGraph(chartData: servo1data, colour: .green)
-        
-        let servo2data = LineChartData(dataSets: bno08xEDF.getServo2Pos(), chartStyle: ChartStyle().getChartStyle())
-        Text("Servo 2 Position")
-        ChartStyle().getGraph(chartData: servo2data, colour: .blue)
-        
-        let servo3data = LineChartData(dataSets: bno08xEDF.getServo3Pos(), chartStyle: ChartStyle().getChartStyle())
-        Text("Servo 3 Position")
-        ChartStyle().getGraph(chartData: servo3data, colour: .yellow)
     }
 }
 
-struct edfPidView : View {
-    @EnvironmentObject var bno08xEDF : BNO08XEDF
+struct rocketPidView : View {
+    @EnvironmentObject var bmi088EDF : BNO08XEDF
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -385,7 +373,7 @@ struct edfPidView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bno08xEDF.resetPIDCommands()
+                    bmi088EDF.resetPIDCommands()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -396,22 +384,22 @@ struct edfPidView : View {
             timer = nil
             timerOn.toggle()})
         
-        let yawCmd = LineChartData(dataSets: bno08xEDF.getYawCommand(), chartStyle: ChartStyle().getChartStyle())
+        let yawCmd = LineChartData(dataSets: bmi088EDF.getYawCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Yaw Command")
         ChartStyle().getGraph(chartData: yawCmd, colour: .red)
         
-        let pitchCmd = LineChartData(dataSets: bno08xEDF.getPitchCommand(), chartStyle: ChartStyle().getChartStyle())
+        let pitchCmd = LineChartData(dataSets: bmi088EDF.getPitchCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Pitch Command")
         ChartStyle().getGraph(chartData: pitchCmd, colour: .green)
         
-        let rollCmd = LineChartData(dataSets: bno08xEDF.getRollCommand(), chartStyle: ChartStyle().getChartStyle())
+        let rollCmd = LineChartData(dataSets: bmi088EDF.getRollCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Roll Command")
         ChartStyle().getGraph(chartData: rollCmd, colour: .blue)
     }
 }
 
-struct ThrustVectoringEDFView_Previews: PreviewProvider {
+struct ThrustVectoringRocketView_Previews: PreviewProvider {
     static var previews: some View {
-        ThrustVectoringEDFView()
+        ThrustVectoringRocketView()
     }
 }

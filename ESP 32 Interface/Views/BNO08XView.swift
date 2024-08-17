@@ -164,55 +164,16 @@ struct BNO08XAccelerationView: View {
     var body: some View {
         VStack {
             let accelerationXData = LineChartData(dataSets: bno08x.getAccelerometerX(), chartStyle: ChartStyle().getChartStyle())
-            
-            //accelerometer x
             Text("Accelerometer X")
-            LineChart(chartData: accelerationXData)
-                .filledTopLine(chartData: accelerationXData,
-                               lineColour: ColourStyle(colour: .red),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: accelerationXData, specifier: "%.2f")
-                .xAxisGrid(chartData: accelerationXData)
-                .yAxisGrid(chartData: accelerationXData)
-                .xAxisLabels(chartData: accelerationXData)
-                .yAxisLabels(chartData: accelerationXData, specifier: "%.2f")
-                .floatingInfoBox(chartData: accelerationXData)
-                .id(accelerationXData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            
+            ChartStyle().getGraph(chartData: accelerationXData, colour: .red)
+
             let accelerationYData = LineChartData(dataSets: bno08x.getAccelerometerY(), chartStyle: ChartStyle().getChartStyle())
-            
-            //accelerometer y
             Text("Accelerometer Y")
-            LineChart(chartData: accelerationYData)
-                .filledTopLine(chartData: accelerationYData,
-                               lineColour: ColourStyle(colour: .green),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: accelerationYData, specifier: "%.2f")
-                .xAxisGrid(chartData: accelerationYData)
-                .yAxisGrid(chartData: accelerationYData)
-                .xAxisLabels(chartData: accelerationYData)
-                .yAxisLabels(chartData: accelerationYData, specifier: "%.2f")
-                .floatingInfoBox(chartData: accelerationYData)
-                .id(accelerationYData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: accelerationYData, colour: .green)
             
             let accelerationZData = LineChartData(dataSets: bno08x.getAccelerometerZ(), chartStyle: ChartStyle().getChartStyle())
-            
-            //accelerometer z
             Text("Accelerometer Z")
-            LineChart(chartData: accelerationZData)
-                .filledTopLine(chartData: accelerationZData,
-                               lineColour: ColourStyle(colour: .blue),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: accelerationZData, specifier: "%.2f")
-                .xAxisGrid(chartData: accelerationZData)
-                .yAxisGrid(chartData: accelerationZData)
-                .xAxisLabels(chartData: accelerationZData)
-                .yAxisLabels(chartData: accelerationZData, specifier: "%.2f")
-                .floatingInfoBox(chartData: accelerationZData)
-                .id(accelerationZData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: accelerationZData, colour: .blue)
         }
     }
 }
@@ -222,146 +183,43 @@ struct BNO08XGyroView: View {
     var body: some View {
         VStack {
             let gyroXData = LineChartData(dataSets: bno08x.getGyroX(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro x
             Text("Gyro X")
-            LineChart(chartData: gyroXData)
-                .filledTopLine(chartData: gyroXData,
-                               lineColour: ColourStyle(colour: .red),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: gyroXData, specifier: "%.2f")
-                .xAxisGrid(chartData: gyroXData)
-                .yAxisGrid(chartData: gyroXData)
-                .xAxisLabels(chartData: gyroXData)
-                .yAxisLabels(chartData: gyroXData, specifier: "%.2f")
-                .floatingInfoBox(chartData: gyroXData)
-                .id(gyroXData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: gyroXData, colour: .red)
             
             let gyroYData = LineChartData(dataSets: bno08x.getGyroY(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro y
             Text("Gyro Y")
-            LineChart(chartData: gyroYData)
-                .filledTopLine(chartData: gyroYData,
-                               lineColour: ColourStyle(colour: .green),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: gyroYData, specifier: "%.2f")
-                .xAxisGrid(chartData: gyroYData)
-                .yAxisGrid(chartData: gyroYData)
-                .xAxisLabels(chartData: gyroYData)
-                .yAxisLabels(chartData: gyroYData, specifier: "%.2f")
-                .floatingInfoBox(chartData: gyroYData)
-                .id(gyroYData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
-            
+            ChartStyle().getGraph(chartData: gyroYData, colour: .green)
+
             let gyroZData = LineChartData(dataSets: bno08x.getGyroZ(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro z
             Text("Gyro Z")
-            LineChart(chartData: gyroZData)
-                .filledTopLine(chartData: gyroZData,
-                               lineColour: ColourStyle(colour: .blue),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: gyroZData, specifier: "%.2f")
-                .xAxisGrid(chartData: gyroZData)
-                .yAxisGrid(chartData: gyroZData)
-                .xAxisLabels(chartData: gyroZData)
-                .yAxisLabels(chartData: gyroZData, specifier: "%.2f")
-                .floatingInfoBox(chartData: gyroZData)
-                .id(gyroZData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: gyroZData, colour: .blue)
         }
     }
 }
+
 struct BNO08XRotationView: View {
     @ObservedObject var bno08x: BNO08X
     var body: some View {
         ScrollView {
             let rotationXData = LineChartData(dataSets: bno08x.getRotationX(), chartStyle: ChartStyle().getChartStyle())
-            
-            //rotation x
             Text("Rotation X")
-            LineChart(chartData: rotationXData)
-                .filledTopLine(chartData: rotationXData,
-                               lineColour: ColourStyle(colour: .red),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: rotationXData, specifier: "%.2f")
-                .xAxisGrid(chartData: rotationXData)
-                .yAxisGrid(chartData: rotationXData)
-                .xAxisLabels(chartData: rotationXData)
-                .yAxisLabels(chartData: rotationXData, specifier: "%.2f")
-                .floatingInfoBox(chartData: rotationXData)
-                .id(rotationXData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
+            ChartStyle().getGraph(chartData: rotationXData, colour: .red)
             
             let rotationYData = LineChartData(dataSets: bno08x.getRotationY(), chartStyle: ChartStyle().getChartStyle())
-            
-            //rotation y
             Text("Rotation Y")
-            LineChart(chartData: rotationYData)
-                .filledTopLine(chartData: rotationYData,
-                               lineColour: ColourStyle(colour: .green),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: rotationYData, specifier: "%.2f")
-                .xAxisGrid(chartData: rotationYData)
-                .yAxisGrid(chartData: rotationYData)
-                .xAxisLabels(chartData: rotationYData)
-                .yAxisLabels(chartData: rotationYData, specifier: "%.2f")
-                .floatingInfoBox(chartData: rotationYData)
-                .id(rotationYData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
+            ChartStyle().getGraph(chartData: rotationYData, colour: .green)
             
             let rotationZData = LineChartData(dataSets: bno08x.getRotationZ(), chartStyle: ChartStyle().getChartStyle())
-            
-            //rotation z
             Text("Rotation Z")
-            LineChart(chartData: rotationZData)
-                .filledTopLine(chartData: rotationZData,
-                               lineColour: ColourStyle(colour: .blue),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: rotationZData, specifier: "%.2f")
-                .xAxisGrid(chartData: rotationZData)
-                .yAxisGrid(chartData: rotationZData)
-                .xAxisLabels(chartData: rotationZData)
-                .yAxisLabels(chartData: rotationZData, specifier: "%.2f")
-                .floatingInfoBox(chartData: rotationZData)
-                .id(rotationZData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
-            
+            ChartStyle().getGraph(chartData: rotationZData, colour:.blue)
+
             let rotationRealData = LineChartData(dataSets: bno08x.getRotationReal(), chartStyle: ChartStyle().getChartStyle())
-            
-            //rotation real
             Text("Rotation Real")
-            LineChart(chartData: rotationRealData)
-                .filledTopLine(chartData: rotationRealData,
-                               lineColour: ColourStyle(colour: .purple),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: rotationRealData, specifier: "%.2f")
-                .xAxisGrid(chartData: rotationRealData)
-                .yAxisGrid(chartData: rotationRealData)
-                .xAxisLabels(chartData: rotationRealData)
-                .yAxisLabels(chartData: rotationRealData, specifier: "%.2f")
-                .floatingInfoBox(chartData: rotationRealData)
-                .id(rotationRealData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
+            ChartStyle().getGraph(chartData: rotationRealData, colour: .purple)
             
             let rotationAccuracyData = LineChartData(dataSets: bno08x.getRotationAccuracy(), chartStyle: ChartStyle().getChartStyle())
-            
-            //rotation accuracy
             Text("Rotation Accuracy")
-            LineChart(chartData: rotationAccuracyData)
-                .filledTopLine(chartData: rotationAccuracyData,
-                               lineColour: ColourStyle(colour: .yellow),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: rotationAccuracyData, specifier: "%.2f")
-                .xAxisGrid(chartData: rotationAccuracyData)
-                .yAxisGrid(chartData: rotationAccuracyData)
-                .xAxisLabels(chartData: rotationAccuracyData)
-                .yAxisLabels(chartData: rotationAccuracyData, specifier: "%.2f")
-                .floatingInfoBox(chartData: rotationAccuracyData)
-                .id(rotationAccuracyData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 600)
+            ChartStyle().getGraph(chartData: rotationAccuracyData, colour: .yellow)
         }
     }
 }

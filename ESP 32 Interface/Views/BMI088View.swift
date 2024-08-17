@@ -145,55 +145,16 @@ struct BMI088AccelerationView: View {
     var body: some View {
         VStack {
             let accelerationXData = LineChartData(dataSets: bmi088.getAccelerometerX(), chartStyle: ChartStyle().getChartStyle())
-            
-            //accelerometer x
             Text("Accelerometer X")
-            LineChart(chartData: accelerationXData)
-                .filledTopLine(chartData: accelerationXData,
-                               lineColour: ColourStyle(colour: .red),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: accelerationXData, specifier: "%.2f")
-                .xAxisGrid(chartData: accelerationXData)
-                .yAxisGrid(chartData: accelerationXData)
-                .xAxisLabels(chartData: accelerationXData)
-                .yAxisLabels(chartData: accelerationXData, specifier: "%.2f")
-                .floatingInfoBox(chartData: accelerationXData)
-                .id(accelerationXData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: accelerationXData, colour:.red)
             
             let accelerationYData = LineChartData(dataSets: bmi088.getAccelerometerY(), chartStyle: ChartStyle().getChartStyle())
-            
-            //accelerometer y
             Text("Accelerometer Y")
-            LineChart(chartData: accelerationYData)
-                .filledTopLine(chartData: accelerationYData,
-                               lineColour: ColourStyle(colour: .green),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: accelerationYData, specifier: "%.2f")
-                .xAxisGrid(chartData: accelerationYData)
-                .yAxisGrid(chartData: accelerationYData)
-                .xAxisLabels(chartData: accelerationYData)
-                .yAxisLabels(chartData: accelerationYData, specifier: "%.2f")
-                .floatingInfoBox(chartData: accelerationYData)
-                .id(accelerationYData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: accelerationYData, colour: .green)
             
             let accelerationZData = LineChartData(dataSets: bmi088.getAccelerometerZ(), chartStyle: ChartStyle().getChartStyle())
-            
-            //accelerometer z
             Text("Accelerometer Z")
-            LineChart(chartData: accelerationZData)
-                .filledTopLine(chartData: accelerationZData,
-                               lineColour: ColourStyle(colour: .blue),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: accelerationZData, specifier: "%.2f")
-                .xAxisGrid(chartData: accelerationZData)
-                .yAxisGrid(chartData: accelerationZData)
-                .xAxisLabels(chartData: accelerationZData)
-                .yAxisLabels(chartData: accelerationZData, specifier: "%.2f")
-                .floatingInfoBox(chartData: accelerationZData)
-                .id(accelerationZData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: accelerationZData, colour: .blue)
         }
     }
 }
@@ -203,55 +164,17 @@ struct BMI088GyroView: View {
     var body: some View {
         VStack {
             let gyroXData = LineChartData(dataSets: bmi088.getGyroX(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro x
             Text("Gyro X")
-            LineChart(chartData: gyroXData)
-                .filledTopLine(chartData: gyroXData,
-                               lineColour: ColourStyle(colour: .red),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: gyroXData, specifier: "%.2f")
-                .xAxisGrid(chartData: gyroXData)
-                .yAxisGrid(chartData: gyroXData)
-                .xAxisLabels(chartData: gyroXData)
-                .yAxisLabels(chartData: gyroXData, specifier: "%.2f")
-                .floatingInfoBox(chartData: gyroXData)
-                .id(gyroXData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: gyroXData, colour: .red)
+
             
             let gyroYData = LineChartData(dataSets: bmi088.getGyroY(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro y
             Text("Gyro Y")
-            LineChart(chartData: gyroYData)
-                .filledTopLine(chartData: gyroYData,
-                               lineColour: ColourStyle(colour: .green),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: gyroYData, specifier: "%.2f")
-                .xAxisGrid(chartData: gyroYData)
-                .yAxisGrid(chartData: gyroYData)
-                .xAxisLabels(chartData: gyroYData)
-                .yAxisLabels(chartData: gyroYData, specifier: "%.2f")
-                .floatingInfoBox(chartData: gyroYData)
-                .id(gyroYData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: gyroYData, colour: .green)
             
             let gyroZData = LineChartData(dataSets: bmi088.getGyroZ(), chartStyle: ChartStyle().getChartStyle())
-            
-            //gyro z
             Text("Gyro Z")
-            LineChart(chartData: gyroZData)
-                .filledTopLine(chartData: gyroZData,
-                               lineColour: ColourStyle(colour: .blue),
-                               strokeStyle: StrokeStyle(lineWidth: 3))
-                .touchOverlay(chartData: gyroZData, specifier: "%.2f")
-                .xAxisGrid(chartData: gyroZData)
-                .yAxisGrid(chartData: gyroZData)
-                .xAxisLabels(chartData: gyroZData)
-                .yAxisLabels(chartData: gyroZData, specifier: "%.2f")
-                .floatingInfoBox(chartData: gyroZData)
-                .id(gyroZData.id)
-                .frame(minWidth: 150, maxWidth: 390, minHeight: 150, maxHeight: 400)
+            ChartStyle().getGraph(chartData: gyroZData, colour: .blue)
         }
     }
 }
