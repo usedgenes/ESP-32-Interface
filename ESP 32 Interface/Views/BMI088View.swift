@@ -144,17 +144,14 @@ struct BMI088AccelerationView: View {
     @ObservedObject var bmi088: BMI088
     var body: some View {
         VStack {
-            let accelerationXData = LineChartData(dataSets: bmi088.getAccelerometerX(), chartStyle: ChartStyle().getChartStyle())
             Text("Accelerometer X")
-            ChartStyle().getGraph(chartData: accelerationXData, colour:.red)
+            ChartStyle().getGraph(datasets: bmi088.getAccelerometerX(), colour:.red)
             
-            let accelerationYData = LineChartData(dataSets: bmi088.getAccelerometerY(), chartStyle: ChartStyle().getChartStyle())
             Text("Accelerometer Y")
-            ChartStyle().getGraph(chartData: accelerationYData, colour: .green)
+            ChartStyle().getGraph(datasets: bmi088.getAccelerometerY(), colour: .green)
             
-            let accelerationZData = LineChartData(dataSets: bmi088.getAccelerometerZ(), chartStyle: ChartStyle().getChartStyle())
             Text("Accelerometer Z")
-            ChartStyle().getGraph(chartData: accelerationZData, colour: .blue)
+            ChartStyle().getGraph(datasets: bmi088.getAccelerometerZ(), colour: .blue)
         }
     }
 }
@@ -163,18 +160,14 @@ struct BMI088GyroView: View {
     @ObservedObject var bmi088: BMI088
     var body: some View {
         VStack {
-            let gyroXData = LineChartData(dataSets: bmi088.getGyroX(), chartStyle: ChartStyle().getChartStyle())
             Text("Gyro X")
-            ChartStyle().getGraph(chartData: gyroXData, colour: .red)
+            ChartStyle().getGraph(datasets: bmi088.getGyroX(), colour: .red)
 
-            
-            let gyroYData = LineChartData(dataSets: bmi088.getGyroY(), chartStyle: ChartStyle().getChartStyle())
             Text("Gyro Y")
-            ChartStyle().getGraph(chartData: gyroYData, colour: .green)
+            ChartStyle().getGraph(datasets: bmi088.getGyroY(), colour: .green)
             
-            let gyroZData = LineChartData(dataSets: bmi088.getGyroZ(), chartStyle: ChartStyle().getChartStyle())
             Text("Gyro Z")
-            ChartStyle().getGraph(chartData: gyroZData, colour: .blue)
+            ChartStyle().getGraph(datasets: bmi088.getGyroZ(), colour: .blue)
         }
     }
 }

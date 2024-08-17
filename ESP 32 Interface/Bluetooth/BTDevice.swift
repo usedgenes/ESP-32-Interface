@@ -40,9 +40,9 @@ class BTDevice: NSObject {
     
     var ESP_32 : ESP32?
     
-    var bno08xEDF : BNO08XEDF?
+    var edf : EDF?
     
-    var bmi088Rocket: BMI088Rocket?
+    var rocket: Rocket?
     
     weak var delegate: BTDeviceDelegate?
     
@@ -274,7 +274,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let servo0pos = Float(value)!
-                    bno08xEDF!.addServo0Pos(pos: servo0pos)
+                    edf!.addServo0Pos(pos: servo0pos)
                     
                     return;
                 }
@@ -282,7 +282,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let servo1pos = Float(value)!
-                    bno08xEDF!.addServo1Pos(pos: servo1pos)
+                    edf!.addServo1Pos(pos: servo1pos)
                     
                     return;
                 }
@@ -290,7 +290,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let servo2pos = Float(value)!
-                    bno08xEDF!.addServo2Pos(pos: servo2pos)
+                    edf!.addServo2Pos(pos: servo2pos)
                     
                     return;
                 }
@@ -298,7 +298,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let servo3pos = Float(value)!
-                    bno08xEDF!.addServo3Pos(pos: servo3pos)
+                    edf!.addServo3Pos(pos: servo3pos)
                     
                     return;
                 }
@@ -311,7 +311,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let yawCmd = Float(value)!
-                    bno08xEDF!.addYawCommand(cmd: yawCmd)
+                    edf!.addYawCommand(cmd: yawCmd)
                     
                     return;
                 }
@@ -319,7 +319,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let pitchCmd = Float(value)!
-                    bno08xEDF!.addPitchCommand(cmd: pitchCmd)
+                    edf!.addPitchCommand(cmd: pitchCmd)
                     
                     return;
                 }
@@ -327,7 +327,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let rollCmd = Float(value)!
-                    bno08xEDF!.addRollCommand(cmd: rollCmd)
+                    edf!.addRollCommand(cmd: rollCmd)
                     
                     return;
                 }
@@ -430,7 +430,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let yaw = Float(value)!
-                    bno08xEDF!.addYaw(yaw: yaw)
+                    edf!.addYaw(yaw: yaw)
                     
                     return;
                 }
@@ -438,7 +438,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let pitch = Float(value)!
-                    bno08xEDF!.addPitch(pitch: pitch)
+                    edf!.addPitch(pitch: pitch)
                     
                     return;
                     
@@ -447,7 +447,7 @@ extension BTDevice: CBPeripheralDelegate {
                     value.remove(at: value.startIndex)
                     
                     let roll = Float(value)!
-                    bno08xEDF!.addRoll(roll: roll)
+                    edf!.addRoll(roll: roll)
                     
                     return;
                 }

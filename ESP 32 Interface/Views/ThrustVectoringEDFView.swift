@@ -209,7 +209,7 @@ struct ThrustVectoringEDFView: View {
 }
 
 struct edfGraphView : View {
-    @EnvironmentObject var bmi088EDF : BNO08XEDF
+    @EnvironmentObject var edf : EDF
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -247,7 +247,7 @@ struct edfGraphView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bmi088EDF.resetRotation()
+                    edf.resetRotation()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -263,23 +263,20 @@ struct edfGraphView : View {
             timer?.invalidate()
             timer = nil
             timerOn.toggle()})
-        
-        let yawData = LineChartData(dataSets: bmi088EDF.getYaw(), chartStyle: ChartStyle().getChartStyle())
+
         Text("Yaw")
-        ChartStyle().getGraph(chartData: yawData, colour: .red)
+        ChartStyle().getGraph(datasets: edf.getYaw(), colour: .red)
         
-        let pitchData = LineChartData(dataSets: bmi088EDF.getPitch(), chartStyle: ChartStyle().getChartStyle())
         Text("Pitch")
-        ChartStyle().getGraph(chartData: pitchData, colour: .green)
+        ChartStyle().getGraph(datasets: edf.getPitch(), colour: .green)
         
-        let rollData = LineChartData(dataSets: bmi088EDF.getRoll(), chartStyle: ChartStyle().getChartStyle())
         Text("Roll")
-        ChartStyle().getGraph(chartData: rollData, colour: .blue)
+        ChartStyle().getGraph(datasets: edf.getRoll(), colour: .blue)
     }
 }
 
 struct edfServoPosView : View {
-    @EnvironmentObject var bno08xEDF : BNO08XEDF
+    @EnvironmentObject var edf : EDF
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -317,7 +314,7 @@ struct edfServoPosView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bno08xEDF.resetServoPos()
+                    edf.resetServoPos()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -328,26 +325,22 @@ struct edfServoPosView : View {
             timer = nil
             timerOn.toggle()})
         
-        let servo0data = LineChartData(dataSets: bno08xEDF.getServo0Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 0 Position")
-        ChartStyle().getGraph(chartData: servo0data, colour: .red)
+        ChartStyle().getGraph(datasets: edf.getServo0Pos(), colour: .red)
         
-        let servo1data = LineChartData(dataSets: bno08xEDF.getServo1Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 1 Position")
-        ChartStyle().getGraph(chartData: servo1data, colour: .green)
+        ChartStyle().getGraph(datasets: edf.getServo1Pos(), colour: .green)
         
-        let servo2data = LineChartData(dataSets: bno08xEDF.getServo2Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 2 Position")
-        ChartStyle().getGraph(chartData: servo2data, colour: .blue)
+        ChartStyle().getGraph(datasets: edf.getServo2Pos(), colour: .blue)
         
-        let servo3data = LineChartData(dataSets: bno08xEDF.getServo3Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 3 Position")
-        ChartStyle().getGraph(chartData: servo3data, colour: .yellow)
+        ChartStyle().getGraph(datasets: edf.getServo3Pos(), colour: .yellow)
     }
 }
 
 struct edfPidView : View {
-    @EnvironmentObject var bno08xEDF : BNO08XEDF
+    @EnvironmentObject var edf : EDF
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -385,7 +378,7 @@ struct edfPidView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bno08xEDF.resetPIDCommands()
+                    edf.resetPIDCommands()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -396,17 +389,14 @@ struct edfPidView : View {
             timer = nil
             timerOn.toggle()})
         
-        let yawCmd = LineChartData(dataSets: bno08xEDF.getYawCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Yaw Command")
-        ChartStyle().getGraph(chartData: yawCmd, colour: .red)
+        ChartStyle().getGraph(datasets: edf.getYawCommand(), colour: .red)
         
-        let pitchCmd = LineChartData(dataSets: bno08xEDF.getPitchCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Pitch Command")
-        ChartStyle().getGraph(chartData: pitchCmd, colour: .green)
+        ChartStyle().getGraph(datasets: edf.getPitchCommand(), colour: .green)
         
-        let rollCmd = LineChartData(dataSets: bno08xEDF.getRollCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Roll Command")
-        ChartStyle().getGraph(chartData: rollCmd, colour: .blue)
+        ChartStyle().getGraph(datasets: edf.getRollCommand(), colour: .blue)
     }
 }
 

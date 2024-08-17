@@ -33,7 +33,8 @@ struct ChartStyle {
         return chartStyle
     }
     
-    @ViewBuilder func getGraph(chartData: LineChartData, colour: Color) -> some View {
+    @ViewBuilder func getGraph(datasets: LineDataSet, colour: Color) -> some View {
+        let chartData = LineChartData(dataSets: datasets, chartStyle: ChartStyle().getChartStyle())
         LineChart(chartData: chartData)
             .filledTopLine(chartData: chartData,
                            lineColour: ColourStyle(colour: colour),

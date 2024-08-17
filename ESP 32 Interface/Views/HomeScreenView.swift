@@ -51,6 +51,8 @@ struct HomeScreenView: View {
                 }
                 Section(header: Text("Thrust Vectoring")) {
                     NavigationLink("EDF", destination: ThrustVectoringEDFView())
+                    NavigationLink("Rocket", destination: ThrustVectoringRocketView())
+
                 }
             }
             .navigationBarTitle("ESP32 Assistant")

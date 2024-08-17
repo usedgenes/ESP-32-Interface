@@ -1,6 +1,5 @@
 import SwiftUI
 import PDFKit
-import UIKit
 
 struct AppHelpView: View {
     @State private var isSharePresented: Bool = false

@@ -8,21 +8,24 @@
 import Foundation
 import SwiftUICharts
 
-class BMI088Rocket : ObservableObject {
+class Rocket : ObservableObject {
     @Published var yawData : [LineChartDataPoint] = []
     @Published var pitchData : [LineChartDataPoint] = []
     @Published var rollData : [LineChartDataPoint] = []
     
     @Published var servo0pos : [LineChartDataPoint] = []
     @Published var servo1pos : [LineChartDataPoint] = []
-    @Published var servo2pos : [LineChartDataPoint] = []
-    @Published var servo3pos : [LineChartDataPoint] = []
-    
+
     @Published var yawPIDCommand : [LineChartDataPoint] = []
     @Published var pitchPIDCommand : [LineChartDataPoint] = []
     @Published var rollPIDCommand : [LineChartDataPoint] = []
 
-
+    @Published var altitude : [LineChartDataPoint] = []
+    
+    func addAltitude(altitude: Float) {
+        self.altitude.append(LineChartDataPoint(value: Double(altitude), xAxisLabel: " ", description: "Altitude"))
+    }
+    
     func addYaw(yaw: Float) {
         yawData.append(LineChartDataPoint(value: Double(yaw * 57.29), xAxisLabel: " ", description: "Yaw"))
     }
@@ -43,13 +46,6 @@ class BMI088Rocket : ObservableObject {
         servo1pos.append(LineChartDataPoint(value: Double(pos), xAxisLabel: " ", description: "Servo 1 Pos"))
     }
     
-    func addServo2Pos(pos: Float) {
-        servo2pos.append(LineChartDataPoint(value: Double(pos), xAxisLabel: " ", description: "Servo 2 Pos"))
-    }
-    
-    func addServo3Pos(pos: Float) {
-        servo3pos.append(LineChartDataPoint(value: Double(pos), xAxisLabel: " ", description: "Servo 3 Pos"))
-    }
     
     func addYawCommand(cmd: Float) {
         yawPIDCommand.append(LineChartDataPoint(value: Double(cmd), xAxisLabel: " ", description: "Yaw Command"))
@@ -98,20 +94,6 @@ class BMI088Rocket : ObservableObject {
                            style: LineStyle(lineColour: ColourStyle(colour: .green), lineType: .line))
     }
     
-    func getServo2Pos() -> LineDataSet {
-        return LineDataSet(dataPoints: servo2pos,
-                           legendTitle: "deg",
-                           pointStyle: PointStyle(),
-                           style: LineStyle(lineColour: ColourStyle(colour: .blue), lineType: .line))
-    }
-    
-    func getServo3Pos() -> LineDataSet {
-        return LineDataSet(dataPoints: servo3pos,
-                           legendTitle: "deg",
-                           pointStyle: PointStyle(),
-                           style: LineStyle(lineColour: ColourStyle(colour: .purple), lineType: .line))
-    }
-    
     func getYawCommand() -> LineDataSet {
         return LineDataSet(dataPoints: yawPIDCommand,
                            legendTitle: "deg",
@@ -133,6 +115,13 @@ class BMI088Rocket : ObservableObject {
                            style: LineStyle(lineColour: ColourStyle(colour: .purple), lineType: .line))
     }
     
+    func getAltitude() -> LineDataSet {
+        return LineDataSet(dataPoints: altitude,
+                           legendTitle: "m",
+                           pointStyle: PointStyle(),
+                           style: LineStyle(lineColour: ColourStyle(colour: .red), lineType: .line))
+    }
+    
     func resetRotation() {
         yawData.removeAll()
         pitchData.removeAll()
@@ -142,13 +131,15 @@ class BMI088Rocket : ObservableObject {
     func resetServoPos() {
         servo0pos.removeAll()
         servo1pos.removeAll()
-        servo2pos.removeAll()
-        servo3pos.removeAll()
     }
     
     func resetPIDCommands() {
         yawPIDCommand.removeAll()
         pitchPIDCommand.removeAll()
         rollPIDCommand.removeAll()
+    }
+    
+    func resetAltitude() {
+        altitude.removeAll()
     }
 }

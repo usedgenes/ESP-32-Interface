@@ -15,7 +15,8 @@ struct BluetoothConnectView: View {
     @State private var showBluetoothAlert: Bool = false
     @State var bluetoothManagerHelper = BluetoothManagerHelper()
     @State var LED_On = false
-    @EnvironmentObject var bmi088EDF : BNO08XEDF
+    @EnvironmentObject var edf : EDF
+    @EnvironmentObject var rocket : Rocket
     var body: some View {
         
         VStack {
@@ -84,7 +85,8 @@ struct BluetoothConnectView: View {
                             bluetoothDevice.device = device
                             bluetoothDevice.connect()
                             bluetoothDevice.ESP_32 = ESP_32
-                            bluetoothDevice.bmi088EDF = bmi088EDF
+                            bluetoothDevice.edf = edf
+                            bluetoothDevice.rocket = rocket
                         }
                     }) {
                             Text("\(device.name)")

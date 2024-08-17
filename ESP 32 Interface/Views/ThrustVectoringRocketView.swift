@@ -6,9 +6,6 @@ struct ThrustVectoringRocketView: View {
     
     @State var servo0Position : Double = 0
     @State var servo1Position : Double = 0
-    @State var servo2Position : Double = 0
-    @State var servo3Position : Double = 0
-    @State var edfPower : Double = 50
     
     @State var rollKp : String = "50.0"
     @State var rollKi : String = "0.5"
@@ -20,8 +17,7 @@ struct ThrustVectoringRocketView: View {
     @State var yawKi : String = "0.0"
     @State var yawKd : String = "0.0"
     
-    
-    @EnvironmentObject var bmi088EDF : BNO08XEDF
+    @EnvironmentObject var rocket : Rocket
     
     var body: some View {
         ScrollView {
@@ -147,46 +143,7 @@ struct ThrustVectoringRocketView: View {
                         }
                     }
                 }.padding()
-                HStack {
-                    Text("Servo 2: " + String(Int(servo2Position)))
-                        .padding(.trailing)
-                    Slider(value: Binding(get: {
-                        servo2Position
-                    }, set: { (newVal) in
-                        servo2Position = newVal
-                    }), in: -30...30, step: 1) { editing in
-                        if(!editing) {
-                            bluetoothDevice.setServos(input: "2" + String(Int(servo2Position)))
-                        }
-                    }
-                }.padding()
-                HStack {
-                    Text("Servo 3: " + String(Int(servo3Position)))
-                        .padding(.trailing)
-                    Slider(value: Binding(get: {
-                        servo3Position
-                    }, set: { (newVal) in
-                        servo3Position = newVal
-                    }), in: -30...30, step: 1) { editing in
-                        if (!editing) {
-                            bluetoothDevice.setServos(input: "3" + String(Int(servo3Position)))
-                        }
-                    }
-                }.padding()
             }
-            HStack {
-                Text("EDF Power: " + String(Int(edfPower)))
-                    .padding(.trailing)
-                Slider(value: Binding(get: {
-                    edfPower
-                }, set: { (newVal) in
-                    edfPower = newVal
-                }), in: 50...180, step: 1) { editing in
-                    if(!editing) {
-                        bluetoothDevice.setServos(input: "4" + String(Int(edfPower)))
-                    }
-                }
-            }.padding()
             GroupBox {
                 NavigationLink("View Orientation:", destination: rocketGraphView())
                     .padding()
@@ -205,7 +162,7 @@ struct ThrustVectoringRocketView: View {
 }
 
 struct rocketGraphView : View {
-    @EnvironmentObject var bmi088EDF : BNO08XEDF
+    @EnvironmentObject var rocket : Rocket
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -243,7 +200,7 @@ struct rocketGraphView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bmi088EDF.resetRotation()
+                    rocket.resetRotation()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -260,22 +217,19 @@ struct rocketGraphView : View {
             timer = nil
             timerOn.toggle()})
         
-        let yawData = LineChartData(dataSets: bmi088EDF.getYaw(), chartStyle: ChartStyle().getChartStyle())
         Text("Yaw")
-        ChartStyle().getGraph(chartData: yawData, colour: .red)
+        ChartStyle().getGraph(datasets: rocket.getYaw(), colour: .red)
         
-        let pitchData = LineChartData(dataSets: bmi088EDF.getPitch(), chartStyle: ChartStyle().getChartStyle())
         Text("Pitch")
-        ChartStyle().getGraph(chartData: pitchData, colour: .green)
+        ChartStyle().getGraph(datasets: rocket.getPitch(), colour: .green)
         
-        let rollData = LineChartData(dataSets: bmi088EDF.getRoll(), chartStyle: ChartStyle().getChartStyle())
         Text("Roll")
-        ChartStyle().getGraph(chartData: rollData, colour: .blue)
+        ChartStyle().getGraph(datasets: rocket.getRoll(), colour: .blue)
     }
 }
 
 struct rocketServoPosView : View {
-    @EnvironmentObject var bmi088EDF : BNO08XEDF
+    @EnvironmentObject var rocket : Rocket
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -313,7 +267,7 @@ struct rocketServoPosView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bmi088EDF.resetServoPos()
+                    rocket.resetServoPos()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -324,18 +278,17 @@ struct rocketServoPosView : View {
             timer = nil
             timerOn.toggle()})
         
-        let servo0data = LineChartData(dataSets: bmi088EDF.getServo0Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 0 Position")
-        ChartStyle().getGraph(chartData: servo0data, colour: .red)
+        ChartStyle().getGraph(datasets: rocket.getServo0Pos(), colour: .red)
         
-        let servo1data = LineChartData(dataSets: bmi088EDF.getServo1Pos(), chartStyle: ChartStyle().getChartStyle())
+        let servo1data = LineChartData(dataSets: rocket.getServo1Pos(), chartStyle: ChartStyle().getChartStyle())
         Text("Servo 1 Position")
-        ChartStyle().getGraph(chartData: servo1data, colour: .green)
+        ChartStyle().getGraph(datasets: rocket.getServo1Pos(), colour: .green)
     }
 }
 
 struct rocketPidView : View {
-    @EnvironmentObject var bmi088EDF : BNO08XEDF
+    @EnvironmentObject var rocket : Rocket
     @EnvironmentObject var bluetoothDevice : BluetoothDeviceHelper
     
     @State var timerOn = false
@@ -373,7 +326,7 @@ struct rocketPidView : View {
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity, alignment: .center)
                 Button(action: {
-                    bmi088EDF.resetPIDCommands()
+                    rocket.resetPIDCommands()
                 }) {
                     Text("Reset All")
                 }.buttonStyle(BorderlessButtonStyle())
@@ -384,17 +337,14 @@ struct rocketPidView : View {
             timer = nil
             timerOn.toggle()})
         
-        let yawCmd = LineChartData(dataSets: bmi088EDF.getYawCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Yaw Command")
-        ChartStyle().getGraph(chartData: yawCmd, colour: .red)
+        ChartStyle().getGraph(datasets: rocket.getYawCommand(), colour: .red)
         
-        let pitchCmd = LineChartData(dataSets: bmi088EDF.getPitchCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Pitch Command")
-        ChartStyle().getGraph(chartData: pitchCmd, colour: .green)
+        ChartStyle().getGraph(datasets: rocket.getPitchCommand(), colour: .green)
         
-        let rollCmd = LineChartData(dataSets: bmi088EDF.getRollCommand(), chartStyle: ChartStyle().getChartStyle())
         Text("Roll Command")
-        ChartStyle().getGraph(chartData: rollCmd, colour: .blue)
+        ChartStyle().getGraph(datasets: rocket.getRollCommand(), colour: .blue)
     }
 }
 

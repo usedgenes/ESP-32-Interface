@@ -163,17 +163,14 @@ struct BNO08XAccelerationView: View {
     @ObservedObject var bno08x: BNO08X
     var body: some View {
         VStack {
-            let accelerationXData = LineChartData(dataSets: bno08x.getAccelerometerX(), chartStyle: ChartStyle().getChartStyle())
             Text("Accelerometer X")
-            ChartStyle().getGraph(chartData: accelerationXData, colour: .red)
+            ChartStyle().getGraph(datasets: bno08x.getAccelerometerX(), colour: .red)
 
-            let accelerationYData = LineChartData(dataSets: bno08x.getAccelerometerY(), chartStyle: ChartStyle().getChartStyle())
             Text("Accelerometer Y")
-            ChartStyle().getGraph(chartData: accelerationYData, colour: .green)
+            ChartStyle().getGraph(datasets: bno08x.getAccelerometerY(), colour: .green)
             
-            let accelerationZData = LineChartData(dataSets: bno08x.getAccelerometerZ(), chartStyle: ChartStyle().getChartStyle())
             Text("Accelerometer Z")
-            ChartStyle().getGraph(chartData: accelerationZData, colour: .blue)
+            ChartStyle().getGraph(datasets: bno08x.getAccelerometerZ(), colour: .blue)
         }
     }
 }
@@ -182,17 +179,14 @@ struct BNO08XGyroView: View {
     @ObservedObject var bno08x: BNO08X
     var body: some View {
         VStack {
-            let gyroXData = LineChartData(dataSets: bno08x.getGyroX(), chartStyle: ChartStyle().getChartStyle())
             Text("Gyro X")
-            ChartStyle().getGraph(chartData: gyroXData, colour: .red)
+            ChartStyle().getGraph(datasets: bno08x.getGyroX(), colour: .red)
             
-            let gyroYData = LineChartData(dataSets: bno08x.getGyroY(), chartStyle: ChartStyle().getChartStyle())
             Text("Gyro Y")
-            ChartStyle().getGraph(chartData: gyroYData, colour: .green)
+            ChartStyle().getGraph(datasets: bno08x.getGyroY(), colour: .green)
 
-            let gyroZData = LineChartData(dataSets: bno08x.getGyroZ(), chartStyle: ChartStyle().getChartStyle())
             Text("Gyro Z")
-            ChartStyle().getGraph(chartData: gyroZData, colour: .blue)
+            ChartStyle().getGraph(datasets: bno08x.getGyroZ(), colour: .blue)
         }
     }
 }
@@ -201,25 +195,20 @@ struct BNO08XRotationView: View {
     @ObservedObject var bno08x: BNO08X
     var body: some View {
         ScrollView {
-            let rotationXData = LineChartData(dataSets: bno08x.getRotationX(), chartStyle: ChartStyle().getChartStyle())
             Text("Rotation X")
-            ChartStyle().getGraph(chartData: rotationXData, colour: .red)
+            ChartStyle().getGraph(datasets: bno08x.getRotationX(), colour: .red)
             
-            let rotationYData = LineChartData(dataSets: bno08x.getRotationY(), chartStyle: ChartStyle().getChartStyle())
             Text("Rotation Y")
-            ChartStyle().getGraph(chartData: rotationYData, colour: .green)
+            ChartStyle().getGraph(datasets: bno08x.getRotationY(), colour: .green)
             
-            let rotationZData = LineChartData(dataSets: bno08x.getRotationZ(), chartStyle: ChartStyle().getChartStyle())
             Text("Rotation Z")
-            ChartStyle().getGraph(chartData: rotationZData, colour:.blue)
+            ChartStyle().getGraph(datasets: bno08x.getRotationZ(), colour:.blue)
 
-            let rotationRealData = LineChartData(dataSets: bno08x.getRotationReal(), chartStyle: ChartStyle().getChartStyle())
             Text("Rotation Real")
-            ChartStyle().getGraph(chartData: rotationRealData, colour: .purple)
+            ChartStyle().getGraph(datasets: bno08x.getRotationReal(), colour: .purple)
             
-            let rotationAccuracyData = LineChartData(dataSets: bno08x.getRotationAccuracy(), chartStyle: ChartStyle().getChartStyle())
             Text("Rotation Accuracy")
-            ChartStyle().getGraph(chartData: rotationAccuracyData, colour: .yellow)
+            ChartStyle().getGraph(datasets: bno08x.getRotationAccuracy(), colour: .yellow)
         }
     }
 }

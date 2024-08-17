@@ -5,8 +5,6 @@
 //  Created by Jindrich Dolezy on 28/11/2018.
 //  Copyright © 2018 Dzindra. All rights reserved.
 //
-
-import UIKit
 import CoreBluetooth
 
 

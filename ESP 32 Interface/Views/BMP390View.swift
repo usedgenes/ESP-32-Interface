@@ -142,18 +142,14 @@ struct BMP390ChartView : View {
         .offset(y:15)
         Spacer()
         
-        let temperatureData = LineChartData(dataSets: bmp390.getTemperatureDataSet(), chartStyle: ChartStyle().getChartStyle())
         Text("Temperature")
-        ChartStyle().getGraph(chartData: temperatureData, colour: .red)
+        ChartStyle().getGraph(datasets: bmp390.getTemperatureDataSet(), colour: .red)
 
-        
-        let pressureData = LineChartData(dataSets: bmp390.getPressureDataSet(), chartStyle: ChartStyle().getChartStyle())
         Text("Pressure")
-        ChartStyle().getGraph(chartData: pressureData, colour: .green)
+        ChartStyle().getGraph(datasets: bmp390.getPressureDataSet(), colour: .green)
         
-        let altitudeData = LineChartData(dataSets: bmp390.getAltitudeDataSet(), chartStyle: ChartStyle().getChartStyle())
         Text("Altitude")
-        ChartStyle().getGraph(chartData: altitudeData, colour: .green)
+        ChartStyle().getGraph(datasets: bmp390.getAltitudeDataSet(), colour: .green)
     }
 }
 

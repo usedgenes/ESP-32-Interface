@@ -11,16 +11,16 @@ import SwiftUI
 struct ESP_32_InterfaceApp: App {
     @StateObject var ESP_32 = ESP32()
     @StateObject var bluetoothDevice = BluetoothDeviceHelper()
-    @StateObject var bno08xEDF = BNO08XEDF()
-    @StateObject var bmi088Rocket = BMI088Rocket()
+    @StateObject var edf = EDF()
+    @StateObject var rocket = Rocket()
     
     var body: some Scene {
         WindowGroup {
             HomeScreenView()
                 .environmentObject(ESP_32)
                 .environmentObject(bluetoothDevice)
-                .environmentObject(bno08xEDF)
-                .environmentObject(bmi088Rocket)
+                .environmentObject(edf)
+                .environmentObject(rocket)
         }
     }
 }
